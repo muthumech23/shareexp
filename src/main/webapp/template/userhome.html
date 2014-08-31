@@ -1,0 +1,46 @@
+<!-- Page Sidebar
+================================================== --> 
+<div class="span4 sidebar"><!-- Begin sidebar column -->
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#friendshome" data-toggle="tab">Home</a></li>
+        <li><a href="#grouphome" data-toggle="tab">Profile</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="friendshome">
+            <ul> 
+                <li ng-repeat="userInfo in usersBillData" >
+                    <a ng-click=""><span class="text-success" ng-if="userInfo.amount >= 0"><span class="span3 no-margin add-on"><i class="icon-user" ></i><strong>{{userInfo.name}}</strong></span>
+                            <strong>{{userInfo.amount| currency}}</strong></span>
+
+                        <span class="text-error" ng-if="userInfo.amount < 0"> <span class="span3 no-margin add-on"><i class="icon-user"></i><strong>{{userInfo.name}}</strong></span>
+                            <strong>{{userInfo.amount| currency}}</strong></span></a></li>
+            </ul>
+        </div>
+        <div class="tab-pane" id="grouphome">
+           <ul> 
+                <li ng-repeat="userInfo in usersBillData" >
+                    <a ng-click=""><span class="text-success" ng-if="userInfo.amount >= 0"><span class="span3 no-margin add-on"><i class="icon-user" ></i><strong>{{userInfo.name}}</strong></span>
+                            <strong>{{userInfo.amount| currency}}</strong></span>
+
+                        <span class="text-error" ng-if="userInfo.amount < 0"> <span class="span3 no-margin add-on"><i class="icon-user"></i><strong>{{userInfo.name}}</strong></span>
+                            <strong>{{userInfo.amount| currency}}</strong></span></a></li>
+            </ul>
+        </div>
+    </div>
+
+</div><!-- End sidebar column -->
+
+<!-- Page Content
+================================================== --> 
+
+<div class="row span8"><!--Begin page content column-->
+
+
+    <h5 class="title-bg">Recent Transaction<button class="btn btn-mini btn-success" type="button" ng-click="AddBill(usersBillData, 'lg')"><span class="icon-plus-sign" ></span><span>&nbsp;Add Bill</span></button></h5>
+
+
+    
+
+</div> <!--End page content column--> 
