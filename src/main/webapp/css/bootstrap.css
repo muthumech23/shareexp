@@ -3854,11 +3854,8 @@ input[type="submit"].btn.btn-mini {
 }
 
 .nav-tabs {
-    background-color: palegreen;
     font-weight: bold;
-     -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid #ddd;
 }
 
 .nav-tabs > li {

@@ -689,7 +689,7 @@ a.accordion-toggle{background: #f5f5f5;}
 .left {float: left;}
 .right {float: right;}
 .align-left{float: left; margin: 0px 20px 20px 0px;}
-.align-right{float: right; margin: 5px 5px 0px 20px;}
+.align-right{float: right; margin: 5px 20px 0px 20px;}
 
 .color-bg { background:#d8450b; }
 .color { color:#d8450b; }
