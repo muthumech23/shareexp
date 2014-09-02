@@ -21,4 +21,6 @@ public interface UserService {
 
     public List<User> findByFriend(String friendId) throws Exception;
     
+    public List<User> findByIdOrFriends(String userId, String friendId) throws Exception;
+    
 }

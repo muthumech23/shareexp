@@ -1,10 +1,20 @@
-var userControllers = angular.module('UserControllers', []);
+var userControllers = angular.module('UserControllers', [ ]);
 
 userControllers.controller('UserController',
         function($scope, $log, $location, $modal, cfpLoadingBar, SessionService, FlashService, BillingServices, homeBillData) {
 
             $log.info = 'Inside User Controller';
             $scope.usersBillData = homeBillData;
+            
+            $scope.billvalue = {};
+            
+            $scope.saveBill = function(bill){
+                alert(bill);
+                console.log(bill);
+                bill.billSplits = $scope.billvalue;
+                console.log($scope.billvalue);
+                console.log(bill);
+            };
             
             $scope.AddBill = function(billData, size) {
                 $scope.billDatas = billData;

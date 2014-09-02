@@ -6,6 +6,7 @@
 
 package com.mycompany.shareexpense.model;
 
+import java.util.List;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,8 +18,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class ShareGroup extends AbstractModal{
     
     private String name;
+    
     @Indexed
     private String userId;
+
+    public List<String> getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(List<String> userIds) {
+        this.userIds = userIds;
+    }
+    
+    private List<String> userIds;
     
     public String getName() {
         return name;

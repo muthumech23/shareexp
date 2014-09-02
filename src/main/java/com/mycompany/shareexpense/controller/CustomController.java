@@ -5,7 +5,7 @@
  */
 package com.mycompany.shareexpense.controller;
 
-import com.mycompany.shareexpense.model.BillPerson;
+import com.mycompany.shareexpense.model.Bill;
 import com.mycompany.shareexpense.model.BillSplit;
 import com.mycompany.shareexpense.model.User;
 import com.mycompany.shareexpense.service.BillService;
@@ -34,11 +34,16 @@ public class CustomController {
 
     @RequestMapping(value = "friends/{userId}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     public List<User> allFriends(@PathVariable("userId") String userId) throws Exception {
-        return userService.findByFriend(userId);
+        return userService.findByIdOrFriends(userId, userId);
     }
 
     @RequestMapping(value = "bills/all", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    public List<BillPerson> allBills(@RequestBody String userId) throws Exception {
+    public List<BillSplit> allBills(@RequestBody String userId) throws Exception {
         return billService.findAllBills(userId);
+    }
+    
+    @RequestMapping(value = "bills/:userId", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    public List<Bill> recentTrans(@PathVariable ("@Id") String userId) throws Exception {
+        return billService.recentTrans(userId);
     }
 }

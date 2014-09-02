@@ -1,6 +1,7 @@
 var shareExpApp = angular.module(
         "ShareExpApp",
-        ["ngSanitize",
+        ["ui.router",
+            "ngSanitize",
             "ngRoute",
             'chieffancypants.loadingBar',
             'ngAnimate',
@@ -16,38 +17,56 @@ var shareExpApp = angular.module(
             "FriendServices",
             "BillServices",
             "ShareExpFilters",
-            'ui.bootstrap']);
+            'ui.bootstrap',
+            "checklist-model"
+            ]);
 
 shareExpApp.config(
-        function($routeProvider) {
+        function($stateProvider, $urlRouterProvider) {
 
-            $routeProvider
-                    .when("/home", {controller: "HomeController", templateUrl: "template/home.html"})
-                    .when("/login", {controller: "LoginController", templateUrl: "template/login.html"})
-                    .when("/signup", {controller: "LoginController", templateUrl: "template/register.html"})
-                    .when("/userhome", {controller: "UserController", templateUrl: "template/userhome.html",
-                        resolve: {
-                            homeBillData: function(BillingServices) {
-                                return BillingServices.getHomeBills();
-                            }
-                        }
-                    })
-                    .when("/friends", {controller: "FriendController", templateUrl: "template/listfriends.html",
-                        resolve: {
-                            friendsData: function(FriendServices) {
-                                return FriendServices.getFriends();
-                            }
-                        }
-                    })
-                    .otherwise({redirectTo: "/home"});
+            $urlRouterProvider.otherwise('/home');
+
+            $stateProvider
+                    .state('home',
+                            {url: "/home",
+                                controller: "HomeController",
+                                templateUrl: "template/home.html"})
+                    .state('login',
+                            {url: "/login",
+                                controller: "LoginController",
+                                templateUrl: "template/login.html"})
+                    .state('signup',
+                            {url: "/signup",
+                                controller: "LoginController",
+                                templateUrl: "template/register.html"})
+                    .state('userhome',
+                            {url: "/userhome",
+                                controller: "UserController",
+                                templateUrl: "template/userhome.html", resolve: {
+                                    homeBillData: function(BillingServices) {
+                                        return BillingServices.getHomeBills();
+                                    }
+                                }
+                            })
+                    .state('friends',
+                            {url: "/friends",
+                                controller: "FriendController",
+                                templateUrl: "template/listfriends.html",
+                                resolve: {
+                                    friendsData: function(FriendServices) {
+                                        return FriendServices.getFriends();
+                                    }
+                                }
+                            })
         },
         function(cfpLoadingBarProvider) {
             cfpLoadingBarProvider.includeSpinner = true;
         });
 
-shareExpApp.controller('IndexController', function($scope, $location, cfpLoadingBar, CookieService, AuthenticationService, FlashService) {
+shareExpApp.controller('IndexController', function($scope, $location, cfpLoadingBar, CookieService, SessionService, AuthenticationService, FlashService) {
 
     $scope.loggedIn = AuthenticationService.isLoggedIn();
+    $scope.loggedUser = SessionService.get('userId');
 
     $scope.userLogin = function(user) {
         cfpLoadingBar.start();
@@ -62,7 +81,9 @@ shareExpApp.controller('IndexController', function($scope, $location, cfpLoading
                     AuthenticationService.cacheSession('userId', userId);
                     AuthenticationService.cacheSession('authenticated', true);
                     CookieService.set('authenticated', true);
+                    $scope.loggedUser = SessionService.get('userId');
                     $scope.loggedIn = AuthenticationService.isLoggedIn();
+
                     FlashService.show(response, "alert-success");
                     $location.path("/userhome");
                 },

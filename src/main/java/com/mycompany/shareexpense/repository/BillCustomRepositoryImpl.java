@@ -5,8 +5,10 @@
  */
 package com.mycompany.shareexpense.repository;
 
-import com.mycompany.shareexpense.model.BillPerson;
+import com.mycompany.shareexpense.model.BillSplit;
 import com.mycompany.shareexpense.model.User;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,7 +18,6 @@ import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -32,28 +33,57 @@ public class BillCustomRepositoryImpl implements BillCustomRepository {
     public MongoTemplate mongoTemplate;
 
     @Override
-    public List<BillPerson> findAllBills(String userId) {
-        
-        AggregationOperation match = Aggregation.match(Criteria.where("userId").is(userId).orOperator(Criteria.where("paidId").is(userId)));
+    public List<BillSplit> findAllBills(String userId, List<User> users) {
 
-        AggregationOperation group = Aggregation.group("userId").sum("amount").as("amount");
+        AggregationOperation match = Aggregation.match(Criteria.where("billSplits.userId").is(userId));
+
+        AggregationOperation group = Aggregation.group("billSplits.userId").sum("billSplits.amount").as("amount");
 
         Aggregation aggregation = Aggregation.newAggregation(match, group);
-        AggregationResults<BillPerson> result = mongoTemplate.aggregate(aggregation, "billsplits", BillPerson.class);
+        AggregationResults<BillSplit> result = mongoTemplate.aggregate(aggregation, "bills", BillSplit.class);
 
-        Query query = Query.query(Criteria.where("friends").is(userId));
+        List<BillSplit> billSplits = result.getMappedResults();
 
-        List<BillPerson> users = mongoTemplate.find(query, BillPerson.class, "users");
-        
-        for(BillPerson billPerson: users){
-            String Id = billPerson.getId();
-            
-            for(BillPerson billPerson1: result.getMappedResults()){
-                if(Id.equalsIgnoreCase(billPerson1.getId())){
-                    billPerson.setAmount(billPerson1.getAmount());
+        log.info(billSplits.isEmpty());
+        if (billSplits.isEmpty()) {
+            billSplits = new ArrayList<>();
+            for (User user : users) {
+                BillSplit billSplit = new BillSplit();
+                billSplit.setId(user.getId());
+                billSplit.setName(user.getName());
+                billSplit.setAmount(BigInteger.ZERO);
+                billSplit.setEmail(user.getEmail());
+                billSplits.add(billSplit);
+            }
+            log.info(billSplits.size());
+        } else {
+            for (User user : users) {
+                boolean userExists = false;
+
+                for (BillSplit billsplit : billSplits) {
+                    if (billsplit.getId().equalsIgnoreCase(user.getId())) {
+                        userExists = true;
+                        break;
+                    };
+                }
+                if (!userExists) {
+                    BillSplit billSplit = new BillSplit();
+                    billSplit.setId(user.getId());
+                    billSplit.setName(user.getName());
+                    billSplit.setAmount(BigInteger.ZERO);
+                    billSplit.setEmail(user.getEmail());
+                    billSplits.add(billSplit);
                 }
             }
+            log.info(billSplits.size());
         }
-        return users;
+
+        return billSplits;
+    }
+
+    public List<BillSplit> recentTrans(String userId) {
+
+        return null;
+
     }
 }

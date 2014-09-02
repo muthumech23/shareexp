@@ -8,7 +8,6 @@ package com.mycompany.shareexpense.model;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -29,12 +28,11 @@ public class Bill extends AbstractModal {
     private String Category;
 
     @Indexed
-    private String paidUser;
+    private String userPaid;
 
     @Indexed
     private String groupId;
 
-    @Transient
     public List<BillSplit> getBillSplits() {
         return billSplits;
     }
@@ -53,16 +51,16 @@ public class Bill extends AbstractModal {
         this.amount = amount;
     }
 
-    public String getPaidUser() {
-        return paidUser;
-    }
-
-    public void setPaidUser(String paidUser) {
-        this.paidUser = paidUser;
-    }
-
     public String getGroupId() {
         return groupId;
+    }
+
+    public String getUserPaid() {
+        return userPaid;
+    }
+
+    public void setUserPaid(String userPaid) {
+        this.userPaid = userPaid;
     }
 
     public void setGroupId(String groupId) {

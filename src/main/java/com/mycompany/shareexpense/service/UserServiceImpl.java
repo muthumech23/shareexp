@@ -55,6 +55,11 @@ public class UserServiceImpl implements UserService {
     public List<User> findByFriend(String friendId) throws Exception {
         return userCustomRepository.findByFriend(friendId);
     }
+    
+    @Override
+    public List<User> findByIdOrFriends(String userId, String friendId) throws Exception {
+        return userRepository.findByIdOrFriends(userId, friendId);
+    }
 
     @Override
     public List<User> findByGroup(String groupId) throws Exception {

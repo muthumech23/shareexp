@@ -7,12 +7,14 @@
 package com.mycompany.shareexpense.service;
 
 import com.mycompany.shareexpense.model.Bill;
-import com.mycompany.shareexpense.model.BillPerson;
+import com.mycompany.shareexpense.model.BillSplit;
+import com.mycompany.shareexpense.model.User;
 import com.mycompany.shareexpense.repository.BillCustomRepository;
 import com.mycompany.shareexpense.repository.BillRepository;
-import com.mycompany.shareexpense.repository.BillSplitRepository;
-import com.mycompany.shareexpense.repository.UserCustomRepository;
+import com.mycompany.shareexpense.repository.UserRepository;
 import java.util.List;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +25,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class BillServiceImpl implements BillService{
     
+    private Log log = LogFactory.getLog(BillServiceImpl.class);
+    
     @Autowired
     private BillRepository billRepository;
     
     @Autowired
-    private BillSplitRepository billSplitRepository;
+    private UserRepository userRepository;
     
     @Autowired
     public BillCustomRepository billCustomRepository;
@@ -59,9 +63,16 @@ public class BillServiceImpl implements BillService{
     }
     
     @Override
-    public List<BillPerson> findAllBills(String userId) throws Exception {
-        List<BillPerson> billPersons = billCustomRepository.findAllBills(userId);
+    public List<BillSplit> findAllBills(String userId) throws Exception {
+        List<User> users = userRepository.findByIdOrFriends(userId, userId);
+        List<BillSplit> billPersons = billCustomRepository.findAllBills(userId, users);
         return billPersons;
+    }
+    
+    @Override
+    public List<Bill> recentTrans(String userId) throws Exception {
+        
+        return null;
     }
 
 }

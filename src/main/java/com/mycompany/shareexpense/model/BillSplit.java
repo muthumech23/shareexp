@@ -6,39 +6,18 @@
 package com.mycompany.shareexpense.model;
 
 import java.math.BigInteger;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 /**
  *
  * @author AH0661755
  */
-@Document(collection = "billsplits")
-public class BillSplit extends AbstractModal {
+public class BillSplit extends AbstractModal{
 
     private BigInteger amount;
-    private String paidId;
-    private String userId;
-    private String email;
+
     private String name;
-    private String billId;
-
-    public String getBillId() {
-        return billId;
-    }
-
-    public void setBillId(String billId) {
-        this.billId = billId;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
+    
+    private String email;
+    
     public BigInteger getAmount() {
         return amount;
     }
@@ -47,12 +26,12 @@ public class BillSplit extends AbstractModal {
         this.amount = amount;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getName() {

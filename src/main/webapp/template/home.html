@@ -1,88 +1,92 @@
-<script type="text/javascript">
-    $(document).ready(function() {
-
-        $("#btn-blog-next").click(function() {
-            $('#blogCarousel').carousel('next')
-        });
-        $("#btn-blog-prev").click(function() {
-            $('#blogCarousel').carousel('prev')
-        });
-
-        $("#btn-client-next").click(function() {
-            $('#clientCarousel').carousel('next')
-        });
-        $("#btn-client-prev").click(function() {
-            $('#clientCarousel').carousel('prev')
-        });
-
-    });
-</script>
-
-<!-- Blog Preview
-================================================== -->
-<div class="span6">
-
-    <h5 class="title-bg">From the Blog 
-        <small>All the latest news</small>
-        <button id="btn-blog-next" class="btn btn-success btn-mini" type="button">&raquo;</button>
-        <button id="btn-blog-prev" class="btn btn-success btn-mini" type="button">&laquo;</button>
-    </h5>
-
-    <div id="blogCarousel" class="carousel slide ">
-
-        <!-- Carousel items -->
-        <div class="carousel-inner">
-
-            <!-- Blog Item 1 -->
-            <div class="active item">
-                <div class="post-info clearfix">
-                    <h4><a href="blog-single.htm">A subject that is beautiful in itself</a></h4>
-                    <ul class="blog-details-preview">
-                        <li><i class="icon-calendar"></i><strong>Posted on:</strong> Sept 4, 2015<li>
-                        <li><i class="icon-user"></i><strong>Posted by:</strong> <a href="#" title="Link">Admin</a><li>
-                        <li><i class="icon-comment"></i><strong>Comments:</strong> <a href="#" title="Link">12</a><li>
-                        <li><i class="icon-tags"></i> <a href="#">photoshop</a>, <a href="#">tutorials</a>, <a href="#">illustration</a>
-                    </ul>
-                </div>
-                <p class="blog-summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum felis fermentum ipsum molestie sed porttitor ligula rutrum. Vestibulum lectus tellus, aliquet et iaculis sed, volutpat vel erat. <a href="#">Read more</a><p>
+<div class="bs-docs-section">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="page-header">
+                <ul class="breadcrumb col-lg-3">
+                    <li class="active">HOME</li>
+                </ul><div class="alert col-lg-7" ng-class="msgType" ng-if="flash">{{flash}}</div>
             </div>
-
-            <!-- Blog Item 2 -->
-            <div class="item">
-                <div class="post-info clearfix">
-                    <h4><a href="blog-single.htm">A great artist is always before his time</a></h4>
-                    <ul class="blog-details-preview">
-                        <li><i class="icon-calendar"></i><strong>Posted on:</strong> Sept 4, 2015<li>
-                        <li><i class="icon-user"></i><strong>Posted by:</strong> <a href="#" title="Link">Admin</a><li>
-                        <li><i class="icon-comment"></i><strong>Comments:</strong> <a href="#" title="Link">12</a><li>
-                        <li><i class="icon-tags"></i> <a href="#">photoshop</a>, <a href="#">tutorials</a>, <a href="#">illustration</a>
-                    </ul>
-                </div>
-                <p class="blog-summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum felis fermentum ipsum molestie sed porttitor ligula rutrum. Vestibulum lectus tellus, aliquet et iaculis sed, volutpat vel erat. <a href="#">Read more</a><p>
-            </div>
-
-            <!-- Blog Item 3 -->
-            <div class="item">
-                <div class="post-info clearfix">
-                    <h4><a href="blog-single.htm">Is art everything to anybody?</a></h4>
-                    <ul class="blog-details-preview">
-                        <li><i class="icon-calendar"></i><strong>Posted on:</strong> Sept 4, 2015<li>
-                        <li><i class="icon-user"></i><strong>Posted by:</strong> <a href="#" title="Link">Admin</a><li>
-                        <li><i class="icon-comment"></i><strong>Comments:</strong> <a href="#" title="Link">12</a><li>
-                        <li><i class="icon-tags"></i> <a href="#">photoshop</a>, <a href="#">tutorials</a>, <a href="#">illustration</a>
-                    </ul>
-                </div>
-                <p class="blog-summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum felis fermentum ipsum molestie sed porttitor ligula rutrum. Vestibulum lectus tellus, aliquet et iaculis sed, volutpat vel erat. <a href="#">Read more</a><p>
-            </div>
-
         </div>
-    </div> 	
-</div>
+        <div class="col-lg-2"></div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
 
-<!-- Headline Text -->
-<div class="span4">
-    <h3>Welcome to Share Expenses. <br />
-        Share bills between housemates and friends — for free.</h3>
-    <p class="lead">It's easy to start sharing right away.</p>
-    <p>Cras rutrum, massa non blandit convallis, est lacus gravida enim, eu fermentum ligula orci et tortor. In sit amet nisl ac leo pulvinar molestie. Morbi blandit ultricies ultrices.</p>
+            $("#btn-blog-next").click(function() {
+                $('#blogCarousel').carousel('next')
+            });
+            $("#btn-blog-prev").click(function() {
+                $('#blogCarousel').carousel('prev')
+            });
+
+            $("#btn-client-next").click(function() {
+                $('#clientCarousel').carousel('next')
+            });
+            $("#btn-client-prev").click(function() {
+                $('#clientCarousel').carousel('prev')
+            });
+
+        });
+    </script>
+    <div class="page-header" id="banner">
+        <div class="row">
+            <div class="col-lg-4 col-md-5 col-sm-6">
+                <h1>Share Expense</h1>
+                <p class="lead">Flat and modern</p>
+            </div>
+            <div class="col-lg-8 col-md-7 col-sm-6">
+                <div class="sponsor">
+                    <div id="blogCarousel" class="carousel slide ">
+
+                        <!-- Carousel items -->
+                        <div class="carousel-inner">
+
+                            <!-- Blog Item 1 -->
+                            <div class="active item">
+                                <div class="post-info clearfix">
+                                    <h4><a href="blog-single.htm">A subject that is beautiful in itself</a></h4>
+                                    <ul class="blog-details-preview">
+                                        <li><i class="icon-calendar"></i><strong>Posted on:</strong> Sept 4, 2015<li>
+                                        <li><i class="icon-user"></i><strong>Posted by:</strong> <a href="#" title="Link">Admin</a><li>
+                                        <li><i class="icon-comment"></i><strong>Comments:</strong> <a href="#" title="Link">12</a><li>
+                                        <li><i class="icon-tags"></i> <a href="#">photoshop</a>, <a href="#">tutorials</a>, <a href="#">illustration</a>
+                                    </ul>
+                                </div>
+                                <p class="blog-summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum felis fermentum ipsum molestie sed porttitor ligula rutrum. Vestibulum lectus tellus, aliquet et iaculis sed, volutpat vel erat. <a href="#">Read more</a><p>
+                            </div>
+
+                            <!-- Blog Item 2 -->
+                            <div class="item">
+                                <div class="post-info clearfix">
+                                    <h4><a href="blog-single.htm">A great artist is always before his time</a></h4>
+                                    <ul class="blog-details-preview">
+                                        <li><i class="icon-calendar"></i><strong>Posted on:</strong> Sept 4, 2015<li>
+                                        <li><i class="icon-user"></i><strong>Posted by:</strong> <a href="#" title="Link">Admin</a><li>
+                                        <li><i class="icon-comment"></i><strong>Comments:</strong> <a href="#" title="Link">12</a><li>
+                                        <li><i class="icon-tags"></i> <a href="#">photoshop</a>, <a href="#">tutorials</a>, <a href="#">illustration</a>
+                                    </ul>
+                                </div>
+                                <p class="blog-summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum felis fermentum ipsum molestie sed porttitor ligula rutrum. Vestibulum lectus tellus, aliquet et iaculis sed, volutpat vel erat. <a href="#">Read more</a><p>
+                            </div>
+
+                            <!-- Blog Item 3 -->
+                            <div class="item">
+                                <div class="post-info clearfix">
+                                    <h4><a href="blog-single.htm">Is art everything to anybody?</a></h4>
+                                    <ul class="blog-details-preview">
+                                        <li><i class="icon-calendar"></i><strong>Posted on:</strong> Sept 4, 2015<li>
+                                        <li><i class="icon-user"></i><strong>Posted by:</strong> <a href="#" title="Link">Admin</a><li>
+                                        <li><i class="icon-comment"></i><strong>Comments:</strong> <a href="#" title="Link">12</a><li>
+                                        <li><i class="icon-tags"></i> <a href="#">photoshop</a>, <a href="#">tutorials</a>, <a href="#">illustration</a>
+                                    </ul>
+                                </div>
+                                <p class="blog-summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum felis fermentum ipsum molestie sed porttitor ligula rutrum. Vestibulum lectus tellus, aliquet et iaculis sed, volutpat vel erat. <a href="#">Read more</a><p>
+                            </div>
+
+                        </div>
+                    </div> 	
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

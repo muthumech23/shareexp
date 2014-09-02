@@ -1,46 +1,86 @@
-<!-- Page Sidebar
-================================================== --> 
-<div class="span4 sidebar"><!-- Begin sidebar column -->
-
-    <ul class="nav nav-tabs">
-        <li class="active"><a href="#friendshome" data-toggle="tab">Home</a></li>
-        <li><a href="#grouphome" data-toggle="tab">Profile</a></li>
-    </ul>
-
-    <div class="tab-content">
-        <div class="tab-pane active" id="friendshome">
-            <ul> 
-                <li ng-repeat="userInfo in usersBillData" >
-                    <a ng-click=""><span class="text-success" ng-if="userInfo.amount >= 0"><span class="span3 no-margin add-on"><i class="icon-user" ></i><strong>{{userInfo.name}}</strong></span>
-                            <strong>{{userInfo.amount| currency}}</strong></span>
-
-                        <span class="text-error" ng-if="userInfo.amount < 0"> <span class="span3 no-margin add-on"><i class="icon-user"></i><strong>{{userInfo.name}}</strong></span>
-                            <strong>{{userInfo.amount| currency}}</strong></span></a></li>
-            </ul>
+<div class="bs-docs-section">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="page-header">
+                <ul class="breadcrumb col-lg-3">
+                    <li class="active">BILLS</li>
+                </ul><div class="alert col-lg-7" ng-class="msgType" ng-if="flash">{{flash}}</div>
+            </div>
         </div>
-        <div class="tab-pane" id="grouphome">
-           <ul> 
-                <li ng-repeat="userInfo in usersBillData" >
-                    <a ng-click=""><span class="text-success" ng-if="userInfo.amount >= 0"><span class="span3 no-margin add-on"><i class="icon-user" ></i><strong>{{userInfo.name}}</strong></span>
-                            <strong>{{userInfo.amount| currency}}</strong></span>
+        <div class="col-lg-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="bs-component">
+                <div class="list-group">
+                    <a ng-repeat="userInfo in usersBillData" class="list-group-item">
+                        <span class="label-success badge" ng-if="userInfo.amount >= 0">{{userInfo.amount| currency}}</span>
+                        <span class="label-danger badge" ng-if="userInfo.amount < 0">{{userInfo.amount| currency}}</span>
+                        <i class="glyphicon glyphicon-user"></i>  {{userInfo.name}}
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="bs-component">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
+                    <li><a href="#profile" data-toggle="tab">Add Bill</a></li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade active in" id="home">
+                        <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+                    </div>
+                    <div class="tab-pane fade" id="profile">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label for="inputDate" class="col-lg-2 control-label">Date</label>
+                                        <div class="col-lg-10">
+                                            <input type="date" ng-model="bill.date" class="form-control input-sm" placeholder="Bill Date">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPaid" class="col-lg-2 control-label">Who Paid</label>
+                                        <div class="col-lg-10">{{}}
+                                            <label ng-repeat="billdata in usersBillData" >
+                                                <input type="radio" ng-model="bill.userPaid" value="{{billdata.id}}" ng-checked="{{billdate.id == loggedUser}}">
+                                                {{billdata.name}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputAmount" class="col-lg-2 control-label">Amount</label>
+                                        <div class="col-lg-10">
+                                            <input type="text" ng-model="bill.amount" class="form-control input-sm" placeholder="Bill Amount">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputUser" class="col-lg-2 control-label">To Whom</label>
+                                        <div class="input-group-sm col-lg-10">
+                                            <label ng-repeat="billdata in usersBillData">
+                                                <input type="checkbox" checklist-model="billvalue.usersBillData" checklist-value="billdata"> 
+                                                
+                                                {{billdata.name}}
+                                                <input type="text" id="{{billdata.id}}" class="form-control input-xsm " ng-model="billdata.amount" placeholder="0.00">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="panel-footer text-right"><a class="btn btn-success btn-sm" ng-click="saveBill(bill)">Save</a><a class="btn btn-warning btn-sm right">Cancel</a></div>
+                        </div>
 
-                        <span class="text-error" ng-if="userInfo.amount < 0"> <span class="span3 no-margin add-on"><i class="icon-user"></i><strong>{{userInfo.name}}</strong></span>
-                            <strong>{{userInfo.amount| currency}}</strong></span></a></li>
-            </ul>
+                    </div>
+                    <div class="tab-pane fade" id="dropdown1">
+                        <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</p>
+                    </div>
+                    <div class="tab-pane fade" id="dropdown2">
+                        <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-</div><!-- End sidebar column -->
-
-<!-- Page Content
-================================================== --> 
-
-<div class="row span8"><!--Begin page content column-->
-
-
-    <h5 class="title-bg">Recent Transaction<button class="btn btn-mini btn-success" type="button" ng-click="AddBill(usersBillData, 'lg')"><span class="icon-plus-sign" ></span><span>&nbsp;Add Bill</span></button></h5>
-
-
-    
-
-</div> <!--End page content column--> 
+</div>

@@ -7,7 +7,6 @@
 package com.mycompany.shareexpense.service;
 
 import com.mycompany.shareexpense.model.Bill;
-import com.mycompany.shareexpense.model.BillPerson;
 import com.mycompany.shareexpense.model.BillSplit;
 import java.util.List;
 
@@ -27,7 +26,8 @@ public interface BillService {
 
     public Iterable<Bill> findAll() throws Exception;
     
-    public List<BillPerson> findAllBills(String userId) throws Exception;
+    public List<BillSplit> findAllBills(String userId) throws Exception;
 
+    public List<Bill> recentTrans(String userId) throws Exception;
     
 }

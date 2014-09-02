@@ -6,8 +6,9 @@
 
 package com.mycompany.shareexpense.repository;
 
-import com.mycompany.shareexpense.model.BillPerson;
+import com.mycompany.shareexpense.model.Bill;
 import com.mycompany.shareexpense.model.BillSplit;
+import com.mycompany.shareexpense.model.User;
 import java.util.List;
 import org.springframework.data.repository.Repository;
 
@@ -15,7 +16,7 @@ import org.springframework.data.repository.Repository;
  *
  * @author AH0661755
  */
-public interface BillCustomRepository extends Repository<BillSplit, String>{
+public interface BillCustomRepository extends Repository<Bill, String>{
     
-    public List<BillPerson> findAllBills(String userId);
+    public List<BillSplit> findAllBills(String userId, List<User> users);
 }

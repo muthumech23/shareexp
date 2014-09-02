@@ -32,10 +32,12 @@ public class BillController {
     public ResponseEntity<Bill> submitBill(@RequestBody Bill bill) throws Exception {
 
         log.debug("Inside Submit Bill --->");
-        log.debug(bill.getPaidUser());
-        billService.saveBill(bill);
+        log.debug(bill.getUserPaid());
+        Bill returnBill =  billService.saveBill(bill);
+        
+        
 
-        ResponseEntity<Bill> responseEntity = new ResponseEntity<>(HttpStatus.CREATED);
+        ResponseEntity<Bill> responseEntity = new ResponseEntity<>(returnBill, HttpStatus.CREATED);
         return responseEntity;
     }
 }
