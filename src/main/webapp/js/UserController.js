@@ -1,61 +1,38 @@
-var userControllers = angular.module('UserControllers', [ ]);
+var userControllers = angular.module('UserControllers', []);
 
 userControllers.controller('UserController',
-        function($scope, $log, $location, $modal, cfpLoadingBar, SessionService, FlashService, BillingServices, homeBillData) {
+        function($scope, $log, $location, $modal, cfpLoadingBar, SessionService, FlashService, BillingServices, homeBillData, recentBills, addBill) {
 
             $log.info = 'Inside User Controller';
             $scope.usersBillData = homeBillData;
-            
+            $scope.bills = recentBills;
             $scope.billvalue = {};
-            
-            $scope.saveBill = function(bill){
-                alert(bill);
+
+            $scope.addBillData = addBill;
+            $scope.addBillSplits = addBill.billSplits;
+
+            $scope.splitAmount = function(billsplit){
+                //console.log($scope.billvalue.addBillSplits.length);
+                billsplit.amount = 20;
+            }
+
+            $scope.saveBill = function(bill) {
+
                 console.log(bill);
-                bill.billSplits = $scope.billvalue;
                 console.log($scope.billvalue);
-                console.log(bill);
+                /*cfpLoadingBar.start();
+                 var saveBill = BillingServices.getBillResource().save(bill).$promise;
+                 saveBill.then(
+                 function(response) {
+                 FlashService.show("Bill added Successfully", "alert-success");
+                 console.log(response);
+                 cfpLoadingBar.complete();
+                 },
+                 function(response) {
+                 FlashService.show("Status Code: " + response.status + " Message: " + response.statusText, "alert-danger");
+                 cfpLoadingBar.complete();
+                 }
+                 
+                 );*/
             };
-            
-            $scope.AddBill = function(billData, size) {
-                $scope.billDatas = billData;
-                console.log(billData);
-                console.log(size);
-                var modalInstance = $modal.open({
-                    templateUrl: 'template/bill.html',
-                    controller: BillInstanceCtrl,
-                    size: size,
-                    resolve: {
-                        friendsData: function() {
-                            return $scope.billDatas;
-                        }
-                    }
-                });
-
-                modalInstance.result.then(function(billData) {
-                    cfpLoadingBar.start();
-
-                    var user = SessionService.get('userId');
-                    console.log(billData);
-                }, function() {
-
-                });
-            };
-
-
         });
-
-var BillInstanceCtrl = function($scope, $modalInstance, friendsData) {
-
-console.log(friendsData);
-    $scope.billDatas = friendsData;
-
-    $scope.ok = function() {
-        $modalInstance.close($scope.billDatas);
-
-    };
-
-    $scope.cancel = function() {
-        console.log('inside');
-        $modalInstance.dismiss('cancel');
-    };
-};

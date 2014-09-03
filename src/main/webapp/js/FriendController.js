@@ -23,8 +23,7 @@ friendControllers.controller('FriendController',
 
                     var user = SessionService.get('userId');
 
-                    friend.friends = [user];
-                    var friendAdd = FriendServices.addFriends(friend);
+                    var friendAdd = FriendServices.addFriends(friend, user);
                     friendAdd.then(
                             function(response) {
                                 FlashService.show("Added Successfully", "alert-success");

@@ -9,7 +9,7 @@ friendServices.factory('FriendServices', function($resource, FlashService, Sessi
 
             var userId = SessionService.get('userId');
 
-            var friendCustom = $resource('api/friends/:Id', {friendId: '@friendid'});
+            var friendCustom = $resource('api/friend/all/:Id', {friendId: '@friendid'});
 
             var friends = friendCustom.query({Id: userId}).$promise;
             friends.then(function(response) {
@@ -19,8 +19,8 @@ friendServices.factory('FriendServices', function($resource, FlashService, Sessi
             });
             return friends;
         },
-        addFriends: function(friend) {
-            var friends = friendRes.save(friend).$promise;
+        addFriends: function(friend, user) {
+            var friends = friendRes.save({Id: user}, friend).$promise;
             return friends;
         },
         editFriends: function(friend) {

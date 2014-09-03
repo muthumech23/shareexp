@@ -7,6 +7,7 @@ package com.mycompany.shareexpense.controller;
 
 import com.mycompany.shareexpense.model.User;
 import com.mycompany.shareexpense.service.UserService;
+import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +28,21 @@ public class FriendController {
 
     @Autowired
     public UserService userService;
-    
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    public ResponseEntity<User> createFriend(@RequestBody User user) throws Exception {
+
+    @RequestMapping(value = "/{Id}", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+    public ResponseEntity<User> createFriend(@PathVariable("Id") String Id, @RequestBody User user) throws Exception {
 
         log.debug("Inside SubmitAccount --->");
         log.debug(user.getEmail());
-        User friendResponse = userService.saveUser(user);
+        User userResponse = userService.createFriend(user, Id);
 
-        return new ResponseEntity<>(friendResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
 
+    }
+
+    @RequestMapping(value = "/all/{userId}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    public List<User> allFriends(@PathVariable("userId") String userId) throws Exception {
+        return userService.findByFriend(userId);
     }
 
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PUT)

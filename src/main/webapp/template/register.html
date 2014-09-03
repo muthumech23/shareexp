@@ -1,33 +1,51 @@
-<!--Container row-->
-<div class="span3 sidebar page-left-sidebar">
-    <!-- Begin sidebar column -->
-</div>
-<!-- Page Content -->
-<form name="form">
-    <div class="span6 well">
-        <!--Begin page content column-->
+<div class="bs-docs-section">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="page-header">
+                <ul class="breadcrumb col-lg-3">
+                    <li class="active">Registration</li>
+                </ul><div class="alert col-lg-7" ng-class="msgType" ng-if="flash">{{flash}}</div>
+            </div>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+    <div class="row center-block">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
+            <div class="bs-component">
+                <div class="panel panel-success">
+                    <div class="panel-body">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="control-label">Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                    <input type="text" placeholder="Name" class="form-control" ng-model="user.name" ng-class="{error: form.UserServices.$invalid}">
+                                    <input type="hidden" placeholder="Name" class="form-control" ng-model="user.id">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                    <input type="email" placeholder="Email" class="form-control" ng-model="user.email" ng-class="{error: form.UserServices.$invalid}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                    <input type="password" placeholder="Password" class="form-control" ng-model="user.password" ng-class="{error: form.UserServices.$invalid}">
+                                </div>
+                            </div>
 
-        <!--User Login-->
-        <h5 class="title-bg">Register</h5>
-        <div class="input-prepend">
-            <span class="add-on"><i class="icon-user"></i></span>
-            <input type="hidden" ng-model="user.id">
-            <input class="span4" id="prependedInput" size="16" type="text" placeholder="Name" ng-model="user.name" ng-class="{error: form.UserServices.$invalid}">
+                        </form>
+                    </div>
+                    <div class="panel-footer text-right"><a class="btn btn-success btn-sm" ng-click="registerUser(user)">Register</a><a class="btn btn-warning btn-sm right">Cancel</a></div>
+                </div>
+            </div>
+            <div class="col-lg-4"></div>
         </div>
-        <div class="input-prepend center">
-            <span class="add-on"><i class="icon-envelope"></i></span>
-            <input class="span4" id="prependedInput" size="16" type="email" placeholder="Email Address" ng-model="user.email" ng-class="{error: form.UserServices.$invalid}">
-        </div>
-        <div class="input-prepend">
-            <span class="add-on"><i class="icon-lock"></i></span><input
-                class="span4" id="appendedPrependedInput" size="16" type="password"
-                placeholder="Password" ng-model="user.password" ng-class="{error: form.UserServices.$invalid}">
-        </div>
-        <button class="btn btn-success btn-small" ng-click="registerUser(user)">Register</button>
 
     </div>
-</form>
-<!--End page content column-->
-<div class="span3 sidebar page-right-sidebar">
-    <!-- Begin sidebar column -->
 </div>

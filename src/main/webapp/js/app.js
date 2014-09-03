@@ -19,7 +19,7 @@ var shareExpApp = angular.module(
             "ShareExpFilters",
             'ui.bootstrap',
             "checklist-model"
-            ]);
+        ]);
 
 shareExpApp.config(
         function($stateProvider, $urlRouterProvider) {
@@ -40,14 +40,34 @@ shareExpApp.config(
                                 controller: "LoginController",
                                 templateUrl: "template/register.html"})
                     .state('userhome',
-                            {url: "/userhome",
+                            {abstract: true,
+                                url: "/userhome",
                                 controller: "UserController",
                                 templateUrl: "template/userhome.html", resolve: {
                                     homeBillData: function(BillingServices) {
                                         return BillingServices.getHomeBills();
+                                    },
+                                    recentBills: function(BillingServices) {
+                                        return BillingServices.getBills();
+                                    },
+                                    addBill: function(BillingServices) {
+                                        return BillingServices.addBillPage();
                                     }
+
                                 }
                             })
+                    .state('userhome.list',
+                            {url: "/list",
+                                controller: "UserController",
+                                templateUrl: "template/userhome.list.html"})
+                    .state('userhome.add',
+                            {url: "/add",
+                                controller: "UserController",
+                                templateUrl: "template/userhome.add.html"})
+                    .state('userhome.edit',
+                            {url: "/edit",
+                                controller: "UserController",
+                                templateUrl: "template/userhome.edit.html"})
                     .state('friends',
                             {url: "/friends",
                                 controller: "FriendController",
@@ -85,7 +105,7 @@ shareExpApp.controller('IndexController', function($scope, $location, cfpLoading
                     $scope.loggedIn = AuthenticationService.isLoggedIn();
 
                     FlashService.show(response, "alert-success");
-                    $location.path("/userhome");
+                    $location.path("/userhome/list");
                 },
                 function(response) {
                     FlashService.show("Status Code: " + response.status + " Message: " + response.statusText, "alert-danger");

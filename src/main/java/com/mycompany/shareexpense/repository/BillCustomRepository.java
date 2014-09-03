@@ -18,5 +18,7 @@ import org.springframework.data.repository.Repository;
  */
 public interface BillCustomRepository extends Repository<Bill, String>{
     
-    public List<BillSplit> findAllBills(String userId, List<User> users);
+    public List<BillSplit> findAllBills(String userId, User user, List<User> users);
+    
+    public List<Bill> recentTrans(String userId);
 }

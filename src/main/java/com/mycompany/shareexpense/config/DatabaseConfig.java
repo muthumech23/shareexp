@@ -6,6 +6,7 @@
 package com.mycompany.shareexpense.config;
 
 import com.mongodb.Mongo;
+import com.mongodb.WriteConcern;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.authentication.UserCredentials;
@@ -47,7 +48,8 @@ public class DatabaseConfig {
         MongoDbFactory mongoDbFactory = new SimpleMongoDbFactory(mongo, databaseName, userCredentials);
 
         MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory);
-
+        mongoTemplate.setWriteConcern(WriteConcern.SAFE);
+        
         return mongoTemplate;
 
     }

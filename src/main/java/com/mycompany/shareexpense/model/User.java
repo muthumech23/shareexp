@@ -26,9 +26,6 @@ public class User extends AbstractModal{
     @Indexed
     private List<String> friends;
     
-    @Indexed
-    private List<String> groupIds;
-    
     public void setName(String name) {
         this.name = name;
     }
@@ -47,14 +44,6 @@ public class User extends AbstractModal{
 
     public String getEmail() {
         return email;
-    }
-
-    public List<String> getGroupIds() {
-        return groupIds;
-    }
-
-    public void setGroupIds(List<String> groupIds) {
-        this.groupIds = groupIds;
     }
 
     public String getPassword() {

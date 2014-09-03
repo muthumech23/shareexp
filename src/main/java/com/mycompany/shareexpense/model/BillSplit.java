@@ -5,24 +5,24 @@
  */
 package com.mycompany.shareexpense.model;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 /**
  *
  * @author AH0661755
  */
 public class BillSplit extends AbstractModal{
 
-    private BigInteger amount;
+    private BigDecimal amount;
 
     private String name;
     
     private String email;
     
-    public BigInteger getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(BigInteger amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

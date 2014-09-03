@@ -86,7 +86,7 @@ and open the template in the editor.
                 </div>
                 <div class="navbar-collapse collapse navbar-inverse-collapse">
                     <ul class="nav navbar-nav navbar-right span6" ng-if="loggedIn">
-                        <li><a ui-sref="userhome">Home</a></li>
+                        <li><a ui-sref="userhome.list">Home</a></li>
                         <li><a ui-sref="friends">Friends</a></li>
                         <li><a ui-sref="account">Account</a></li>
                         <li><a ui-sref="about">About Us</a></li>
@@ -96,7 +96,7 @@ and open the template in the editor.
                         <li><form class="navbar-form navbar-left" role="search">
                                 <input class="form-control input-sm" id="focusedInput" ng-model="user.email" type="email" placeholder="Email" required="">
                                 <input class="form-control input-sm" id="focusedInput" type="password" ng-model="user.password" placeholder="password" required="">
-                                <a class="btn btn-success btn-sm" ng-click="userLogin(user)">Sign In</a>
+                                <a class="btn btn-success btn-sm" ng-click="userLogin(user)"><i class="glyphicon glyphicon-log-in"></i></a>
                                 <a ui-sref="signup" class="btn btn-success btn-sm">Sign Up</a>
                             </form></li>
                     </ul>

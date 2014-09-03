@@ -5,7 +5,7 @@
  */
 package com.mycompany.shareexpense.model;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -19,7 +19,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Bill extends AbstractModal {
 
     @Indexed
-    private BigInteger amount;
+    private BigDecimal amount;
     
     private String description;
     @Indexed
@@ -43,11 +43,11 @@ public class Bill extends AbstractModal {
     
     private List<BillSplit> billSplits;
 
-    public BigInteger getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(BigInteger amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

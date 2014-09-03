@@ -30,4 +30,6 @@ public interface BillService {
 
     public List<Bill> recentTrans(String userId) throws Exception;
     
+    public Bill addBill(String userId) throws Exception;
+    
 }

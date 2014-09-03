@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface UserService {
 
-    public User saveUser(User user) throws Exception;
+    public User createUser(User user) throws Exception;
 
     public User showUser(String Id) throws Exception;
 
@@ -15,12 +15,12 @@ public interface UserService {
 
     public Iterable<User> findAll() throws Exception;
 
+    public User createFriend(User user, String Id) throws Exception;
+    
     public void deleteFriend(String Id) throws Exception;
-
-     public List<User> findByGroup(String groupId) throws Exception;
 
     public List<User> findByFriend(String friendId) throws Exception;
     
-    public List<User> findByIdOrFriends(String userId, String friendId) throws Exception;
-    
+    public User findByEmail(String email) throws Exception;
+     
 }

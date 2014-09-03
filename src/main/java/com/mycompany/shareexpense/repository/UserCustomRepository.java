@@ -16,7 +16,6 @@ import org.springframework.data.repository.Repository;
  */
 public interface UserCustomRepository extends Repository<User, String>{
     
-    public List<User> findByFriend(String friendId);
-    public List<User> findByGroup(String groupId);
+    public List<User> findByFriendCustom(String friendId);
     
 }

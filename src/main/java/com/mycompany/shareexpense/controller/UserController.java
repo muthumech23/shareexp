@@ -7,6 +7,7 @@ package com.mycompany.shareexpense.controller;
 
 import com.mycompany.shareexpense.model.User;
 import com.mycompany.shareexpense.service.UserService;
+import java.util.List;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,32 +33,47 @@ public class UserController {
     @Autowired
     public UserService userService;
 
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    public ResponseEntity<Void> submitAccount(@RequestBody User user) throws Exception {
-
-        log.debug("Inside SubmitAccount --->");
-        log.debug(user.getEmail());
-        userService.saveUser(user);
-
-        ResponseEntity<Void> responseEntity = new ResponseEntity<>(HttpStatus.CREATED);
-        return responseEntity;
-    }
-
+    /* Authentication API */
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST, value = "/auth/login")
     public ResponseEntity<User> loginUser(@RequestBody User user) throws Exception {
 
         User userResponse = userService.findByEmailAndPassword(user.getEmail(), user.getPassword());
-        if(userResponse == null){
+        if (userResponse == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
-    
+
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET, value = "/auth/logout")
     public ResponseEntity<Void> logout() throws Exception {
 
         ResponseEntity<Void> responseEntity = new ResponseEntity<>(HttpStatus.OK);
         return responseEntity;
+    }
+
+
+    /* USER registration */
+    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+    public ResponseEntity<User> createAccount(@RequestBody User user) throws Exception {
+
+        log.debug(user.getEmail());
+        User userExists = userService.findByEmail(user.getEmail());
+        User userResponse = null;
+        if (userExists != null) {
+            List<User> users = userService.findByFriend(userExists.getId());
+
+            for (User user1 : users) {
+                userExists.getFriends().add(user1.getId());
+            }
+
+            userExists.setPassword(user.getPassword());
+
+            userResponse = userService.createUser(userExists);
+        } else {
+            userResponse = userService.createUser(user);
+        }
+
+        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{Id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -74,7 +90,5 @@ public class UserController {
     public Iterable<User> allUsers() throws Exception {
         return userService.findAll();
     }
-    
-    
 
 }

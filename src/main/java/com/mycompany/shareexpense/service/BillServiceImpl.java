@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.mycompany.shareexpense.service;
 
 import com.mycompany.shareexpense.model.Bill;
@@ -12,6 +11,11 @@ import com.mycompany.shareexpense.model.User;
 import com.mycompany.shareexpense.repository.BillCustomRepository;
 import com.mycompany.shareexpense.repository.BillRepository;
 import com.mycompany.shareexpense.repository.UserRepository;
+import com.mycompany.shareexpense.util.CommonUtil;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
@@ -23,21 +27,22 @@ import org.springframework.stereotype.Service;
  * @author AH0661755
  */
 @Service
-public class BillServiceImpl implements BillService{
-    
+public class BillServiceImpl implements BillService {
+
     private Log log = LogFactory.getLog(BillServiceImpl.class);
-    
+
     @Autowired
     private BillRepository billRepository;
-    
+
     @Autowired
     private UserRepository userRepository;
-    
+
     @Autowired
     public BillCustomRepository billCustomRepository;
-    
+
     @Override
     public Bill saveBill(Bill bill) throws Exception {
+
         return billRepository.save(bill);
     }
 
@@ -61,18 +66,94 @@ public class BillServiceImpl implements BillService{
     public void deleteBill(String Id) throws Exception {
         billRepository.delete(Id);
     }
-    
+
     @Override
     public List<BillSplit> findAllBills(String userId) throws Exception {
-        List<User> users = userRepository.findByIdOrFriends(userId, userId);
-        List<BillSplit> billPersons = billCustomRepository.findAllBills(userId, users);
-        return billPersons;
+
+        User user = userRepository.findOne(userId);
+        List<User> users = null;
+        if (user.getFriends() != null) {
+            users = CommonUtil.toList(userRepository.findAll(user.getFriends()));
+        } else {
+            users = new ArrayList<>();
+        }
+
+        List<Bill> bills = billRepository.findByUserPaidOrBillSplitsId(userId, userId);
+
+        List<BillSplit> billSpits = new ArrayList<>();
+
+        BillSplit loggedUser = new BillSplit();
+        loggedUser.setId(user.getId());
+        loggedUser.setName(user.getName());
+        loggedUser.setEmail(user.getEmail());
+
+        billSpits.add(0, loggedUser);
+
+        BigDecimal loggedUserAmt = BigDecimal.ZERO;
+
+        for (User userBill : users) {
+            BillSplit billSplit = new BillSplit();
+            String Id = userBill.getId();
+            log.info("User ->" + Id);
+            BigDecimal bigDecimal = BigDecimal.ZERO;
+            for (Bill bill : bills) {
+                log.info("Bill ->" + bill.getId());
+                for (BillSplit billsplit : bill.getBillSplits()) {
+                    log.info("BillSPlit ->" + billsplit.getId());
+                    if (billsplit.getId().equalsIgnoreCase(Id)) {
+                        log.info("Bill Split IF ->" + billsplit.getId());
+                        log.info("User Split IF ->" + Id);
+                        log.info("User AMount IF ->" + billsplit.getAmount());
+                        bigDecimal = bigDecimal.add(billsplit.getAmount());
+                        log.info(billsplit.getAmount());
+                    }
+                }
+            }
+
+            billSplit.setId(Id);
+            billSplit.setName(userBill.getName());
+            billSplit.setEmail(userBill.getEmail());
+            billSplit.setAmount(bigDecimal);
+            loggedUserAmt = loggedUserAmt.add(bigDecimal);
+            log.info(bigDecimal);
+            billSpits.add(billSplit);
+        }
+
+        billSpits.get(0).setAmount(loggedUserAmt);
+        return billSpits;
     }
-    
+
     @Override
     public List<Bill> recentTrans(String userId) throws Exception {
-        
-        return null;
+
+        return billRepository.findByUserPaidOrBillSplitsId(userId, userId);
+    }
+
+    @Override
+    public Bill addBill(String userId) throws Exception {
+
+        User user = userRepository.findOne(userId);
+        List<User> users = null;
+        if (user.getFriends() != null) {
+            users = CommonUtil.toList(userRepository.findAll(user.getFriends()));
+        } else {
+            users = new ArrayList<>();
+        }
+        Bill bill = null;
+
+        List<BillSplit> billSplits = new ArrayList<>();
+
+        for (User userBill : users) {
+            BillSplit billSplit = new BillSplit();
+            billSplit.setId(userBill.getId());
+            billSplit.setName(userBill.getName());
+            billSplit.setEmail(userBill.getEmail());
+            billSplit.setAmount(BigDecimal.ZERO);
+            billSplits.add(billSplit);
+        }
+        bill = new Bill();
+        bill.setBillSplits(billSplits);
+        return bill;
     }
 
 }

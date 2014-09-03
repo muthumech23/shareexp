@@ -28,19 +28,9 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
     public MongoTemplate mongoTemplate;
 
     @Override
-    public List<User> findByFriend(String friendId) {
+    public List<User> findByFriendCustom(String friendId) {
 
         Query query = Query.query(Criteria.where("friends").is(friendId));
-
-        List<User> users = mongoTemplate.find(query, User.class);
-
-        return users;
-    }
-
-    @Override
-    public List<User> findByGroup(String groupId) {
-
-        Query query = Query.query(Criteria.where("groupIds").is(groupId));
 
         List<User> users = mongoTemplate.find(query, User.class);
 

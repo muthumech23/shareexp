@@ -11,11 +11,12 @@ loginControllers.controller('LoginController',
                 var userAdd = UserServices.save(user).$promise;
                 userAdd.then(
                         function(response) {
-                            FlashService.show(response, "alert-success");
-                            $location.path("/login");
+                            FlashService.show("Register completed successfully! please login to continue...", "alert-success");
+                            $location.path("/home");
                         },
                         function(response) {
                             FlashService.show("Status Code: " + response.status + " Message: " + response.statusText, "alert-danger");
+                            $scope.user = response;
                             cfpLoadingBar.complete();
                         }
 

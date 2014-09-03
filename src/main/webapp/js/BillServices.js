@@ -2,8 +2,10 @@ var billServices = angular.module('BillServices', []);
 
 billServices.factory("BillingServices", function($resource, FlashService, SessionService) {
 
-    var billAllRes = $resource("api/bills/all", {}, {getHomeBillData: {method: 'POST', isArray: true}});
-    var billRes = $resource('api/bill/:Id', {billId: '@billid'}, {update: {method: 'PUT'}});
+    var billAllRes = $resource("api/bill/all", {}, {getHomeBillData: {method: 'POST', isArray: true}});
+    var billRecentRes = $resource("api/bill/recent/:Id", {}, {getRecentBills: {method: 'GET', isArray: true}});
+    var addBillRes = $resource("api/bill/add/:Id", {}, {addBill: {method: 'GET'}});
+    
     return {
         getHomeBills: function() {
             var userId = SessionService.get('userId');
@@ -15,6 +17,34 @@ billServices.factory("BillingServices", function($resource, FlashService, Sessio
                 FlashService.show("Status Code: " + response.status + " Message: " + response.statusText, "alert-danger");
             });
             return billData;
+        },
+        getBillResource: function() {
+            return $resource('api/bill/:Id', {billId: '@billid'}, {update: {method: 'PUT'}});
+        },
+        addBillPage: function() {
+            var userId = SessionService.get('userId');
+            
+            var addBill = addBillRes.addBill({Id: userId}).$promise;
+
+            addBill.then(function(response) {
+                return response.data;
+            }, function(response) {
+                FlashService.show("Status Code: " + response.status + " Message: " + response.statusText, "alert-danger");
+            });
+            return addBill;
+            
+        },
+        getBills: function() {
+            var userId = SessionService.get('userId');
+            var bills = billRecentRes.getRecentBills({Id: userId}).$promise;
+
+            bills.then(function(response) {
+                return response.data;
+            }, function(response) {
+                FlashService.show("Status Code: " + response.status + " Message: " + response.statusText, "alert-danger");
+            });
+            return bills;
         }
+
     };
 });

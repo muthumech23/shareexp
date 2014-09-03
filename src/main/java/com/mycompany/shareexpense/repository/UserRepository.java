@@ -6,7 +6,6 @@
 package com.mycompany.shareexpense.repository;
 
 import com.mycompany.shareexpense.model.User;
-import java.io.Serializable;
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -21,5 +20,10 @@ public interface UserRepository extends CrudRepository<User, String> {
     public User findByEmailAndPassword(String emailId, String password);
     
     public List<User> findByIdOrFriends(String userId, String friendId);
+    
+    public List<User> findByFriends(String friendId);
+    
+    public User findByEmail(String email);
+
 
 }
