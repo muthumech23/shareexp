@@ -13,8 +13,6 @@ import com.mycompany.shareexpense.repository.BillRepository;
 import com.mycompany.shareexpense.repository.UserRepository;
 import com.mycompany.shareexpense.util.CommonUtil;
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.logging.LogFactory;
@@ -78,12 +76,12 @@ public class BillServiceImpl implements BillService {
             users = new ArrayList<>();
         }
 
-        List<Bill> bills = billRepository.findByUserPaidOrBillSplitsId(userId, userId);
+        List<Bill> bills = billRepository.findByUserPaidOrBillSplitsUserId(userId, userId);
 
         List<BillSplit> billSpits = new ArrayList<>();
 
         BillSplit loggedUser = new BillSplit();
-        loggedUser.setId(user.getId());
+        loggedUser.setUserId(user.getId());
         loggedUser.setName(user.getName());
         loggedUser.setEmail(user.getEmail());
 
@@ -99,18 +97,21 @@ public class BillServiceImpl implements BillService {
             for (Bill bill : bills) {
                 log.info("Bill ->" + bill.getId());
                 for (BillSplit billsplit : bill.getBillSplits()) {
-                    log.info("BillSPlit ->" + billsplit.getId());
-                    if (billsplit.getId().equalsIgnoreCase(Id)) {
-                        log.info("Bill Split IF ->" + billsplit.getId());
+                    log.info("BillSPlit ->" + billsplit.getUserId());
+                    if (billsplit.getUserId().equalsIgnoreCase(Id)) {
+                        log.info("Bill Split IF ->" + billsplit.getUserId());
                         log.info("User Split IF ->" + Id);
                         log.info("User AMount IF ->" + billsplit.getAmount());
-                        bigDecimal = bigDecimal.add(billsplit.getAmount());
+                        if(userId.equalsIgnoreCase(bill.getUserPaid()) || billsplit.getUserId().equalsIgnoreCase(bill.getUserPaid())){
+                            bigDecimal = bigDecimal.add(billsplit.getAmount());
+                        }
+                        
                         log.info(billsplit.getAmount());
                     }
                 }
             }
 
-            billSplit.setId(Id);
+            billSplit.setUserId(Id);
             billSplit.setName(userBill.getName());
             billSplit.setEmail(userBill.getEmail());
             billSplit.setAmount(bigDecimal);
@@ -126,26 +127,35 @@ public class BillServiceImpl implements BillService {
     @Override
     public List<Bill> recentTrans(String userId) throws Exception {
 
-        return billRepository.findByUserPaidOrBillSplitsId(userId, userId);
+        List<Bill> bills = billRepository.findByUserPaidOrBillSplitsUserId(userId, userId);
+        
+        log.info("Bill Details ---> "+bills.size());
+        
+        return bills;
+        
+        
     }
 
     @Override
     public Bill addBill(String userId) throws Exception {
 
-        User user = userRepository.findOne(userId);
         List<User> users = null;
+        Bill bill = null;
+        
+        User user = userRepository.findOne(userId);
+        
         if (user.getFriends() != null) {
             users = CommonUtil.toList(userRepository.findAll(user.getFriends()));
         } else {
             users = new ArrayList<>();
         }
-        Bill bill = null;
-
+        users.add(user);
+        
         List<BillSplit> billSplits = new ArrayList<>();
 
         for (User userBill : users) {
             BillSplit billSplit = new BillSplit();
-            billSplit.setId(userBill.getId());
+            billSplit.setUserId(userBill.getId());
             billSplit.setName(userBill.getName());
             billSplit.setEmail(userBill.getEmail());
             billSplit.setAmount(BigDecimal.ZERO);

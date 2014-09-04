@@ -10,8 +10,19 @@ import java.math.BigDecimal;
  *
  * @author AH0661755
  */
-public class BillSplit extends AbstractModal{
 
+public class BillSplit {
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    private String userId;
+    
     private BigDecimal amount;
 
     private String name;

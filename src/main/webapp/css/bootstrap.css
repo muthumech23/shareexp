@@ -2452,7 +2452,7 @@ input[type="month"].input-lg {
 .radio-inline + .radio-inline,
 .checkbox-inline + .checkbox-inline {
     margin-top: 0;
-    margin-left: 10px;
+    margin-left: 0;
 }
 input[type="radio"][disabled],
 input[type="checkbox"][disabled],
@@ -2493,14 +2493,13 @@ fieldset[disabled] .checkbox label {
     border-radius: 3px;
 }
 
-.input-xsm,
-.form-horizontal .form-group-sm .form-control {
+.input-xsm {
     height: 25px;
     padding: 6px 9px;
     font-size: 11px;
     line-height: 1.5;
     border-radius: 3px;
-    width: 80px;
+    width: 50px;
     margin-left: 5px;
     margin-right: 10px;
 }
@@ -2697,7 +2696,7 @@ select[multiple].input-lg {
     margin-top: 0;
     margin-bottom: 0;
     padding-top: 11px;
-    
+
 }
 .form-horizontal .radio,
 .form-horizontal .checkbox {
@@ -3474,6 +3473,19 @@ select[multiple].input-group-lg > .input-group-btn > .btn {
     line-height: 1.5;
     border-radius: 3px;
 }
+
+.input-group > .input-group-lbl {
+    padding: 10px 15px;
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 1;
+    color: #2c3e50;
+    text-align: center;
+    background-color: #ecf0f1;
+    border: 1px solid #dce4ec;
+    border-radius: 4px;
+}
+
 select.input-group-sm > .form-control,
 select.input-group-sm > .input-group-addon,
 select.input-group-sm > .input-group-btn > .btn {

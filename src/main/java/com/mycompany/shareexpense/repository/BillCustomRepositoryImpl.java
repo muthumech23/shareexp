@@ -41,11 +41,11 @@ public class BillCustomRepositoryImpl implements BillCustomRepository {
     @Override
     public List<BillSplit> findAllBills(String userId, User user, List<User> users) {
 
-        List<Bill> billsCollection = billRepository.findByUserPaidOrBillSplitsId(userId, userId);
+        List<Bill> billsCollection = billRepository.findByUserPaidOrBillSplitsUserId(userId, userId);
         
         AggregationOperation match = Aggregation.match(Criteria.where("userPaid").is(userId));
 
-        AggregationOperation group = Aggregation.group("billSplits._id").sum("billSplits.amount").as("amount");
+        AggregationOperation group = Aggregation.group("billSplits.userId").sum("billSplits.amount").as("amount");
 
         Aggregation aggregation = Aggregation.newAggregation(match, group);
         AggregationResults<Bill> result = mongoTemplate.aggregate(aggregation, "bills", Bill.class);
@@ -58,7 +58,7 @@ public class BillCustomRepositoryImpl implements BillCustomRepository {
             
             for(BillSplit billSplit: bill.getBillSplits()){
                 log.info(billSplit.getAmount());
-                log.info(billSplit.getId());
+                log.info(billSplit.getUserId());
                 log.info(billSplit.getName());
             }
         }
@@ -71,7 +71,7 @@ public class BillCustomRepositoryImpl implements BillCustomRepository {
             billSplits = new ArrayList<>();
             for (User user1 : users) {
                 BillSplit billSplit = new BillSplit();
-                billSplit.setId(user1.getId());
+                billSplit.setUserId(user1.getId());
                 billSplit.setName(user1.getName());
                 billSplit.setAmount(BigDecimal.ZERO);
                 billSplit.setEmail(user1.getEmail());
@@ -88,8 +88,8 @@ public class BillCustomRepositoryImpl implements BillCustomRepository {
                     log.info(billsplit==null);
                     log.info(user1==null);
                     log.info(user1.getId());
-                    log.info(billsplit.getId());
-                    if (billsplit.getId().equalsIgnoreCase(user1.getId())) {
+                    log.info(billsplit.getUserId());
+                    if (billsplit.getUserId().equalsIgnoreCase(user1.getId())) {
                         loggedUserAmount.add(billsplit.getAmount());
                         userExists = true;
                         break;
@@ -97,7 +97,7 @@ public class BillCustomRepositoryImpl implements BillCustomRepository {
                 }
                 if (!userExists) {
                     BillSplit billSplit = new BillSplit();
-                    billSplit.setId(user1.getId());
+                    billSplit.setUserId(user1.getId());
                     billSplit.setName(user1.getName());
                     billSplit.setAmount(BigDecimal.ZERO);
                     billSplit.setEmail(user1.getEmail());
@@ -109,7 +109,7 @@ public class BillCustomRepositoryImpl implements BillCustomRepository {
 
         /* Logged User Info */
         BillSplit loggedUserBillSplit = new BillSplit();
-        loggedUserBillSplit.setId(userId);
+        loggedUserBillSplit.setUserId(userId);
         loggedUserBillSplit.setName(user.getName());
         loggedUserBillSplit.setEmail(user.getEmail());
         loggedUserBillSplit.setAmount(loggedUserAmount);
@@ -122,8 +122,8 @@ public class BillCustomRepositoryImpl implements BillCustomRepository {
     @Override
     public List<Bill> recentTrans(String userId) {
 
-        Query query = Query.query(Criteria.where("userPaid").is(userId).orOperator(Criteria.where("billSplits._id").is(userId)));
-        Query query1 = Query.query(Criteria.where("userPaid").is(userId).orOperator(Criteria.where("billSplits.id").is(userId)));
+        Query query = Query.query(Criteria.where("userPaid").is(userId).orOperator(Criteria.where("billSplits.userId").is(userId)));
+        Query query1 = Query.query(Criteria.where("userPaid").is(userId).orOperator(Criteria.where("billSplits.userId").is(userId)));
         Query query2 = Query.query(Criteria.where("userPaid").is(userId));
         
         log.info(query.toString());

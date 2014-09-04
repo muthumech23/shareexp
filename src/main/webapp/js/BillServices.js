@@ -5,6 +5,7 @@ billServices.factory("BillingServices", function($resource, FlashService, Sessio
     var billAllRes = $resource("api/bill/all", {}, {getHomeBillData: {method: 'POST', isArray: true}});
     var billRecentRes = $resource("api/bill/recent/:Id", {}, {getRecentBills: {method: 'GET', isArray: true}});
     var addBillRes = $resource("api/bill/add/:Id", {}, {addBill: {method: 'GET'}});
+    var billingRes = $resource('api/bill/:Id', {billId: '@billid'}, {update: {method: 'PUT'}});
     
     return {
         getHomeBills: function() {
@@ -18,8 +19,9 @@ billServices.factory("BillingServices", function($resource, FlashService, Sessio
             });
             return billData;
         },
-        getBillResource: function() {
-            return $resource('api/bill/:Id', {billId: '@billid'}, {update: {method: 'PUT'}});
+        getBillResource: function(billData) {
+            var addBill = billingRes.save(billData).$promise;
+            return addBill;
         },
         addBillPage: function() {
             var userId = SessionService.get('userId');

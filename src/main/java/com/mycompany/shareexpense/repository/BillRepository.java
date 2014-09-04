@@ -18,6 +18,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BillRepository extends CrudRepository<Bill, String>{
     
-    public List<Bill> findByUserPaidOrBillSplitsId(String Id, String userId);
+    public List<Bill> findByUserPaidOrBillSplitsUserId(String Id, String userId);
     
 }
