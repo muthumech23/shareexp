@@ -1,17 +1,9 @@
-@import url("//fonts.googleapis.com/css?family=Lato:400,700,400italic");
-/*!
- * bootswatch v3.2.0
- * Homepage: http://bootswatch.com
- * Copyright 2012-2014 Thomas Park
- * Licensed under MIT
- * Based on Bootstrap
-*/
-/*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 html {
     font-family: sans-serif;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
 }
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 body {
     margin: 0;
     padding-top: 50px;
@@ -892,7 +884,7 @@ html {
 }
 body {
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 15px;
+    font-size: 12px;
     line-height: 1.42857143;
     color: #2c3e50;
     background-color: #ffffff;
@@ -1100,7 +1092,7 @@ p {
 }
 .lead {
     margin-bottom: 21px;
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 300;
     line-height: 1.4;
 }
@@ -1363,7 +1355,7 @@ pre {
     display: block;
     padding: 10px;
     margin: 0 0 10.5px;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1.42857143;
     word-break: break-all;
     word-wrap: break-word;
@@ -2349,7 +2341,7 @@ output {
     width: 100%;
     height: 43px;
     padding: 10px 15px;
-    font-size: 15px;
+    font-size: 12px;
     line-height: 1.42857143;
     color: #2c3e50;
     background-color: #ffffff;
@@ -2411,7 +2403,7 @@ input[type="month"].input-lg {
     line-height: 64px;
 }
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 .radio,
 .checkbox {
@@ -2488,7 +2480,7 @@ fieldset[disabled] .checkbox label {
 .form-horizontal .form-group-sm .form-control {
     height: 33px;
     padding: 6px 9px;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.5;
     border-radius: 3px;
 }
@@ -2736,7 +2728,7 @@ select[multiple].input-lg {
     border: 1px solid transparent;
     white-space: nowrap;
     padding: 10px 15px;
-    font-size: 15px;
+    font-size: 12px;
     line-height: 1.42857143;
     border-radius: 4px;
     -webkit-user-select: none;
@@ -3062,14 +3054,14 @@ fieldset[disabled] .btn-link:focus {
 .btn-sm,
 .btn-group-sm > .btn {
     padding: 6px 9px;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.5;
     border-radius: 3px;
 }
 .btn-xs,
 .btn-group-xs > .btn {
     padding: 1px 5px;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.5;
     border-radius: 3px;
 }
@@ -3141,7 +3133,7 @@ tbody.collapse.in {
     padding: 5px 0;
     margin: 2px 0 0;
     list-style: none;
-    font-size: 15px;
+    font-size: 12px;
     text-align: left;
     background-color: #ffffff;
     border: 1px solid #cccccc;
@@ -3214,7 +3206,7 @@ tbody.collapse.in {
 .dropdown-header {
     display: block;
     padding: 3px 20px;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.42857143;
     color: #b4bcc2;
     white-space: nowrap;
@@ -3469,14 +3461,14 @@ select[multiple].input-group-lg > .input-group-btn > .btn {
 .input-group-sm > .input-group-btn > .btn {
     height: 33px;
     padding: 6px 9px;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.5;
     border-radius: 3px;
 }
 
 .input-group > .input-group-lbl {
     padding: 10px 15px;
-    font-size: 15px;
+    font-size: 12px;
     font-weight: normal;
     line-height: 1;
     color: #2c3e50;
@@ -3518,7 +3510,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .input-group-addon {
     padding: 10px 15px;
-    font-size: 15px;
+    font-size: 12px;
     font-weight: normal;
     line-height: 1;
     color: #2c3e50;
@@ -3529,7 +3521,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .input-group-addon.input-sm {
     padding: 6px 9px;
-    font-size: 13px;
+    font-size: 12px;
     border-radius: 3px;
 }
 .input-group-addon.input-lg {
@@ -4405,7 +4397,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination-sm > li > a,
 .pagination-sm > li > span {
     padding: 6px 9px;
-    font-size: 13px;
+    font-size: 12px;
 }
 .pagination-sm > li:first-child > a,
 .pagination-sm > li:first-child > span {
@@ -4526,7 +4518,7 @@ a.label:focus {
     display: inline-block;
     min-width: 10px;
     padding: 3px 7px;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: bold;
     color: #ffffff;
     line-height: 1;
@@ -4626,9 +4618,6 @@ a.thumbnail.active {
 }
 .alert {
     padding: 5px;
-    margin-bottom: 21px;
-    border: 1px solid transparent;
-    border-radius: 4px;
 }
 .alert h4 {
     margin-top: 0;
@@ -4656,9 +4645,7 @@ a.thumbnail.active {
     color: inherit;
 }
 .alert-success {
-    background-color: #18bc9c;
-    border-color: #18bc9c;
-    color: #ffffff;
+    color: #18bc9c;
 }
 .alert-success hr {
     border-top-color: #15a589;
@@ -4667,9 +4654,7 @@ a.thumbnail.active {
     color: #e6e6e6;
 }
 .alert-info {
-    background-color: #3498db;
-    border-color: #3498db;
-    color: #ffffff;
+    color: #3498db;
 }
 .alert-info hr {
     border-top-color: #258cd1;
@@ -4678,9 +4663,7 @@ a.thumbnail.active {
     color: #e6e6e6;
 }
 .alert-warning {
-    background-color: #f39c12;
-    border-color: #f39c12;
-    color: #ffffff;
+    color: #f39c12;
 }
 .alert-warning hr {
     border-top-color: #e08e0b;
@@ -4689,9 +4672,7 @@ a.thumbnail.active {
     color: #e6e6e6;
 }
 .alert-danger {
-    background-color: #e74c3c;
-    border-color: #e74c3c;
-    color: #ffffff;
+    color: #e74c3c;
 }
 .alert-danger hr {
     border-top-color: #e43725;
@@ -4728,7 +4709,7 @@ a.thumbnail.active {
     float: left;
     width: 0%;
     height: 100%;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 21px;
     color: #ffffff;
     text-align: center;
@@ -5021,7 +5002,7 @@ a.list-group-item-danger.active:focus {
 .panel-title {
     margin-top: 0;
     margin-bottom: 0;
-    font-size: 17px;
+    font-size: 14px;
     color: inherit;
 }
 .panel-title > a {
@@ -5503,7 +5484,7 @@ button.close {
     z-index: 1070;
     display: block;
     visibility: visible;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.4;
     opacity: 0;
     filter: alpha(opacity=0);
@@ -5629,7 +5610,7 @@ button.close {
 .popover-title {
     margin: 0;
     padding: 8px 14px;
-    font-size: 15px;
+    font-size: 12px;
     font-weight: normal;
     line-height: 18px;
     background-color: #f7f7f7;

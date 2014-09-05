@@ -1,27 +1,20 @@
 <div class="bs-docs-section">
     <div class="row">
-        <div class="col-lg-10">
-            <div class="page-header">
-                <ul class="breadcrumb col-lg-3">
-                    <li class="active">BILLS</li>
-                </ul><div class="alert col-lg-7" ng-class="msgType" ng-if="flash">{{flash}}</div>
-            </div>
-        </div>
-        <div class="col-lg-2"></div>
-    </div>
-    <div class="row">
-        <div class="col-lg-3">
+        <div class="col-lg-4">
             <div class="bs-component">
                 <div class="list-group">
                     <a ng-repeat="userInfo in usersBillData" class="list-group-item">
+                        <strong>{{userInfo.name}} </strong><br/>
+                        <i class="glyphicon glyphicon-envelope small"></i>  {{userInfo.email}}
                         <span class="label-success badge" ng-if="userInfo.amount <= 0">{{userInfo.amount| currency}}</span>
                         <span class="label-danger badge" ng-if="userInfo.amount > 0">{{userInfo.amount| currency}}</span>
-                        <i class="glyphicon glyphicon-user"></i>  {{userInfo.name}}
+                        
+                        
                     </a>
                 </div>
             </div>
         </div>
-        <div class="col-lg-9">
+        <div class="col-lg-8">
             <div class="bs-component">
                 <div ui-view></div>
             </div>

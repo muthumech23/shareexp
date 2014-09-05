@@ -87,6 +87,7 @@ shareExpApp.controller('IndexController', function($scope, $location, cfpLoading
 
     $scope.loggedIn = AuthenticationService.isLoggedIn();
     $scope.loggedUser = SessionService.get('userId');
+    $scope.loggedUserName = SessionService.get('userName');
 
     $scope.userLogin = function(user) {
         cfpLoadingBar.start();
@@ -99,10 +100,12 @@ shareExpApp.controller('IndexController', function($scope, $location, cfpLoading
 
                     var userId = $scope.user.id;
                     AuthenticationService.cacheSession('userId', userId);
+                    AuthenticationService.cacheSession('userName', $scope.user.name);
                     AuthenticationService.cacheSession('authenticated', true);
                     CookieService.set('authenticated', true);
                     $scope.loggedUser = SessionService.get('userId');
                     $scope.loggedIn = AuthenticationService.isLoggedIn();
+                    $scope.loggedUserName = SessionService.get('userName');
 
                     FlashService.show(response, "alert-success");
                     $location.path("/userhome/list");

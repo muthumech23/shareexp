@@ -13,10 +13,10 @@ userControllers.controller('UserController',
 
             $scope.updatedBillSPlitList = [];
 
+            $scope.splittype = 'equally';
             $scope.billAmountChng = function() {
                 updateSplitAmount();
             };
-
 
             var updateSplitAmount = function() {
                 //console.log($scope.billvalue.addBillSplits.length);
@@ -139,7 +139,7 @@ userControllers.controller('UserController',
                             FlashService.show("Bill added Successfully", "alert-success");
                             console.log(response);
                             cfpLoadingBar.complete();
-                            $state.go('userhome.list', {}, { reload: true });
+                            $state.go('userhome.list', {}, {reload: true});
                         },
                         function(response) {
                             FlashService.show("Status Code: " + response.status + " Message: " + response.statusText, "alert-danger");

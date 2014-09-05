@@ -1,14 +1,4 @@
 <div class="bs-docs-section">
-    <div class="row">
-        <div class="col-lg-10">
-            <div class="page-header">
-                <ul class="breadcrumb col-lg-3">
-                    <li class="active">HOME</li>
-                </ul><div class="alert col-lg-7" ng-class="msgType" ng-if="flash">{{flash}}</div>
-            </div>
-        </div>
-        <div class="col-lg-2"></div>
-    </div>
     <script type="text/javascript">
         $(document).ready(function() {
 
@@ -27,15 +17,42 @@
             });
 
         });
+
+
+        $(window).load(function() {
+
+            $('.flexslider').flexslider({
+                animation: "slide",
+                slideshow: true,
+                start: function(slider) {
+                    $('body').removeClass('loading');
+                }
+            });
+        });
     </script>
-    <div class="page-header" id="banner">
-        <div class="row">
-            <div class="col-lg-4 col-md-5 col-sm-6">
-                <h1>Share Expense</h1>
-                <p class="lead">Flat and modern</p>
+    <div class="row">
+        <div class="col-lg-11"><h4 class="text-success">Share your expense with friends</h4></div>
+        <div class="col-lg-1">
+            <button id="btn-blog-prev" class="btn btn-success btn-xs " type="button">&laquo;</button>
+            <button id="btn-blog-next" class="btn btn-success btn-xs" type="button">&raquo;</button>
+        </div>
+        <div class="col-lg-8">
+            <div class="flexslider">
+                <ul class="slides">
+                    <li><a href="gallery-single.htm"><img src="img/background2.jpg" alt="slider" /></a></li>
+                    <li><a href="gallery-single.htm"><img src="img/background3.jpg" alt="slider" /></a></li>
+                    <li><a href="gallery-single.htm"><img src="img/background5.jpg" alt="slider" /></a></li>
+                    <li><a href="gallery-single.htm"><img src="img/background6.jpg" alt="slider" /></a></li>
+                    
+                </ul>
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-6">
+        </div>
+    </div>
+    <div id="banner">
+        <div class="row">
+            <div class="col-lg-12">
                 <div class="sponsor">
+
                     <div id="blogCarousel" class="carousel slide ">
 
                         <!-- Carousel items -->
@@ -43,16 +60,9 @@
 
                             <!-- Blog Item 1 -->
                             <div class="active item">
-                                <div class="post-info clearfix">
-                                    <h4><a href="blog-single.htm">A subject that is beautiful in itself</a></h4>
-                                    <ul class="blog-details-preview">
-                                        <li><i class="icon-calendar"></i><strong>Posted on:</strong> Sept 4, 2015<li>
-                                        <li><i class="icon-user"></i><strong>Posted by:</strong> <a href="#" title="Link">Admin</a><li>
-                                        <li><i class="icon-comment"></i><strong>Comments:</strong> <a href="#" title="Link">12</a><li>
-                                        <li><i class="icon-tags"></i> <a href="#">photoshop</a>, <a href="#">tutorials</a>, <a href="#">illustration</a>
-                                    </ul>
+                                <div class="post-info clearfix text-center">
+                                    <img src="img/Friends.gif">
                                 </div>
-                                <p class="blog-summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum felis fermentum ipsum molestie sed porttitor ligula rutrum. Vestibulum lectus tellus, aliquet et iaculis sed, volutpat vel erat. <a href="#">Read more</a><p>
                             </div>
 
                             <!-- Blog Item 2 -->

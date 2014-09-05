@@ -18,6 +18,7 @@ and open the template in the editor.
         <link rel="stylesheet" href="css/flexslider.css" />
         <link rel="stylesheet" href="css/loading-bar.css">
         <link rel="stylesheet" href="css/jquery.lightbox-0.5.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
 
         <!--[if lt IE 9]>
             <script src="assets/html5.js"></script>
@@ -74,7 +75,7 @@ and open the template in the editor.
         <script src="js/custom.js"></script>
     </head>
     <body ng-controller="IndexController">
-        <div class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
@@ -88,9 +89,9 @@ and open the template in the editor.
                     <ul class="nav navbar-nav navbar-right span6" ng-if="loggedIn">
                         <li><a ui-sref="userhome.list">Home</a></li>
                         <li><a ui-sref="friends">Friends</a></li>
-                        <li><a ui-sref="account">Account</a></li>
                         <li><a ui-sref="about">About Us</a></li>
-                        <li><a href="" ng-click="userLogout()">logout</a></li>
+                        <li><a ui-sref="about" > {{loggedUserName}}  <i class="fa fa-smile-o"></i></a>
+                        <li><a href="" ng-click="userLogout()"><i class="glyphicon glyphicon-log-out"></i></a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right span6" ng-if="!loggedIn">
                         <li><form class="navbar-form navbar-left" role="search">
@@ -104,6 +105,10 @@ and open the template in the editor.
             </div>
         </div>
         <div class="container">
+            <div class="row">
+                <div class="page-header col-lg-12">&nbsp;<div class="alert" ng-class="msgType" ng-if="flash">{{flash}}</div>&nbsp;</div>
+            </div>
+
             <input type="hidden" ng-model="loggedUser" value="{{loggedUser}}"/>
             <div ui-view></div>
         </div>
