@@ -6,6 +6,7 @@
 package com.mycompany.shareexpense.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 /**
  *
@@ -16,11 +17,34 @@ public class AbstractModal {
     @Id
     private String id;
 
-    public void setId(String id) {
+    @Indexed
+    private String createDate = null;
+
+    @Indexed
+    private String modifiedDate = null;
+
+    public void setCreateDate (String createDate) {
+        this.createDate = createDate;
+    }
+
+    public void setModifiedDate (String modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public String getCreateDate () {
+        return createDate;
+    }
+
+    public String getModifiedDate () {
+        return modifiedDate;
+    }
+
+    public void setId (String id) {
         this.id = id;
     }
 
-    public String getId() {
+    public String getId () {
         return id;
     }
+
 }

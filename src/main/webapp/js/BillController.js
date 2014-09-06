@@ -1,13 +1,23 @@
-var userControllers = angular.module('UserControllers', []);
+var billControllers = angular.module('BillControllers', []);
 
-userControllers.controller('UserController',
-        function($scope, $log, $state, $location, $modal, cfpLoadingBar, SessionService, FlashService, BillingServices, homeBillData, recentBills, addBill) {
-
-            $log.info = 'Inside User Controller';
+billControllers.controller('BillListController',
+        function($scope, homeBillData) {
             $scope.usersBillData = homeBillData;
+
+        });
+
+billControllers.controller('BillRecentController',
+        function($scope, recentBills) {
+
             $scope.bills = recentBills;
+        });
+
+billControllers.controller('BillController',
+        function($scope, $state, cfpLoadingBar, FlashService, BillingServices, addBill) {
 
             $scope.addBillData = addBill;
+            
+            $scope.bill;
 
             $scope.addBillSplits = addBill.billSplits;
 
@@ -29,7 +39,6 @@ userControllers.controller('UserController',
                 } else if ($scope.splittype === 'exact') {
                     updateSplitExact();
                 }
-
             };
 
             var updateSelected = function(action, billsplit) {
@@ -113,7 +122,6 @@ userControllers.controller('UserController',
             $scope.isSelected = function(billsplit) {
                 console.log('isSelected --<' + billsplit);
                 return $scope.updatedBillSPlitList.indexOf(billsplit) >= 0;
-
             };
 
             $scope.splitInitial = function() {
@@ -123,14 +131,12 @@ userControllers.controller('UserController',
                  }*/
             };
 
-
             $scope.saveBill = function(billData) {
 
                 console.log(billData);
                 console.log($scope.updatedBillSPlitList);
                 billData.billSplits = $scope.updatedBillSPlitList;
                 console.log(billData);
-
 
                 cfpLoadingBar.start();
                 var saveBill = BillingServices.getBillResource(billData);
@@ -139,7 +145,7 @@ userControllers.controller('UserController',
                             FlashService.show("Bill added Successfully", "alert-success");
                             console.log(response);
                             cfpLoadingBar.complete();
-                            $state.go('userhome.list', {}, {reload: true});
+                            $state.go('billhome.list', {}, {reload: true});
                         },
                         function(response) {
                             FlashService.show("Status Code: " + response.status + " Message: " + response.statusText, "alert-danger");

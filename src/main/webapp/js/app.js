@@ -1,24 +1,26 @@
 var shareExpApp = angular.module(
-        "ShareExpApp",
-        ["ui.router",
-            "ngSanitize",
-            "ngRoute",
+        'ShareExpApp',
+        ['ui.router',
+            'ngSanitize',
+            'ngRoute',
             'chieffancypants.loadingBar',
             'ngAnimate',
-            "ngResource",
-            "ngCookies",
-            "HomeControllers",
-            "FriendControllers",
-            "LoginControllers",
-            "UserControllers",
-            "ShareExpDirectives",
-            "HomeServices",
-            "LoginServices",
-            "FriendServices",
-            "BillServices",
-            "ShareExpFilters",
+            'ngResource',
+            'ngCookies',
+            'HomeControllers',
+            'LoginControllers',
+            'FriendControllers',
+            'BillControllers',
+            'GroupControllers',
+            'HomeServices',
+            'LoginServices',
+            'FriendServices',
+            'BillServices',
+            'GroupServices',
+            'ShareExpDirectives',
+            'ShareExpFilters',
             'ui.bootstrap',
-            "checklist-model"
+            'checklist-model'
         ]);
 
 shareExpApp.config(
@@ -28,56 +30,93 @@ shareExpApp.config(
 
             $stateProvider
                     .state('home',
-                            {url: "/home",
-                                controller: "HomeController",
-                                templateUrl: "template/home.html"})
-                    .state('login',
-                            {url: "/login",
-                                controller: "LoginController",
-                                templateUrl: "template/login.html"})
+                            {url: '/home',
+                                controller: 'HomeController',
+                                templateUrl: 'template/home.html'})
                     .state('signup',
-                            {url: "/signup",
-                                controller: "LoginController",
-                                templateUrl: "template/register.html"})
-                    .state('userhome',
+                            {url: '/signup',
+                                controller: 'LoginController',
+                                templateUrl: 'template/register.html'})
+                    .state('billhome',
                             {abstract: true,
-                                url: "/userhome",
-                                controller: "UserController",
-                                templateUrl: "template/userhome.html", resolve: {
+                                url: '/billhome',
+                                controller: 'BillListController',
+                                templateUrl: 'template/billhome.html', resolve: {
                                     homeBillData: function(BillingServices) {
-                                        return BillingServices.getHomeBills();
-                                    },
+                                        return BillingServices.getUsersBill();
+                                    }
+                                }
+                            })
+                    .state('billhome.list',
+                            {url: '/list',
+                                controller: 'BillRecentController',
+                                templateUrl: 'template/billhome.list.html', resolve: {
                                     recentBills: function(BillingServices) {
                                         return BillingServices.getBills();
-                                    },
+                                    }
+                                }
+                            })
+                    .state('billhome.add',
+                            {url: '/add',
+                                controller: 'BillController',
+                                templateUrl: 'template/billhome.add.html', resolve: {
                                     addBill: function(BillingServices) {
                                         return BillingServices.addBillPage();
                                     }
-
                                 }
                             })
-                    .state('userhome.list',
-                            {url: "/list",
-                                controller: "UserController",
-                                templateUrl: "template/userhome.list.html"})
-                    .state('userhome.add',
-                            {url: "/add",
-                                controller: "UserController",
-                                templateUrl: "template/userhome.add.html"})
-                    .state('userhome.edit',
-                            {url: "/edit",
-                                controller: "UserController",
-                                templateUrl: "template/userhome.edit.html"})
-                    .state('friends',
-                            {url: "/friends",
-                                controller: "FriendController",
-                                templateUrl: "template/listfriends.html",
+                    .state('billhome.edit',
+                            {url: '/edit',
+                                controller: 'BillController',
+                                templateUrl: 'template/billhome.edit.html'})
+                    .state('billhome.grouplist',
+                            {url: '/grouplist',
+                                controller: 'GroupListController',
+                                templateUrl: 'template/group.list.html', resolve: {
+                                    getGroupList: function(GroupServices) {
+                                        return GroupServices.getGroups();
+                                    }
+                                }
+                            })
+                    .state('billhome.groupbills',
+                            {url: '/groupbills/:groupId',
+                                controller: 'GroupRecentController',
+                                templateUrl: 'template/group.bills.html'})
+                    .state('billhome.groupadd',
+                            {url: '/groupadd',
+                                controller: 'GroupController',
+                                templateUrl: 'template/group.add.html', resolve: {
+                                    friendsData: function(FriendServices) {
+                                        return FriendServices.getFriends();
+                                    }
+                                }})
+                    .state('billhome.grpaddbill',
+                            {url: '/grpaddbill',
+                                controller: 'GroupBillController',
+                                templateUrl: 'template/group.addbill.html', resolve: {
+                                    addBill: function(BillingServices) {
+                                        return BillingServices.addBillPage();
+                                    }
+                                }
+                            })
+                    .state('billhome.groupedit',
+                            {url: '/groupedit',
+                                controller: 'GroupController',
+                                templateUrl: 'template/group.edit.html'})
+                    .state('billhome.grpeditbill',
+                            {url: '/grpeditbill',
+                                controller: 'GroupBillController',
+                                templateUrl: 'template/group.editbill.html'})
+                    .state('billhome.friends',
+                            {url: '/friends',
+                                controller: 'FriendController',
+                                templateUrl: 'template/billhome.friends.html',
                                 resolve: {
                                     friendsData: function(FriendServices) {
                                         return FriendServices.getFriends();
                                     }
                                 }
-                            })
+                            });
         },
         function(cfpLoadingBarProvider) {
             cfpLoadingBarProvider.includeSpinner = true;
@@ -94,24 +133,24 @@ shareExpApp.controller('IndexController', function($scope, $location, cfpLoading
         var sanitizeCredentials = AuthenticationService.sanitizeCredentials(user);
 
         var userVerify = AuthenticationService.login().login(sanitizeCredentials).$promise;
+
         userVerify.then(
                 function(response) {
                     $scope.user = response;
-
-                    var userId = $scope.user.id;
-                    AuthenticationService.cacheSession('userId', userId);
+                    AuthenticationService.cacheSession('userId', $scope.user.id);
                     AuthenticationService.cacheSession('userName', $scope.user.name);
+                    AuthenticationService.cacheSession('userEmail', $scope.user.email);
                     AuthenticationService.cacheSession('authenticated', true);
+
                     CookieService.set('authenticated', true);
                     $scope.loggedUser = SessionService.get('userId');
                     $scope.loggedIn = AuthenticationService.isLoggedIn();
                     $scope.loggedUserName = SessionService.get('userName');
 
-                    FlashService.show(response, "alert-success");
-                    $location.path("/userhome/list");
+                    $location.path('/billhome/list');
                 },
                 function(response) {
-                    FlashService.show("Status Code: " + response.status + " Message: " + response.statusText, "alert-danger");
+                    FlashService.show('Status Code: ' + response.status + ' Message: Login Failed. Please try again.', 'alert-danger');
                     cfpLoadingBar.complete();
                 }
         );
@@ -123,13 +162,15 @@ shareExpApp.controller('IndexController', function($scope, $location, cfpLoading
         userSignout.then(
                 function(response) {
                     AuthenticationService.uncacheSession('userId');
+                    AuthenticationService.uncacheSession('userName');
+                    AuthenticationService.uncacheSession('userEmail');
                     AuthenticationService.uncacheSession('authenticated');
                     CookieService.unset('authenticated');
                     $scope.loggedIn = AuthenticationService.isLoggedIn();
-                    $location.path("/home");
+                    $location.path('/home');
                 },
                 function(response) {
-                    FlashService.show("Status Code: " + response.status + " Message: " + response.statusText, "alert-danger");
+                    FlashService.show('Status Code: ' + response.status + ' Message: Logout Failed.', 'alert-danger');
                     cfpLoadingBar.complete();
                 }
         );
@@ -139,47 +180,47 @@ shareExpApp.controller('IndexController', function($scope, $location, cfpLoading
 shareExpApp.run(
         function($rootScope, $location, AuthenticationService) {
 
-            var routesThatRequireAuth = ['/userhome', '/friends'];
+            var routesThatRequireAuth = ['/home', '/signup'];
 
             $rootScope.$on('$locationChangeStart', function(event) {
-                if (_(routesThatRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn()) {
-                    alert('Please Login to COntinue');
-                    event.preventDefault();
+                if (!_(routesThatRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn()) {
+                    alert('Please Login to Continue');
+                    $location.path('/home');
                     return;
                 }
             });
             $rootScope.$on('$routeChangeStart', function(event, next, current) {
                 if (_(routesThatRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn()) {
-                    $location.path('/login');
+                    $location.path('/home');
                     return;
                 }
-                $rootScope.active = "progress-success progress-striped";
-                $rootScope.progress = "Loading...";
+                $rootScope.active = 'progress-success progress-striped';
+                $rootScope.progress = 'Loading...';
             });
-            $rootScope.$on("$routeChangeSuccess", function(event, current, previous) {
-                $rootScope.active = "progress-success progress-striped";
-                $rootScope.progress = "";
+            $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
+                $rootScope.active = 'progress-success progress-striped';
+                $rootScope.progress = '';
                 $rootScope.newLocation = $location.path();
 
             });
-            $rootScope.$on("$routeChangeError", function(event, current, previous, rejection) {
-                $rootScope.active = "progress-danger progress-striped";
-                $rootScope.progress = "failed";
+            $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
+                $rootScope.active = 'progress-danger progress-striped';
+                $rootScope.progress = 'failed';
             });
 
         });
 
 
-shareExpApp.animation(".alert", function($timeout, FlashService) {
+shareExpApp.animation('.alert', function($timeout, FlashService) {
     return {
         leave: function(element, done) {
-            TweenMax.fromTo(element, 10, {opacity: 1}, {opacity: 0, onComplete: done});
+            TweenMax.fromTo(element, 5, {opacity: 1}, {opacity: 0, onComplete: done});
         },
         enter: function(element, done) {
             TweenMax.fromTo(element, 1, {opacity: 0}, {opacity: 1, onComplete: done});
             $timeout(function() {
                 FlashService.clear();
-            }, 10000);
+            }, 5000);
         }
     };
 });

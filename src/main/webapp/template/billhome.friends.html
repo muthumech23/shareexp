@@ -1,0 +1,51 @@
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Friends</h3>
+    </div>
+    <div class="panel-body">
+
+        <table class="table table-striped table-hover " id="table">
+            <tbody>
+                <tr>
+                    <td colspan="3">&nbsp;</td>
+                    <td class="text-center col-lg-1"><a ng-click="AddFriend()" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-user"></i><i class="glyphicon glyphicon-plus"></i></a></td>
+                </tr>
+                <tr ng-animate="'animate'" ng-repeat="friend in friends">
+                    <td class="col-lg-2">{{friend.name}}</td>
+                    <td class="col-lg-2">{{friend.email}}</td>
+                    <td class="col-lg-4">{{friend.email}}</td>
+                    <td class="text-center col-lg-1"><a class="btn btn-danger btn-xs" ng-click="removeFriend(friend)"><i class="glyphicon glyphicon-trash"></i></a></td>
+                </tr>
+            </tbody>
+        </table> 
+    </div><!-- /example -->
+</div>
+
+
+<script type="text/ng-template" id="friendmodal.html">
+
+    <div class="modal-body">
+    <form class="form-horizontal" role="form">
+    <div class="form-group">
+    <label class="control-label">Name</label>
+    <div class="input-group">
+    <span class="input-group-addon input-sm"><i class="glyphicon glyphicon-user"></i></span>
+    <input type="text" placeholder="Name" class="form-control input-sm" ng-model="friendData.name">
+    </div>
+    </div>
+    <div class="form-group">
+    <label class="control-label">Email</label>
+    <div class="input-group">
+    <span class="input-group-addon input-sm"><i class="glyphicon glyphicon-envelope"></i></span>
+    <input type="email" placeholder="Email" class="form-control input-sm" ng-model="friendData.email">
+    </div>
+    </div>
+    </form>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-warning btn-xs" data-dismiss="modal" ng-click="cancel()">Close</button>
+    <button type="button" class="btn btn-success btn-xs" ng-click="ok()">Save</button>
+    </div>
+
+</script>

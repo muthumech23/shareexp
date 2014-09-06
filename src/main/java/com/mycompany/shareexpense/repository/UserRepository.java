@@ -16,14 +16,19 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserRepository extends CrudRepository<User, String> {
-    
-    public User findByEmailAndPassword(String emailId, String password);
-    
-    public List<User> findByIdOrFriends(String userId, String friendId);
-    
-    public List<User> findByFriends(String friendId);
-    
-    public User findByEmail(String email);
 
+    public List<User> findByIdOrFriends (String userId,
+                                         String friendId);
+
+    public List<User> findByFriends (String friendId);
+
+    public User findByEmail (String email);
 
 }
+
+/*
+ *  Query query = Query.query(Criteria.where("friends").is(friendId));
+
+        List<User> users = mongoTemplate.find(query, User.class);
+
+ */

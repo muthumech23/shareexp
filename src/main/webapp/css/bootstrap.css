@@ -1381,6 +1381,7 @@ pre code {
     margin-left: auto;
     padding-left: 15px;
     padding-right: 15px;
+
 }
 @media (min-width: 768px) {
     .container {
@@ -2735,6 +2736,8 @@ select[multiple].input-lg {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
 }
 .btn:focus,
 .btn:active:focus,
@@ -3893,6 +3896,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     font-size: 19px;
     line-height: 21px;
     height: 60px;
+    
 }
 .navbar-brand:hover,
 .navbar-brand:focus {
@@ -3940,6 +3944,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     padding-top: 10px;
     padding-bottom: 10px;
     line-height: 21px;
+    
 }
 @media (max-width: 767px) {
     .navbar-nav .open .dropdown-menu {
@@ -3987,6 +3992,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
         float: right !important;
     }
 }
+
 .navbar-form {
     margin-left: -15px;
     margin-right: -15px;
@@ -4525,7 +4531,9 @@ a.label:focus {
     vertical-align: baseline;
     white-space: nowrap;
     text-align: center;
-    border-radius: 10px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
 }
 .badge:empty {
     display: none;
@@ -4807,6 +4815,8 @@ a.thumbnail.active {
 .list-group {
     margin-bottom: 20px;
     padding-left: 0;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
 }
 .list-group-item {
     position: relative;
@@ -4984,8 +4994,8 @@ a.list-group-item-danger.active:focus {
     background-color: #ffffff;
     border: 1px solid transparent;
     border-radius: 4px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
 }
 .panel-body {
     padding: 15px;
@@ -6194,6 +6204,7 @@ button.close {
 }
 .navbar-brand {
     padding: 18.5px 15px 20.5px;
+    
 }
 .btn:active {
     -webkit-box-shadow: none;

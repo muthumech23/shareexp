@@ -22,6 +22,7 @@ public class Bill extends AbstractModal {
     private BigDecimal amount;
     
     private String description;
+    
     @Indexed
     private Date date;
     

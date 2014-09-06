@@ -15,6 +15,9 @@ loginServices.factory("AuthenticationService", function($resource, $sanitize, Se
         logout: function() {
             return $resource("api/user/auth/logout", {}, {logout: {method: 'GET'}});
         },
+        forgot: function() {
+            return $resource("api/user/auth/forgot", {}, {forgot: {method: 'POST'}});
+        },
         isLoggedIn: function() {
             return SessionService.get('authenticated');
         },

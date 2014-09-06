@@ -2,7 +2,7 @@ var friendControllers = angular.module('FriendControllers', []);
 
 /* Friends Controller */
 friendControllers.controller('FriendController',
-        function($scope, $log, $location, cfpLoadingBar, FriendServices, $modal, FlashService, friendsData, SessionService) {
+        function($scope, $state, cfpLoadingBar, FriendServices, $modal, FlashService, friendsData, SessionService) {
 
             $scope.friends = friendsData;
 
@@ -26,18 +26,17 @@ friendControllers.controller('FriendController',
                     var friendAdd = FriendServices.addFriends(friend, user);
                     friendAdd.then(
                             function(response) {
-                                FlashService.show("Added Successfully", "alert-success");
-                                $scope.friends.push(response);
+                                FlashService.show("Friend Added Successfully", "alert-success");
+                                $state.go('billhome.friends', {}, {reload: true});
                                 cfpLoadingBar.complete();
                             },
                             function(response) {
-                                FlashService.show("Status Code: " + response.status + " Message: " + response.statusText, "alert-danger");
+                                FlashService.show("Status Code: " + response.status + " Message: Addition of friend failed. please try again.", "alert-danger");
                                 cfpLoadingBar.complete();
                             }
-
                     );
                 }, function() {
-                    
+
                 });
             };
 
@@ -65,13 +64,12 @@ friendControllers.controller('FriendController',
                                 cfpLoadingBar.complete();
                             },
                             function(response) {
-                                FlashService.show("Status Code: " + response.status + " Message: " + response.statusText, "alert-danger");
+                                FlashService.show("Status Code: " + response.status + " Message: Edit Failed.", "alert-danger");
                                 cfpLoadingBar.complete();
                             }
-
                     );
                 }, function() {
-                    
+
                 });
             };
 
@@ -80,22 +78,21 @@ friendControllers.controller('FriendController',
                 var removeFriend = FriendServices.deleteFriends(friend.id);
                 removeFriend.then(
                         function(response) {
-                            FlashService.show("Updated Successfully", "alert-success");
+                            FlashService.show("Updated Successfully.", "alert-success");
                             var index = $scope.friends.indexOf(friend);
 
                             if (index !== -1) {
                                 // Remove todo-item from array
                                 $scope.friends.splice(index, 1);
                             }
+                            cfpLoadingBar.complete();
                         },
                         function(response) {
-                            FlashService.show("Status Code: " + response.status + " Message: " + response.statusText, "alert-danger");
+                            FlashService.show("Status Code: " + response.status + " Message: Friend delete failed.", "alert-danger");
                             cfpLoadingBar.complete();
                         }
-
                 );
             };
-
         });
 
 var ModalInstanceCtrl = function($scope, $modalInstance, friendData) {
@@ -104,7 +101,6 @@ var ModalInstanceCtrl = function($scope, $modalInstance, friendData) {
 
     $scope.ok = function() {
         $modalInstance.close($scope.friendData);
-
     };
 
     $scope.cancel = function() {

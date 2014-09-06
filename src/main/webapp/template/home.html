@@ -18,34 +18,12 @@
 
         });
 
-
-        $(window).load(function() {
-
-            $('.flexslider').flexslider({
-                animation: "slide",
-                slideshow: true,
-                start: function(slider) {
-                    $('body').removeClass('loading');
-                }
-            });
-        });
     </script>
     <div class="row">
         <div class="col-lg-11"><h4 class="text-success">Share your expense with friends</h4></div>
         <div class="col-lg-1">
             <button id="btn-blog-prev" class="btn btn-success btn-xs " type="button">&laquo;</button>
             <button id="btn-blog-next" class="btn btn-success btn-xs" type="button">&raquo;</button>
-        </div>
-        <div class="col-lg-8">
-            <div class="flexslider">
-                <ul class="slides">
-                    <li><a href="gallery-single.htm"><img src="img/background2.jpg" alt="slider" /></a></li>
-                    <li><a href="gallery-single.htm"><img src="img/background3.jpg" alt="slider" /></a></li>
-                    <li><a href="gallery-single.htm"><img src="img/background5.jpg" alt="slider" /></a></li>
-                    <li><a href="gallery-single.htm"><img src="img/background6.jpg" alt="slider" /></a></li>
-                    
-                </ul>
-            </div>
         </div>
     </div>
     <div id="banner">
@@ -58,15 +36,8 @@
                         <!-- Carousel items -->
                         <div class="carousel-inner">
 
-                            <!-- Blog Item 1 -->
-                            <div class="active item">
-                                <div class="post-info clearfix text-center">
-                                    <img src="img/Friends.gif">
-                                </div>
-                            </div>
-
                             <!-- Blog Item 2 -->
-                            <div class="item">
+                            <div class="active item">
                                 <div class="post-info clearfix">
                                     <h4><a href="blog-single.htm">A great artist is always before his time</a></h4>
                                     <ul class="blog-details-preview">

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.mycompany.shareexpense.service;
 
 import com.mycompany.shareexpense.model.Bill;
@@ -15,21 +14,19 @@ import java.util.List;
  * @author AH0661755
  */
 public interface BillService {
-    
-    public Bill saveBill(Bill bill) throws Exception;
 
-    public Bill showBill(String Id) throws Exception;
+    public Bill saveBill (Bill bill) throws Exception;
 
-    public void deleteBill(String Id) throws Exception;
-    
-    public Bill updateBill(Bill bill) throws Exception;
+    public void deleteBill (String Id) throws Exception;
 
-    public Iterable<Bill> findAll() throws Exception;
-    
-    public List<BillSplit> findAllBills(String userId) throws Exception;
+    public Bill updateBill (Bill bill) throws Exception;
 
-    public List<Bill> recentTrans(String userId) throws Exception;
-    
-    public Bill addBill(String userId) throws Exception;
-    
+    public List<BillSplit> usersBillDetails (String userId) throws Exception;
+
+    public List<Bill> recentTrans (String userId) throws Exception;
+
+    public List<Bill> recentGroupTrans (String groupId) throws Exception;
+
+    public Bill addBill (String userId) throws Exception;
+
 }

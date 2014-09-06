@@ -25,34 +25,42 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("bill")
 public class BillController {
 
-    private final Log log = LogFactory.getLog(BillController.class);
+    private final Log log = LogFactory.getLog (BillController.class);
 
     @Autowired
     public BillService billService;
 
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    public ResponseEntity<Bill> submitBill(@RequestBody Bill bill) throws Exception {
+    public ResponseEntity<Bill> submitBill (@RequestBody Bill bill) throws Exception {
 
-        log.debug("Inside Submit Bill --->");
-        log.debug(bill.getUserPaid());
-        Bill returnBill = billService.saveBill(bill);
+        log.debug ("Inside Submit Bill --->");
+        log.debug (bill.getUserPaid ());
+        Bill returnBill = billService.saveBill (bill);
 
-        ResponseEntity<Bill> responseEntity = new ResponseEntity<>(returnBill, HttpStatus.CREATED);
+        ResponseEntity<Bill> responseEntity = new ResponseEntity<> (returnBill, HttpStatus.CREATED);
         return responseEntity;
     }
 
-    @RequestMapping(value = "/all", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    public List<BillSplit> allBills(@RequestBody String userId) throws Exception {
-        return billService.findAllBills(userId);
+    @RequestMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    public List<BillSplit> usersBillDetails (
+            @PathVariable("userId") String userId) throws Exception {
+        return billService.usersBillDetails (userId);
     }
 
     @RequestMapping(value = "/recent/{userId}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    public List<Bill> recentTrans(@PathVariable("userId") String userId) throws Exception {
-        return billService.recentTrans(userId);
+    public List<Bill> recentTrans (@PathVariable("userId") String userId) throws Exception {
+        return billService.recentTrans (userId);
     }
-    
+
+    @RequestMapping(value = "/group/{groupId}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    public List<Bill> recentGroupTrans (@PathVariable("groupId") String groupId)
+            throws Exception {
+        return billService.recentGroupTrans (groupId);
+    }
+
     @RequestMapping(value = "/add/{userId}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    public Bill addBill(@PathVariable("userId") String userId) throws Exception {
-        return billService.addBill(userId);
+    public Bill addBill (@PathVariable("userId") String userId) throws Exception {
+        return billService.addBill (userId);
     }
+
 }

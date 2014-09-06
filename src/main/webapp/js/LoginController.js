@@ -2,7 +2,7 @@ var loginControllers = angular.module('LoginControllers', []);
 
 /* Login Controller */
 loginControllers.controller('LoginController',
-        function($scope, $log, $location, cfpLoadingBar, UserServices, AuthenticationService, CookieService, FlashService) {
+        function($scope, $location, cfpLoadingBar, UserServices, FlashService) {
 
             $scope.title = 'Share Expenses - Login';
 
@@ -15,8 +15,7 @@ loginControllers.controller('LoginController',
                             $location.path("/home");
                         },
                         function(response) {
-                            FlashService.show("Status Code: " + response.status + " Message: " + response.statusText, "alert-danger");
-                            $scope.user = response;
+                            FlashService.show("Status Code: " + response.status + " Message: Registeration failed.", "alert-danger");
                             cfpLoadingBar.complete();
                         }
 

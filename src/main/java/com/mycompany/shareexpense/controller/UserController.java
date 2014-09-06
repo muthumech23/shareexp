@@ -7,7 +7,6 @@ package com.mycompany.shareexpense.controller;
 
 import com.mycompany.shareexpense.model.User;
 import com.mycompany.shareexpense.service.UserService;
-import java.util.List;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,67 +27,71 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("user")
 public class UserController {
 
-    private final Log log = LogFactory.getLog(UserController.class);
+    private final Log log = LogFactory.getLog (UserController.class);
 
     @Autowired
     public UserService userService;
 
-    /* Authentication API */
+    /*
+     * Authentication API
+     */
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST, value = "/auth/login")
-    public ResponseEntity<User> loginUser(@RequestBody User user) throws Exception {
+    public ResponseEntity<User> loginUser (@RequestBody User user) throws Exception {
 
-        User userResponse = userService.findByEmailAndPassword(user.getEmail(), user.getPassword());
+        log.info ("Inside loginUser");
+        User userResponse = userService.findByEmailAndPassword (user.getEmail (), user.getPassword ());
         if (userResponse == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<> (HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        return new ResponseEntity<> (userResponse, HttpStatus.OK);
     }
 
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET, value = "/auth/logout")
-    public ResponseEntity<Void> logout() throws Exception {
+    public ResponseEntity<Void> logout () throws Exception {
 
-        ResponseEntity<Void> responseEntity = new ResponseEntity<>(HttpStatus.OK);
-        return responseEntity;
+        return new ResponseEntity<> (HttpStatus.OK);
+    }
+
+    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET, value = "/auth/forgot")
+    public ResponseEntity<Void> forgotPassword (@RequestBody String emailId)
+            throws Exception {
+
+        boolean status = userService.forgotPassword (emailId);
+        if (!status) {
+            return new ResponseEntity<> (HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<> (HttpStatus.OK);
     }
 
 
-    /* USER registration */
+    /*
+     * USER registration
+     */
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    public ResponseEntity<User> createAccount(@RequestBody User user) throws Exception {
+    public ResponseEntity<User> createAccount (@RequestBody User user) throws Exception {
 
-        log.debug(user.getEmail());
-        User userExists = userService.findByEmail(user.getEmail());
-        User userResponse = null;
-        if (userExists != null) {
-            List<User> users = userService.findByFriend(userExists.getId());
+        User userResponse = userService.createAccount (user);
 
-            for (User user1 : users) {
-                userExists.getFriends().add(user1.getId());
-            }
+        return new ResponseEntity<> (userResponse, HttpStatus.CREATED);
+    }
 
-            userExists.setPassword(user.getPassword());
+    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PUT)
+    public ResponseEntity<User> updateAccount (@RequestBody User user) throws Exception {
 
-            userResponse = userService.createUser(userExists);
-        } else {
-            userResponse = userService.createUser(user);
-        }
+        User userResponse = userService.updateAccount (user);
 
-        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
+        return new ResponseEntity<> (userResponse, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{Id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> showAccount(@PathVariable("Id") String Id) throws Exception {
+    public ResponseEntity<User> showAccount (@PathVariable("Id") String Id)
+            throws Exception {
 
-        User user = userService.showUser(Id);
+        User user = userService.showAccount (Id);
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<> (HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
-
-    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    public Iterable<User> allUsers() throws Exception {
-        return userService.findAll();
+        return new ResponseEntity<> (user, HttpStatus.OK);
     }
 
 }
