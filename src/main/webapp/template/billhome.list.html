@@ -7,7 +7,7 @@
         <table class="table table-striped table-hover " id="table">
             <tbody>
                 <tr>
-                    <td colspan="4"></td>
+                    <td colspan="4"><p class="text-muted"><strong> {{bills.length}} bills available.</strong></p></td>
                     <td class="text-center col-lg-1"><a ui-sref="billhome.add" class="btn btn-success btn-xs"><i class="fa fa-plus-circle"> </i>
                             <i class="fa fa-money"> </i></a></td>
                 </tr>
@@ -20,7 +20,7 @@
                             <span class="label label-default" ng-if="billdata.userId !== bill.userPaid">{{billdata.name}}</span>
                             <span class="label label-success" ng-if="billdata.userId === bill.userPaid">{{billdata.name}}</span></span>
                     </td>
-                    <td class="text-center col-lg-1"><a class="btn btn-warning btn-xs" ng-click="EditFriend(bill)"><i class="glyphicon glyphicon-edit"></i></a></td>
+                    <td class="text-center col-lg-1"><a class="btn btn-warning btn-xs" ng-click="editBill(bill.id)"><i class="glyphicon glyphicon-edit"></i></a></td>
                 </tr>
             </tbody>
         </table> 

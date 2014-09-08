@@ -37,6 +37,14 @@ shareExpApp.config(
                             {url: '/signup',
                                 controller: 'LoginController',
                                 templateUrl: 'template/register.html'})
+                    .state('account',
+                            {url: '/account',
+                                controller: 'UpdateUserController',
+                                templateUrl: 'template/account.html'})
+                    .state('about',
+                            {url: '/about',
+                                controller: 'HomeController',
+                                templateUrl: 'template/aboutus.html'})
                     .state('billhome',
                             {abstract: true,
                                 url: '/billhome',
@@ -58,7 +66,7 @@ shareExpApp.config(
                             })
                     .state('billhome.add',
                             {url: '/add',
-                                controller: 'BillController',
+                                controller: 'BillAddController',
                                 templateUrl: 'template/billhome.add.html', resolve: {
                                     addBill: function(BillingServices) {
                                         return BillingServices.addBillPage();
@@ -66,8 +74,8 @@ shareExpApp.config(
                                 }
                             })
                     .state('billhome.edit',
-                            {url: '/edit',
-                                controller: 'BillController',
+                            {url: '/edit/:billId',
+                                controller: 'BillEditController',
                                 templateUrl: 'template/billhome.edit.html'})
                     .state('billhome.grouplist',
                             {url: '/grouplist',
@@ -85,14 +93,10 @@ shareExpApp.config(
                     .state('billhome.groupadd',
                             {url: '/groupadd',
                                 controller: 'GroupController',
-                                templateUrl: 'template/group.add.html', resolve: {
-                                    friendsData: function(FriendServices) {
-                                        return FriendServices.getFriends();
-                                    }
-                                }})
+                                templateUrl: 'template/group.add.html'})
                     .state('billhome.grpaddbill',
-                            {url: '/grpaddbill',
-                                controller: 'GroupBillController',
+                            {url: '/grpaddbill/:groupId',
+                                controller: 'GroupAddBillController',
                                 templateUrl: 'template/group.addbill.html', resolve: {
                                     addBill: function(BillingServices) {
                                         return BillingServices.addBillPage();
@@ -102,25 +106,15 @@ shareExpApp.config(
                     .state('billhome.groupedit',
                             {url: '/groupedit/:groupId',
                                 controller: 'GroupController',
-                                templateUrl: 'template/group.edit.html', resolve: {
-                                    friendsData: function(FriendServices) {
-                                        return FriendServices.getFriends();
-                                    }
-                                }})
+                                templateUrl: 'template/group.edit.html'})
                     .state('billhome.grpeditbill',
-                            {url: '/grpeditbill',
-                                controller: 'GroupBillController',
+                            {url: '/grpeditbill/:billId',
+                                controller: 'GroupEditBillController',
                                 templateUrl: 'template/group.editbill.html'})
                     .state('billhome.friends',
                             {url: '/friends',
                                 controller: 'FriendController',
-                                templateUrl: 'template/billhome.friends.html',
-                                resolve: {
-                                    friendsData: function(FriendServices) {
-                                        return FriendServices.getFriends();
-                                    }
-                                }
-                            });
+                                templateUrl: 'template/billhome.friends.html'});
         },
         function(cfpLoadingBarProvider) {
             cfpLoadingBarProvider.includeSpinner = true;

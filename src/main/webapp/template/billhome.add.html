@@ -37,8 +37,9 @@
             <div class="form-group col-lg-12">
                 <label class="control-label"></label>
                 <div class="btn-group-xs">
-                    <label class="btn btn-success" ng-model="splittype" btn-radio="'equally'" ng-change="billAmountChng()"><i popover-trigger="mouseenter" popover="Split Euqally" class="glyphicon glyphicon-align-justify"></i></label>
+                    <label class="btn btn-success" ng-model="splittype" btn-radio="'equally'" ng-change="billAmountChng()"><i popover-trigger="mouseenter" popover="Split Equally" class="glyphicon glyphicon-align-justify"></i></label>
                     <label class="btn btn-success" ng-model="splittype" btn-radio="'exact'" ng-change="billAmountChng()"><i popover-trigger="mouseenter" popover="Split By Exact" class="glyphicon glyphicon-align-left"></i></label>
+                    <label class="btn btn-success" ng-model="splittype" btn-radio="'share'" ng-change="billAmountChng()"><i popover-trigger="mouseenter" popover="Split By Share" class="glyphicon glyphicon-align-right"></i></label>
                 </div>
                 <div class="form-inline">
                     <label class="col-lg-6 checkbox-inline" ng-repeat="billsplit in addBillSplits">
@@ -46,7 +47,7 @@
                                ng-checked="isSelected(billsplit)"
                                ng-click="updateSelection($event, billsplit)">
                         {{billsplit.name}} <span class="text-danger small" ng-if="billsplit.amount < 0">{{billsplit.amount| currency}}</span><span class="text-success small" ng-if="billsplit.amount >= 0">{{billsplit.amount| currency}}</span>
-                        <input type="number" ng-model="billsplit.splitText" class="input-xsm">
+                        <input type="number" ng-model="billsplit.splitText" class="input-xsm" ng-if="splittype !== 'equally'" ng-change="billAmountChng()">
                     </label>
                 </div>
             </div>

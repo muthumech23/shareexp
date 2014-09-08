@@ -148,5 +148,12 @@ public class BillServiceImpl implements BillService {
         bill.setBillSplits (billSplits);
         return bill;
     }
+    
+    @Override
+    public Bill showBill (String Id) throws Exception {
+
+        Bill bill = billRepository.findOne (Id);
+        return bill;
+    }
 
 }

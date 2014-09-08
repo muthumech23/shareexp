@@ -18,6 +18,8 @@ public interface BillService {
     public Bill saveBill (Bill bill) throws Exception;
 
     public void deleteBill (String Id) throws Exception;
+    
+    public Bill showBill (String Id) throws Exception;
 
     public Bill updateBill (Bill bill) throws Exception;
 

@@ -41,7 +41,17 @@ public class BillController {
         return responseEntity;
     }
 
-    @RequestMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @RequestMapping(value = "/{Id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    public ResponseEntity<Bill> showBill (@PathVariable("Id") String Id) throws Exception {
+
+        log.debug ("Inside show Bill --->");
+        Bill returnBill = billService.showBill (Id);
+
+        ResponseEntity<Bill> responseEntity = new ResponseEntity<> (returnBill, HttpStatus.CREATED);
+        return responseEntity;
+    }
+
+    @RequestMapping(value = "/total/{userId}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     public List<BillSplit> usersBillDetails (
             @PathVariable("userId") String userId) throws Exception {
         return billService.usersBillDetails (userId);

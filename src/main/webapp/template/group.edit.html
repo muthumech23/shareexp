@@ -15,10 +15,10 @@
             </div>
             <div class="form-group col-lg-12">
                 <div class="form-inline">
-                     <label class="col-lg-6 checkbox-inline" ng-repeat="friend in friends">
+                     <label class="col-lg-6 checkbox-inline" ng-repeat="friend in usersBillData">
                      <input type="checkbox" name="selected" 
-                       ng-checked="isSelected(friend.id)"
-                       ng-click="updateSelection($event, friend.id)" required>
+                       ng-checked="isSelected(friend.userId)"
+                       ng-click="updateSelection($event, friend.userId)" required>
                     {{friend.name}} 
                     </label>
 

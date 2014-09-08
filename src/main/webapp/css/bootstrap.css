@@ -3897,7 +3897,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     font-size: 19px;
     line-height: 21px;
     height: 60px;
-    
+
 }
 .navbar-brand:hover,
 .navbar-brand:focus {
@@ -3945,7 +3945,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     padding-top: 10px;
     padding-bottom: 10px;
     line-height: 21px;
-    
+
 }
 @media (max-width: 767px) {
     .navbar-nav .open .dropdown-menu {
@@ -4626,7 +4626,10 @@ a.thumbnail.active {
     color: #2c3e50;
 }
 .alert {
-    padding: 5px;
+    padding: 10px;
+    margin-bottom: 21px;
+    border: 1px solid transparent;
+    border-radius: 4px;
 }
 .alert h4 {
     margin-top: 0;
@@ -4654,7 +4657,9 @@ a.thumbnail.active {
     color: inherit;
 }
 .alert-success {
-    color: #18bc9c;
+    background-color: #18bc9c;
+    border-color: #18bc9c;
+    color: #ffffff;
 }
 .alert-success hr {
     border-top-color: #15a589;
@@ -4663,7 +4668,9 @@ a.thumbnail.active {
     color: #e6e6e6;
 }
 .alert-info {
-    color: #3498db;
+    background-color: #3498db;
+    border-color: #3498db;
+    color: #ffffff;
 }
 .alert-info hr {
     border-top-color: #258cd1;
@@ -4672,7 +4679,9 @@ a.thumbnail.active {
     color: #e6e6e6;
 }
 .alert-warning {
-    color: #f39c12;
+    background-color: #f39c12;
+    border-color: #f39c12;
+    color: #ffffff;
 }
 .alert-warning hr {
     border-top-color: #e08e0b;
@@ -4681,7 +4690,9 @@ a.thumbnail.active {
     color: #e6e6e6;
 }
 .alert-danger {
-    color: #e74c3c;
+    background-color: #e74c3c;
+    border-color: #e74c3c;
+    color: #ffffff;
 }
 .alert-danger hr {
     border-top-color: #e43725;
@@ -6205,7 +6216,7 @@ button.close {
 }
 .navbar-brand {
     padding: 18.5px 15px 20.5px;
-    
+
 }
 .btn:active {
     -webkit-box-shadow: none;
@@ -6424,7 +6435,7 @@ input:focus {
     transition: background 0.1s linear;
     font-size: 75%;
 }
-	
+
 .required-field-block .required-icon {
     background-color: transparent;
     position: absolute;
@@ -6460,8 +6471,8 @@ input:focus {
 }
 
 .required-field-block .required-icon .text {
-	color: #B80000;
-	font-size: 26px;
-	margin: -3px 0 0 12px;
+    color: #B80000;
+    font-size: 26px;
+    margin: -3px 0 0 12px;
 }
 /* Required field END */

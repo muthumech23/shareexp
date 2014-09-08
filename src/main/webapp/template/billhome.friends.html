@@ -8,14 +8,15 @@
         <table class="table table-striped table-hover " id="table">
             <tbody>
                 <tr>
-                    <td colspan="3">&nbsp;</td>
+                    <td colspan="3"><p class="text-muted"><strong> {{usersBillData.length -1}} friends</strong></p></td>
                     <td class="text-center col-lg-1"><a ng-click="AddFriend()" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-user"></i><i class="glyphicon glyphicon-plus"></i></a></td>
                 </tr>
-                <tr ng-animate="'animate'" ng-repeat="friend in friends">
+                <tr ng-repeat="friend in usersBillData" ng-if="loggedUser !== friend.userId">
                     <td class="col-lg-2">{{friend.name}}</td>
                     <td class="col-lg-2">{{friend.email}}</td>
-                    <td class="col-lg-4">{{friend.email}}</td>
-                    <td class="text-center col-lg-1"><a class="btn btn-danger btn-xs" ng-click="removeFriend(friend)"><i class="glyphicon glyphicon-trash"></i></a></td>
+                    <td class="col-lg-4" ng-if="friend.amount <= 0">Owes you <span class="text-success" >{{friend.amount| currency}}</span></td>
+                    <td class="col-lg-4" ng-if="friend.amount > 0">You owe <span class="text-danger" >{{friend.amount| currency}}</span></td>
+                    <td class="text-center col-lg-1"><a class="btn btn-danger btn-xs" ng-click="removeFriend(friend)" ng-if="friend.amount === 0"><i class="glyphicon glyphicon-trash"></i></a></td>
                 </tr>
             </tbody>
         </table> 
@@ -33,8 +34,8 @@
     <span class="input-group-addon input-sm"><i class="glyphicon glyphicon-user"></i></span>
     <input type="text" placeholder="Name" name='name' class="form-control input-sm" ng-model="friendData.name" required>
     <div class="required-icon">
-                                        <div class="text">*</div>
-                                    </div>
+    <div class="text">*</div>
+    </div>
     </div>
     </div>
     <div class="form-group">
@@ -43,8 +44,8 @@
     <span class="input-group-addon input-sm"><i class="glyphicon glyphicon-envelope"></i></span>
     <input type="email" placeholder="Email" name='email' class="form-control input-sm" ng-model="friendData.email" required>
     <div class="required-icon">
-                                        <div class="text">*</div>
-                                    </div>
+    <div class="text">*</div>
+    </div>
     </div>
     </div>
     </form>

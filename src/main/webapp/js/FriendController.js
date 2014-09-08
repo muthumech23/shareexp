@@ -2,9 +2,7 @@ var friendControllers = angular.module('FriendControllers', []);
 
 /* Friends Controller */
 friendControllers.controller('FriendController',
-        function($scope, $state, cfpLoadingBar, FriendServices, $modal, FlashService, friendsData, SessionService) {
-
-            $scope.friends = friendsData;
+        function($scope, $state, cfpLoadingBar, FriendServices, $modal, FlashService, SessionService) {
 
             $scope.AddFriend = function() {
                 $scope.friend = {};

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>run</actionName>
+            <packagings>
+                <packaging>war</packaging>
+                <packaging>ear</packaging>
+                <packaging>ejb</packaging>
+            </packagings>
+            <goals>
+                <goal>package</goal>
+            </goals>
+            <properties>
+                <netbeans.deploy>true</netbeans.deploy>
+                <Env.OPENSHIFT_MONGODB_DB_HOST>localhost</Env.OPENSHIFT_MONGODB_DB_HOST>
+                <Env.OPENSHIFT_MONGODB_DB_PORT>27017</Env.OPENSHIFT_MONGODB_DB_PORT>
+                <Env.OPENSHIFT_MONGODB_DB_USERNAME>accountUser</Env.OPENSHIFT_MONGODB_DB_USERNAME>
+                <Env.OPENSHIFT_MONGODB_DB_PASSWORD>password</Env.OPENSHIFT_MONGODB_DB_PASSWORD>
+                <Env.OPENSHIFT_APP_NAME>mydb</Env.OPENSHIFT_APP_NAME>
+            </properties>
+        </action>
+    </actions>
