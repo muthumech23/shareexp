@@ -28,30 +28,47 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("group")
 public class GroupController {
 
-    private final Log log = LogFactory.getLog(GroupController.class);
+    private final Log log = LogFactory.getLog (GroupController.class);
 
     @Autowired
     public GroupService groupService;
 
-    /* USER registration */
+    /*
+     * USER registration
+     */
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    public ResponseEntity<ShareGroup> createGroup(@RequestBody ShareGroup shareGroup) throws Exception {
-        ShareGroup shareGroupResponse = groupService.createGroup(shareGroup);
+    public ResponseEntity<ShareGroup> createGroup (
+            @RequestBody ShareGroup shareGroup) throws Exception {
+        ShareGroup shareGroupResponse = groupService.createGroup (shareGroup);
 
-        return new ResponseEntity<>(shareGroupResponse, HttpStatus.CREATED);
+        return new ResponseEntity<> (shareGroupResponse, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{Id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ShareGroup> updateGroup(@PathVariable("Id") String Id) throws Exception {
+    public ResponseEntity<ShareGroup> updateGroup (@PathVariable("Id") String Id)
+            throws Exception {
 
-        ShareGroup shareGroupResponse = groupService.showGroup(Id);
+        ShareGroup shareGroupResponse = groupService.showGroup (Id);
 
-        return new ResponseEntity<>(shareGroupResponse, HttpStatus.OK);
+        return new ResponseEntity<> (shareGroupResponse, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{Id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ShareGroup> showGroup (@PathVariable("Id") String Id)
+            throws Exception {
+
+        ShareGroup shareGroupResponse = groupService.showGroup (Id);
+
+        if (shareGroupResponse == null) {
+            return new ResponseEntity<> (HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<> (shareGroupResponse, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/list/{Id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    public List<ShareGroup> listGroups(@PathVariable("Id") String Id) throws Exception {
-        return groupService.listGroups(Id);
+    public List<ShareGroup> listGroups (@PathVariable("Id") String Id) throws Exception {
+        return groupService.listGroups (Id);
     }
 
 }

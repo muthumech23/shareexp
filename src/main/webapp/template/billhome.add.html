@@ -3,13 +3,13 @@
         <h3 class="panel-title">ADD</h3>
     </div>
     <div class="panel-body">
-        <form class="form-horizontal" role="form">
+        <form class="form-horizontal" name="form" novalidate rc-attempt>
             <div class="form-group">
-                <div class="form-group col-lg-6">
+                <div class="form-group col-lg-6" ng-class="{'has-error': form.billdate.$invalid && (form.billdate.$dirty || rc.form.attempted)}">
                     <label class="control-label">Bill Date</label>
-                    <input type="date" ng-model="bill.date" class="form-control input-sm" placeholder="Bill Date">
-
+                    <input type="date" ng-model="bill.date" class="form-control input-sm" name="billdate" placeholder="Bill Date" required> 
                 </div>
+                
                 <div class="form-group col-lg-6">
                     <label class="control-label">Description</label>
                     <input type="text" ng-model="bill.description" class="form-control input-sm" placeholder="Description">
@@ -20,16 +20,16 @@
                     <label class="control-label">Category</label>
                     <input type="text" ng-model="bill.category" class="form-control input-sm" placeholder="Category">
                 </div>
-                <div class="form-group col-lg-6">
+                <div class="form-group col-lg-6" ng-class="{'has-error': form.billamt.$invalid && (form.billamt.$dirty || rc.form.attempted)}">
                     <label class="control-label">Amount</label>
-                    <input type="text" ng-model="bill.amount" class="form-control input-sm" placeholder="Bill Amount" ng-change="billAmountChng()">
+                    <input type="number" ng-model="bill.amount" class="form-control input-sm" name="billamt" placeholder="Bill Amount" ng-change="billAmountChng()" required>
                 </div>
             </div>
             <div class="form-group col-lg-12">
                 <label class="control-label">Who Paid</label>
                 <div class="form-inline">
                     <label class="col-lg-4 radio-inline" ng-repeat="billsplit in addBillSplits">
-                        <input type="radio" ng-model="bill.userPaid" value="{{billsplit.userId}}">
+                        <input type="radio" ng-model="bill.userPaid" value="{{billsplit.userId}} " ng-change="billAmountChng()">
                         {{billsplit.name}}
                     </label>
                 </div>
@@ -46,10 +46,11 @@
                                ng-checked="isSelected(billsplit)"
                                ng-click="updateSelection($event, billsplit)">
                         {{billsplit.name}} <span class="text-danger small" ng-if="billsplit.amount < 0">{{billsplit.amount| currency}}</span><span class="text-success small" ng-if="billsplit.amount >= 0">{{billsplit.amount| currency}}</span>
+                        <input type="number" ng-model="billsplit.splitText" class="input-xsm">
                     </label>
                 </div>
             </div>
         </form>
     </div>
-    <div class="panel-footer text-right"><a class="btn btn-success btn-sm" ng-click="saveBill(bill)">Save</a><span>   </span><a ui-sref="billhome.list" class="btn btn-warning btn-sm right">Cancel</a></div>
+    <div class="panel-footer text-right"><a class="btn btn-success btn-sm" ng-disabled="!form.$valid" ng-click="saveBill(bill)">Save</a><span>   </span><a ui-sref="billhome.list" class="btn btn-warning btn-sm right">Cancel</a></div>
 </div>

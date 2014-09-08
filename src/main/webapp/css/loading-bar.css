@@ -30,7 +30,7 @@
     -o-transition: width 350ms;
     transition: width 350ms;
 
-    background: #d14;
+    background: deepskyblue;
     position: fixed;
     z-index: 10002;
     top: 0;
@@ -73,8 +73,8 @@
     height: 25px;
 
     border:  solid 5px transparent;
-    border-top-color:  #d14;
-    border-left-color: #d14;
+    border-top-color:  deepskyblue;
+    border-left-color: deepskyblue;
     border-radius: 25px;
 
     -webkit-animation: loading-bar-spinner 400ms linear infinite;

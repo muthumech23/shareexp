@@ -1,42 +1,30 @@
-<div class="panel panel-warning">
+<div class="panel panel-primary">
     <div class="panel-heading">
-        <h3 class="panel-title">EDIT</h3>
+        <h3 class="panel-title">Edit Group</h3>
     </div>
     <div class="panel-body">
-        <form class="form-horizontal" role="form">
+        <form class="form-horizontal" name="form" rc-attempt novalidate>
             <div class="form-group">
-                <label for="inputDate" class="col-lg-2 control-label">Date</label>
-                <div class="col-lg-10">
-                    <input type="date" ng-model="bill.date" class="form-control input-sm" placeholder="Bill Date">
+                <div class="form-group  col-lg-6" ng-class="{'has-error': form.groupname.$invalid && (form.groupname.$dirty || rc.form.attempted)}">
+                    <label class="control-label">Name</label>
+                    <input type="text" ng-model="shareGroup.groupName" name="groupname" class="form-control input-sm" placeholder="Group Name" required>
+                    <input type="hidden" ng-model="shareGroup.id" name="groupid" class="form-control input-sm" placeholder="Group Id">
+                    <input type="hidden" ng-model="shareGroup.userId" name="groupid" class="form-control input-sm" placeholder="Group User Id">
+                    <input type="hidden" ng-model="shareGroup.email" name="groupid" class="form-control input-sm" placeholder="Group email">
                 </div>
             </div>
-            <div class="form-group">
-                <label for="inputPaid" class="col-lg-2 control-label">Who Paid</label>
-                <div class="col-lg-10">{{}}
-                    <label ng-repeat="billdata in usersBillData" >
-                        <input type="radio" ng-model="bill.userPaid" value="{{billdata.id}}" ng-checked="{{billdate.id == loggedUser}}">
-                        {{billdata.name}}
+            <div class="form-group col-lg-12">
+                <div class="form-inline">
+                     <label class="col-lg-6 checkbox-inline" ng-repeat="friend in friends">
+                     <input type="checkbox" name="selected" 
+                       ng-checked="isSelected(friend.id)"
+                       ng-click="updateSelection($event, friend.id)" required>
+                    {{friend.name}} 
                     </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputAmount" class="col-lg-2 control-label">Amount</label>
-                <div class="col-lg-10">
-                    <input type="text" ng-model="bill.amount" class="form-control input-sm" placeholder="Bill Amount">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputUser" class="col-lg-2 control-label">To Whom</label>
-                <div class="input-group-sm col-lg-10">
-                    <label ng-repeat="billdata in usersBillData">
-                        <input type="checkbox" checklist-model="billvalue.usersBillData" checklist-value="billdata"> 
 
-                        {{billdata.name}}
-                        <input type="text" id="{{billdata.id}}" class="form-control input-xsm " ng-model="billdata.amount" placeholder="0.00">
-                    </label>
                 </div>
             </div>
         </form>
     </div>
-    <div class="panel-footer text-right"><a class="btn btn-success btn-sm" ng-click="saveBill(bill)">Save</a><a class="btn btn-warning btn-sm right">Cancel</a></div>
+    <div class="panel-footer text-right"><a class="btn btn-success btn-sm" ng-disabled="!form.$valid" ng-click="saveGroup(shareGroup)">Save</a><span>   </span><a ui-sref="billhome.grouplist" class="btn btn-warning btn-sm right">Cancel</a></div>
 </div>

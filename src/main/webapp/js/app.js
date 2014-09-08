@@ -100,9 +100,13 @@ shareExpApp.config(
                                 }
                             })
                     .state('billhome.groupedit',
-                            {url: '/groupedit',
+                            {url: '/groupedit/:groupId',
                                 controller: 'GroupController',
-                                templateUrl: 'template/group.edit.html'})
+                                templateUrl: 'template/group.edit.html', resolve: {
+                                    friendsData: function(FriendServices) {
+                                        return FriendServices.getFriends();
+                                    }
+                                }})
                     .state('billhome.grpeditbill',
                             {url: '/grpeditbill',
                                 controller: 'GroupBillController',
@@ -180,7 +184,7 @@ shareExpApp.controller('IndexController', function($scope, $location, cfpLoading
 shareExpApp.run(
         function($rootScope, $location, AuthenticationService) {
 
-            var routesThatRequireAuth = ['/home', '/signup'];
+            var routesThatRequireAuth = ['/home', '/signup', "/"];
 
             $rootScope.$on('$locationChangeStart', function(event) {
                 if (!_(routesThatRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn()) {

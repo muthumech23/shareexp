@@ -22,6 +22,10 @@ groupServices.factory('GroupServices', function($resource, FlashService, Session
             var group = groupRes.save(sharegroup).$promise;
             return group;
         },
+        getGroup: function(groupId) {
+            var editGroup = groupRes.get({Id: groupId}).$promise;
+            return editGroup;
+        },
         getGroupBills: function(groupId) {
             
             var groupBillRes = $resource('api/bill/group/:Id', {}, {getBills: {method: 'GET', isArray: true}});

@@ -14,7 +14,7 @@
                     <td class="col-lg-1"><a class="btn btn-success btn-xs" ng-click="getGroupBills(group.id)">{{group.groupName}}</a></td>
                     <td class="col-lg-2"><p class="text-muted">Created on {{group.createDate | date: 'mediumdate'}} By {{group.email}}</p></td>
                     <td class="col-lg-1"><p class="text-muted">{{group.userIds.length}} persons</p></td>
-                    <td class="text-center col-lg-1"><a class="btn btn-warning btn-xs" ng-click="EditFriend(group)"><i class="glyphicon glyphicon-edit"></i></a></td>
+                    <td class="text-center col-lg-1"><a class="btn btn-warning btn-xs" ng-click="editGroup(group.id)"><i class="glyphicon glyphicon-edit"></i></a></td>
                 </tr>
             </tbody>
         </table> 

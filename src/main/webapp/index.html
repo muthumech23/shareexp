@@ -91,14 +91,6 @@
                                 <li><a ui-sref="account" class="navbar-brand" ><small> {{loggedUserName}}  <i class="fa fa-smile-o"></i></small></a></li>
 
                     </ul>
-                    <ul class="nav navbar-nav navbar-right span6" ng-if="!loggedIn">
-                        <li><form class="navbar-form navbar-left" role="search">
-                                <input class="form-control input-sm" ng-model="user.email" type="email" placeholder="Email" required="">
-                                <input class="form-control input-sm" type="password" ng-model="user.password" placeholder="password" required="">
-                                <a class="btn btn-warning btn-sm" ng-click="userLogin(user)"><i class="glyphicon glyphicon-log-in"></i></a>
-                                <a ui-sref="signup" class="btn btn-warning btn-sm">Sign Up</a>
-                            </form></li>
-                    </ul>
                 </div>
             </div>
         </div>

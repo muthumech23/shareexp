@@ -10,6 +10,11 @@ groupControllers.controller('GroupListController',
                 $state.go('billhome.groupbills', {groupId: groupId});
             };
 
+            $scope.editGroup = function(groupId) {
+                console.log(groupId);
+                $state.go('billhome.groupedit', {groupId: groupId});
+            };
+
         });
 
 groupControllers.controller('GroupRecentController',
@@ -31,19 +36,43 @@ groupControllers.controller('GroupRecentController',
             );
 
             $scope.addGroupBill = function(grpId) {
-                console.log('Group Add'+grpId);
+                console.log('Group Add' + grpId);
             };
         });
 
 groupControllers.controller('GroupController',
-        function($scope, $state, cfpLoadingBar, SessionService, FlashService, GroupServices, friendsData) {
+        function($scope, $state, $stateParams, cfpLoadingBar, SessionService, FlashService, GroupServices, friendsData) {
 
             $scope.friends = friendsData;
+
+            console.log("Inside Edit Group"+$stateParams.groupId);
 
             $scope.shareGroup;
 
             $scope.updatedFriendList = [];
 
+            if ($stateParams.groupId !== null || $stateParams.groupId !== "" || $stateParams.groupId !== 'undefined')
+            {
+                console.log("Inside Edit Group");
+                $scope.groupId = $stateParams.groupId;
+                var group = GroupServices.getGroup($scope.groupId);
+
+                group.then(
+                        function(response) {
+                            $scope.shareGroup = response;
+                            console.log("success");
+                            console.log($scope.shareGroup);
+                            console.log($scope.shareGroup.userIds);
+                            $scope.updatedFriendList = $scope.shareGroup.userIds;
+                            cfpLoadingBar.complete();
+                        },
+                        function(response) {
+                            FlashService.show("Status Code: " + response.status + " Message: " + response.statusText, "alert-danger");
+                            cfpLoadingBar.complete();
+                        }
+                );
+            }
+            console.log($scope.updatedFriendList);
             var updateSelected = function(action, userId) {
                 if (action === 'add' && $scope.updatedFriendList.indexOf(userId) === -1) {
                     $scope.updatedFriendList.push(userId);
@@ -94,7 +123,6 @@ groupControllers.controller('GroupController',
 
                 );
             };
-
         });
 
 
