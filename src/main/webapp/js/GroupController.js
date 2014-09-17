@@ -142,7 +142,12 @@ groupControllers.controller('GroupAddBillController',
             $scope.billAmountChng = function() {
                 updateSplitAmount();
             };
+            $scope.open = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
 
+                $scope.opened = true;
+            };
             var updateSplitAmount = function() {
                 //console.log($scope.billvalue.addBillSplits.length);
                 console.log($scope.updatedBillSPlitList.length);
@@ -293,7 +298,12 @@ groupControllers.controller('GroupEditBillController',
                         }
                 );
             }
+            $scope.open = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
 
+                $scope.opened = true;
+            };
             $scope.billAmountChng = function() {
                 updateSplitAmount();
             };

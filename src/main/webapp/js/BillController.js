@@ -10,7 +10,7 @@ billControllers.controller('BillRecentController',
         function($scope, recentBills, $state) {
 
             $scope.bills = recentBills;
-            
+
             $scope.editBill = function(billId) {
                 console.log(billId);
                 $state.go('billhome.edit', {billId: billId});
@@ -19,6 +19,13 @@ billControllers.controller('BillRecentController',
 
 billControllers.controller('BillAddController',
         function($scope, $state, cfpLoadingBar, FlashService, BillingServices, addBill) {
+
+            $scope.open = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+
+                $scope.opened = true;
+            };
 
             $scope.addBillData = addBill;
 
@@ -183,7 +190,12 @@ billControllers.controller('BillEditController',
                         }
                 );
             }
+            $scope.open = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
 
+                $scope.opened = true;
+            };
             $scope.billAmountChng = function() {
                 updateSplitAmount();
             };
@@ -287,7 +299,7 @@ billControllers.controller('BillEditController',
             };
 
             $scope.isSelected = function(billsplit) {
-                console.log('isSelected'+$scope.updatedBillSPlitList.indexOf(billsplit));
+                console.log('isSelected' + $scope.updatedBillSPlitList.indexOf(billsplit));
                 return $scope.updatedBillSPlitList.indexOf(billsplit) >= 0;
             };
 

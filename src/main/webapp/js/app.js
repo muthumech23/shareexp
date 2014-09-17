@@ -212,13 +212,13 @@ shareExpApp.run(
 shareExpApp.animation('.alert', function($timeout, FlashService) {
     return {
         leave: function(element, done) {
-            TweenMax.fromTo(element, 5, {opacity: 1}, {opacity: 0, onComplete: done});
+            TweenMax.fromTo(element, 3, {opacity: 1}, {opacity: 0, onComplete: done});
         },
         enter: function(element, done) {
             TweenMax.fromTo(element, 1, {opacity: 0}, {opacity: 1, onComplete: done});
             $timeout(function() {
                 FlashService.clear();
-            }, 5000);
+            }, 3000);
         }
     };
 });

@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
             if (userSecure == null) {
 
-                users = userRepository.findByFriends (userExists.getId ());
+                /* users = userRepository.findByFriends (userExists.getId ());
 
                 friends = userExists.getFriends () != null ? userExists.getFriends () : new ArrayList<String> ();
 
@@ -100,6 +100,7 @@ public class UserServiceImpl implements UserService {
                 userExists.setCreateDate (dateFormat.format (sysDate));
                 userExists.setModifiedDate (dateFormat.format (sysDate));
                 userResponse = userRepository.save (userExists);
+                 */
 
                 userSecure = new UserSecure ();
                 userSecure.setUserId (userExists.getId ());
@@ -153,11 +154,16 @@ public class UserServiceImpl implements UserService {
                               String Id) throws Exception {
 
         Date sysDate = new Date ();
-
+        List<String> friends = null;
+        
         User friendExist = userRepository.findByEmail (user.getEmail ());
         if (friendExist == null) {
             user.setModifiedDate (dateFormat.format (sysDate));
             user.setCreateDate (dateFormat.format (sysDate));
+            
+            friends = user.getFriends () != null ? user.getFriends () : new ArrayList<String> ();
+            friends.add (Id);
+            
             friendExist = userRepository.save (user);
         }
 
@@ -166,13 +172,24 @@ public class UserServiceImpl implements UserService {
         if (loggedUser.getFriends () != null) {
             loggedUser.getFriends ().add (friendExist.getId ());
         } else {
-            List<String> friends = new ArrayList<> ();
-            friends.add (friendExist.getId ());
-            loggedUser.setFriends (friends);
+            List<String> loggedFriends = new ArrayList<> ();
+            loggedFriends.add (friendExist.getId ());
+            loggedUser.setFriends (loggedFriends);
         }
         loggedUser.setModifiedDate (dateFormat.format (sysDate));
         userRepository.save (loggedUser);
-
+        
+        if (friendExist.getFriends () != null) {
+            friendExist.getFriends ().add (Id);
+        } else {
+            List<String> friendsList = new ArrayList<> ();
+            friendsList.add (Id);
+            friendExist.setFriends (friendsList);
+        }
+        
+        friendExist.setModifiedDate (dateFormat.format (sysDate));
+        userRepository.save (friendExist);
+        
         return friendExist;
     }
 

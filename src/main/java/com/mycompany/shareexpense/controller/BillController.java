@@ -58,7 +58,9 @@ public class BillController {
     }
 
     @RequestMapping(value = "/recent/{userId}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    public List<Bill> recentTrans (@PathVariable("userId") String userId) throws Exception {
+    public List<Bill> recentTrans (@RequestBody String month, @PathVariable("userId") String userId) throws Exception {
+        
+        System.out.println (month);
         return billService.recentTrans (userId);
     }
 

@@ -95,11 +95,10 @@
             </div>
         </div>
         <div class="container">
-            <div class="row">
-                <div class="page-header col-lg-12">&nbsp;<div class="alert" ng-class="msgType" ng-if="flash">{{flash}}</div>&nbsp;</div>
-            </div>
-
+            <div class="page-header col-lg-12"><span class="alert" ng-class="msgType" ng-if="flash">{{flash}}</span>&nbsp;</div>
+            
             <input type="hidden" ng-model="loggedUser" value="{{loggedUser}}"/>
+            
             <div ui-view></div>
         </div>
 
