@@ -14,9 +14,9 @@ import com.mycompany.shareexpense.util.CommonUtil;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,8 +26,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class BillServiceImpl implements BillService {
 
-    private Log log = LogFactory.getLog (BillServiceImpl.class);
+    private final Logger log = Logger.getLogger (BillServiceImpl.class);
 
+    @Autowired
+    private Environment env;
+    
     @Autowired
     private BillRepository billRepository;
 
@@ -36,6 +39,42 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public Bill saveBill (Bill bill) throws Exception {
+        
+        Bill billResponse = billRepository.save (bill);
+        
+        if(billResponse != null){
+            
+            for(BillSplit billSplit: bill.getBillSplits ()){
+                
+                String subject = null;
+                String emailbody = null;
+                
+                if(billSplit.getAmount ().compareTo (BigDecimal.ZERO) > 0){
+                    
+                    subject = env.getProperty ("mail.template.bill.owner.subject");
+                    emailbody = env.getProperty ("mail.template.bill.owner.body");
+                    emailbody = emailbody.replaceAll ("billamount", bill.getAmount ()+"");
+                    emailbody = emailbody.replaceAll ("billdesc", bill.getDescription ());
+                    emailbody = emailbody.replaceAll ("toaddress", billSplit.getEmail ());
+                    emailbody = emailbody.replaceAll ("username", bill.getUserPaid ());
+                        
+                }else{
+                    subject = env.getProperty ("mail.template.bill.recipants.subject");
+                    subject = subject.replaceAll ("userpaid", bill.getUserPaid ()+"");
+                    
+                    emailbody = env.getProperty ("mail.template.bill.recipants.body");
+                    emailbody = emailbody.replaceAll ("billamount", bill.getAmount ()+"");
+                    emailbody = emailbody.replaceAll ("billdesc", bill.getDescription ());
+                    emailbody = emailbody.replaceAll ("toaddress", billSplit.getEmail ());
+                    emailbody = emailbody.replaceAll ("splitamount", billSplit.getAmount ()+"");
+                    emailbody = emailbody.replaceAll ("username", bill.getUserPaid ());
+                    emailbody = emailbody.replaceAll ("userpaid", bill.getUserPaid ());
+                    
+                }
+                CommonUtil.sendEmail (subject, billSplit.getEmail (), emailbody);
+            }
+        }
+        
         return billRepository.save (bill);
     }
 

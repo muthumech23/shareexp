@@ -9,10 +9,11 @@ import com.mycompany.shareexpense.util.CommonUtil;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final Log log = LogFactory.getLog (UserController.class);
+    private final Logger log = Logger.getLogger (UserController.class);
 
     DateFormat dateFormat = new SimpleDateFormat ("yyyy/MM/dd HH:mm:ss");
 
@@ -43,10 +44,15 @@ public class UserServiceImpl implements UserService {
         log.info ("ID ---> " + user.getId ());
 
         UserSecure userSecure = userSecureRepository.findByUserIdAndPassword (user.getId (), password);
-
-        if (userSecure == null) {
+        
+         if (userSecure == null) {
             return null;
         }
+        
+        if(!CommonUtil.authenticate (password, userSecure.getPassword ().getBytes (), user.getId ().getBytes ())){
+            return null;
+        }
+
         log.info ("Secure ID ---> " + userSecure.getUserId ());
         return user;
     }
@@ -104,7 +110,7 @@ public class UserServiceImpl implements UserService {
 
                 userSecure = new UserSecure ();
                 userSecure.setUserId (userExists.getId ());
-                userSecure.setPassword (user.getPassword ());
+                userSecure.setPassword (Arrays.toString (CommonUtil.getEncryptedPassword (user.getPassword (), userExists.getId ().getBytes ())) );
                 userSecure.setCreateDate (dateFormat.format (sysDate));
                 userSecure.setModifiedDate (dateFormat.format (sysDate));
                 userSecureRepository.save (userSecure);
@@ -118,7 +124,7 @@ public class UserServiceImpl implements UserService {
 
             userSecure = new UserSecure ();
             userSecure.setUserId (userResponse.getId ());
-            userSecure.setPassword (user.getPassword ());
+            userSecure.setPassword (Arrays.toString (CommonUtil.getEncryptedPassword (user.getPassword (), userResponse.getId ().getBytes ())));
             userSecure.setCreateDate (dateFormat.format (sysDate));
             userSecure.setModifiedDate (dateFormat.format (sysDate));
             userSecureRepository.save (userSecure);
@@ -135,7 +141,7 @@ public class UserServiceImpl implements UserService {
 
         UserSecure userSecure = new UserSecure ();
         userSecure.setUserId (user.getId ());
-        userSecure.setPassword (user.getPassword ());
+        userSecure.setPassword (Arrays.toString (CommonUtil.getEncryptedPassword (user.getPassword (), user.getId ().getBytes ())));
 
         userSecure.setModifiedDate (dateFormat.format (sysDate));
         userSecureRepository.save (userSecure);

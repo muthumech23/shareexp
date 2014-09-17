@@ -9,8 +9,8 @@ import com.mycompany.shareexpense.model.Bill;
 import com.mycompany.shareexpense.model.BillSplit;
 import com.mycompany.shareexpense.service.BillService;
 import java.util.List;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("bill")
 public class BillController {
 
-    private final Log log = LogFactory.getLog (BillController.class);
+    private final Logger log = Logger.getLogger (BillController.class);
 
     @Autowired
     public BillService billService;

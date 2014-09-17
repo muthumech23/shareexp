@@ -8,8 +8,7 @@ package com.mycompany.shareexpense.controller;
 import com.mycompany.shareexpense.model.ShareGroup;
 import com.mycompany.shareexpense.service.GroupService;
 import java.util.List;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("group")
 public class GroupController {
 
-    private final Log log = LogFactory.getLog (GroupController.class);
+    private final Logger log = Logger.getLogger (GroupController.class);
 
     @Autowired
     public GroupService groupService;

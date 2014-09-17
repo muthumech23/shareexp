@@ -8,8 +8,7 @@ package com.mycompany.shareexpense.controller;
 import com.mycompany.shareexpense.model.User;
 import com.mycompany.shareexpense.service.UserService;
 import java.util.List;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("friend")
 public class FriendController {
 
-    private final Log log = LogFactory.getLog (FriendController.class);
+    private final Logger log = Logger.getLogger (FriendController.class);
 
     @Autowired
     public UserService userService;
