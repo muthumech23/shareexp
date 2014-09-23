@@ -4,6 +4,7 @@ billServices.factory('BillingServices', function($resource, FlashService, Sessio
 
     var billAllRes = $resource('api/bill/total/:userId', {}, {getUsersBillData: {method: 'GET', isArray: true}});
     var billRecentRes = $resource('api/bill/recent/:Id', {}, {getRecentBills: {method: 'GET', isArray: true}});
+    var billUserRecentRes = $resource('api/bill/recentuser/:Id', {}, {getUserRecentBills: {method: 'POST', isArray: true}});
     var addBillRes = $resource('api/bill/add/:Id', {}, {addBill: {method: 'GET'}});
     var billingRes = $resource('api/bill/:Id', {billId: '@billid'}, {update: {method: 'PUT'}});
     var userId = SessionService.get('userId');
@@ -42,6 +43,17 @@ billServices.factory('BillingServices', function($resource, FlashService, Sessio
         getBills: function() {
 
             var bills = billRecentRes.getRecentBills({Id: userId}).$promise;
+
+            bills.then(function(response) {
+                return response.data;
+            }, function(response) {
+                FlashService.show('Status Code: ' + response.status + ' Message: ' + response.statusText, 'alert-danger');
+            });
+            return bills;
+        },
+        getUserBills: function(id) {
+console.log(id);
+        	var bills = billUserRecentRes.getUserRecentBills({Id: id }, userId).$promise;
 
             bills.then(function(response) {
                 return response.data;

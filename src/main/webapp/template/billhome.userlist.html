@@ -1,0 +1,27 @@
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Recent Bills</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped table-hover " id="table">
+            <tbody>
+                <tr>
+                    <td colspan="3"><p class="text-muted"><strong> {{bills.length}} bills available.</strong></p></td>
+                </tr>
+                <tr ng-repeat="bill in bills">
+                    <td class="col-lg-2"><span class="text-muted"> [{{bill.date| date: 'MMM dd, y'}}]</span> {{bill.description}}</td>
+                    <td class="col-lg-1">{{bill.amount | currency}}</td>
+                    <td class="col-lg-7">
+                        <span ng-repeat="billdata in bill.billSplits">
+                            <span class="label label-default" ng-if="billdata.userId !== bill.userPaid">{{billdata.name}} <span class="text-warning sm">[{{billdata.amount |currency}}]</span></span>
+                            <span class="label label-success" ng-if="billdata.userId === bill.userPaid">{{billdata.name}} <span class="text-success sm">[{{billdata.amount |currency}}]</span></span>
+                    </td>
+                    <td class="text-center col-lg-1"><a class="btn btn-warning btn-xs" ng-click="editBill(bill.id)"><i class="glyphicon glyphicon-edit"></i></a></td>
+                </tr>
+                
+            </tbody>
+        </table> 
+    </div>
+</div>
+

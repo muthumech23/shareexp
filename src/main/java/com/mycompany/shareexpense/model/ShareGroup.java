@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.shareexpense.model;
 
 import java.util.List;
@@ -10,52 +6,58 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
- *
  * @author AH0661755
  */
 @Document(collection = "sharegroups")
-public class ShareGroup
-        extends AbstractModal {
+public class ShareGroup extends AbstractModal {
 
-    private String groupName;
+	private String			groupName;
 
-    private String email;
+	private String			email;
 
-    private List<String> userIds;
+	private List<String>	userIds;
 
-    @Indexed
-    private String userId;
+	@Indexed
+	private String			userId;
 
-    public String getGroupName () {
-        return groupName;
-    }
+	public String getGroupName() {
 
-    public void setGroupName (String groupName) {
-        this.groupName = groupName;
-    }
+		return groupName;
+	}
 
-    public String getEmail () {
-        return email;
-    }
+	public void setGroupName(String groupName) {
 
-    public void setEmail (String email) {
-        this.email = email;
-    }
+		this.groupName = groupName;
+	}
 
-    public List<String> getUserIds () {
-        return userIds;
-    }
+	public String getEmail() {
 
-    public void setUserIds (List<String> userIds) {
-        this.userIds = userIds;
-    }
+		return email;
+	}
 
-    public String getUserId () {
-        return userId;
-    }
+	public void setEmail(String email) {
 
-    public void setUserId (String userId) {
-        this.userId = userId;
-    }
+		this.email = email;
+	}
+
+	public List<String> getUserIds() {
+
+		return userIds;
+	}
+
+	public void setUserIds(List<String> userIds) {
+
+		this.userIds = userIds;
+	}
+
+	public String getUserId() {
+
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+
+		this.userId = userId;
+	}
 
 }

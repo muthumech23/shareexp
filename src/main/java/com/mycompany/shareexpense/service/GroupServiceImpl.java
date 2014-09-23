@@ -2,20 +2,22 @@ package com.mycompany.shareexpense.service;
 
 import com.mycompany.shareexpense.model.ShareGroup;
 import com.mycompany.shareexpense.repository.GroupRepository;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GroupServiceImpl implements GroupService {
     
-    private final Logger log = Logger.getLogger (GroupServiceImpl.class);
+	private final Logger	log	= Logger.getLogger (GroupServiceImpl.class);
     DateFormat dateFormat = new SimpleDateFormat ("yyyy/MM/dd HH:mm:ss");
     
     @Autowired

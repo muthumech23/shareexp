@@ -19,4 +19,5 @@
                 <Env.OPENSHIFT_APP_NAME>mydb</Env.OPENSHIFT_APP_NAME>
             </properties>
         </action>
+        
     </actions>

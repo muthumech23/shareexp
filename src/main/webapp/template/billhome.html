@@ -10,7 +10,7 @@
                     </li>
                 </ul>
                 <div class="list-group">
-                    <a ng-repeat="userInfo in usersBillData" class="list-group-item" ng-if="userInfo.userId !== loggedUser">
+                    <a ng-repeat="userInfo in usersBillData" class="list-group-item" ng-if="userInfo.userId !== loggedUser" ng-click="userBill(userInfo.userId);">
                         <strong>{{userInfo.name}} </strong><br/>
                         <span class="text-muted"><i class="glyphicon glyphicon-envelope small"></i>  {{userInfo.email}}</span>
                         <span class="label-success badge" ng-if="userInfo.amount <= 0">{{userInfo.amount| currency}}</span>

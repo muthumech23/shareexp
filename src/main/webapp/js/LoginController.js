@@ -1,5 +1,31 @@
 var loginControllers = angular.module('LoginControllers', []);
 
+loginControllers.controller('HomeController',
+        function($scope, $log, $location) {
+            $scope.imagelists = [{url: "img/background2.jpg?v=1&cache=" + (new Date()).getTime()}, {url: "img/background3.jpg?v=1&cache=" + (new Date()).getTime()}, {url: "img/background5.jpg?v=1&cache=" + (new Date()).getTime()}, {url: "img/background6.jpg?v=1&cache=" + (new Date()).getTime()}];
+            $log.info = 'Inside Index Controller';
+
+            $scope.slides = [{image: "img/Friends.gif", text: "friends"}, {image: "img/background2.jpg", text: "friends"}];
+
+        });
+
+loginControllers.controller('ActivateController',
+        function($scope, SessionService) {
+	
+	$scope.userSecure = {};
+	
+	$scope.userSecure.userId = SessionService.get('userEmail');
+
+        });
+
+loginControllers.controller('ChgpwdController',
+        function($scope, SessionService) {
+	$scope.user = {};
+	$scope.user.email = SessionService.get('userEmail');
+	$scope.user.name = SessionService.get('userName');
+
+        });
+
 /* Login Controller */
 loginControllers.controller('LoginController',
         function($scope, $location, cfpLoadingBar, UserServices, FlashService) {
@@ -12,7 +38,7 @@ loginControllers.controller('LoginController',
                 userAdd.then(
                         function(response) {
                             FlashService.show("Register completed successfully! please login to continue...", "alert-success");
-                            $location.path("/home");
+                            $location.path("/home/activation");
                         },
                         function(response) {
                             FlashService.show("Status Code: " + response.status + " Message: Registeration failed.", "alert-danger");

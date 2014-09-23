@@ -16,7 +16,7 @@
                     <td class="col-lg-2">{{friend.email}}</td>
                     <td class="col-lg-4" ng-if="friend.amount <= 0">Owes you <span class="text-success" >{{friend.amount| currency}}</span></td>
                     <td class="col-lg-4" ng-if="friend.amount > 0">You owe <span class="text-danger" >{{friend.amount| currency}}</span></td>
-                    <td class="text-center col-lg-1"><a class="btn btn-danger btn-xs" ng-click="removeFriend(friend)" ng-if="friend.amount === 0"><i class="glyphicon glyphicon-trash"></i></a></td>
+                    <td class="text-center col-lg-1"><a class="btn btn-danger btn-xs" ng-click="removeFriend(friend.userId)" ng-if="friend.amount === 0"><i class="glyphicon glyphicon-trash"></i></a></td>
                 </tr>
             </tbody>
         </table> 

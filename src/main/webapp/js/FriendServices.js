@@ -3,6 +3,7 @@ var friendServices = angular.module('FriendServices', []);
 friendServices.factory('FriendServices', function($resource, FlashService, SessionService) {
 
     var friendRes = $resource('api/friend/:Id', {friendId: '@friendid'}, {update: {method: 'PUT'}});
+    var friendRes1 = $resource('api/friend/remove/:Id', {friendId: '@friendid'}, {removeUser: {method: 'POST'}});
     var userId = SessionService.get('userId');
 
     return {
@@ -27,7 +28,8 @@ friendServices.factory('FriendServices', function($resource, FlashService, Sessi
             return friends;
         },
         deleteFriends: function(friendId) {
-            var friends = friendRes.remove({Id: friendId}, {userId: userId}).$promise;
+        	console.log(friendId);
+            var friends = friendRes1.removeUser({Id: friendId}, userId).$promise;
             return friends;
         }
     };

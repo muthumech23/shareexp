@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.shareexpense.repository;
 
 import com.mycompany.shareexpense.model.Bill;
@@ -19,6 +15,9 @@ public interface BillRepository extends CrudRepository<Bill, String> {
 
     public List<Bill> findByUserPaidOrBillSplitsUserId (String Id,
                                                         String userId);
+    
+    public List<Bill> findByUserPaidAndBillSplitsUserId (String userId,
+                    String loggedUser);
 
     public List<Bill> findByGroupId (String groupId);
 

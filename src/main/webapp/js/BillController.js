@@ -1,13 +1,45 @@
 var billControllers = angular.module('BillControllers', []);
 
 billControllers.controller('BillListController',
-        function($scope, homeBillData) {
+        function($scope, homeBillData, $state) {
             $scope.usersBillData = homeBillData;
+            
+            $scope.userBill = function(userId) {
+                console.log(userId);
+                $state.go('billhome.userlist', {userId: userId});
+            };
 
         });
 
+
+billControllers.controller('BillUserController',
+        function($scope, $state, $stateParams, BillingServices, cfpLoadingBar, FlashService) {
+
+            $scope.editBill = function(billId) {
+                console.log(billId);
+                $state.go('billhome.edit', {billId: billId});
+            };
+            
+            if ($stateParams.userId !== null || $stateParams.userId !== "" || $stateParams.userId !== 'undefined')
+            {
+                var userbill = BillingServices.getUserBills($stateParams.userId);
+
+                userbill.then(
+                        function(response) {
+                            $scope.bills = response;
+                            cfpLoadingBar.complete();
+                        },
+                        function(response) {
+                            FlashService.show("Status Code: " + response.status + " Message: " + response.statusText, "alert-danger");
+                            cfpLoadingBar.complete();
+                        }
+                );
+            }
+        });
+
+
 billControllers.controller('BillRecentController',
-        function($scope, recentBills, $state) {
+        function($scope, recentBills, $state, $stateParams) {
 
             $scope.bills = recentBills;
 
@@ -18,7 +50,7 @@ billControllers.controller('BillRecentController',
         });
 
 billControllers.controller('BillAddController',
-        function($scope, $state, cfpLoadingBar, FlashService, BillingServices, addBill) {
+        function($scope, $state, cfpLoadingBar, FlashService, BillingServices, addBill, SessionService) {
 
             $scope.open = function($event) {
                 $event.preventDefault();
@@ -152,6 +184,7 @@ billControllers.controller('BillAddController',
 
             $scope.saveBill = function(billData) {
                 billData.billSplits = $scope.updatedBillSPlitList;
+                billData.by = SessionService.get('userEmail');
 
                 cfpLoadingBar.start();
                 var saveBill = BillingServices.getBillResource(billData);
@@ -312,12 +345,12 @@ billControllers.controller('BillEditController',
 
             $scope.saveBill = function(billData) {
                 billData.billSplits = $scope.updatedBillSPlitList;
-
+                billData.by = SessionService.get('userEmail');
                 cfpLoadingBar.start();
                 var saveBill = BillingServices.getBillResource(billData);
                 saveBill.then(
                         function(response) {
-                            FlashService.show("Bill added Successfully", "alert-success");
+                            FlashService.show("Bill updated Successfully", "alert-success");
                             cfpLoadingBar.complete();
                             $state.go('billhome.list', {}, {reload: true});
                         },

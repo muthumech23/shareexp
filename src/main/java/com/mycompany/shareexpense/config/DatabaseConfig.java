@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * 
  */
 package com.mycompany.shareexpense.config;
 
@@ -15,7 +13,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class DatabaseConfig.
  *
  * @author Muthukumaran Swaminathan
  */
@@ -23,6 +23,12 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackages = {"com.mycompany.shareexpense.repository"})
 public class DatabaseConfig {
 
+    /**
+     * Mongo template.
+     *
+     * @return the mongo template
+     * @throws Exception the exception
+     */
     @Bean
     public MongoTemplate mongoTemplate() throws Exception {
 

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.shareexpense.util;
 
 import java.security.NoSuchAlgorithmException;
@@ -12,143 +8,202 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Properties;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
 /**
- *
  * @author AH0661755
  */
 public class CommonUtil {
 
-    private final Logger log = Logger.getLogger (CommonUtil.class);
-    
-    @Autowired
-    private static Environment environment;
-    
-    public static boolean checkStringNullBlank (String string) {
+	private static Logger	log	= Logger.getLogger(CommonUtil.class);
 
-        if (string == null || string.isEmpty () || string.trim ().equalsIgnoreCase ("")) {
-            return true;
-        }
+	public static boolean checkStringNullBlank(String string) {
 
-        return false;
-    }
+		if (string == null || string.isEmpty() || string.trim().equalsIgnoreCase("")) {
+			return true;
+		}
 
-    public static <E> List<E> toList (Iterable<E> iterable) {
-        if (iterable instanceof List) {
-            return (List<E>) iterable;
-        }
-        ArrayList<E> list = new ArrayList<E> ();
-        if (iterable != null) {
-            for (E e : iterable) {
-                list.add (e);
-            }
-        }
-        return list;
-    }
-    
-    public static boolean authenticate(String attemptedPassword,
-                                byte[] encryptedPassword,
-                                byte[] salt)
-                         throws NoSuchAlgorithmException, InvalidKeySpecException {
-        
-        // Encrypt the clear-text password using the same salt that was used to
-        // encrypt the original password
-        byte[] encryptedAttemptedPassword = getEncryptedPassword(attemptedPassword, salt);
+		return false;
+	}
 
-        // Authentication succeeds if encrypted password that the user entered
-        // is equal to the stored hash
-        return Arrays.equals(encryptedPassword, encryptedAttemptedPassword);
-    }
+	public static <E> List<E> toList(Iterable<E> iterable) {
+
+		if (iterable instanceof List) {
+			return (List<E>) iterable;
+		}
+		ArrayList<E> list = new ArrayList<E>();
+		if (iterable != null) {
+			for (E e : iterable) {
+				list.add(e);
+			}
+		}
+		return list;
+	}
+
+	public static boolean authenticate(	String attemptedPassword,
+										byte[] encryptedPassword,
+										byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+
+		// Encrypt the clear-text password using the same salt that was used to
+		// encrypt the original password
+		byte[] encryptedAttemptedPassword = getEncryptedPassword(attemptedPassword, salt);
+
+		// Authentication succeeds if encrypted password that the user entered
+		// is equal to the stored hash
+		return Arrays.equals(encryptedPassword, encryptedAttemptedPassword);
+	}
+
+	public static byte[] getEncryptedPassword(	String password,
+												byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+
+		// PBKDF2 with SHA-1 as the hashing algorithm. Note that the NIST
+		// specifically names SHA-1 as an acceptable hashing algorithm for PBKDF2
+		String algorithm = "PBKDF2WithHmacSHA1";
+
+		// SHA-1 generates 160 bit hashes, so that's what makes sense here
+		int derivedKeyLength = 160;
+
+		// Pick an iteration count that works for you. The NIST recommends at
+		// least 1,000 iterations:
+		int iterations = 20000;
+
+		KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, derivedKeyLength);
+
+		SecretKeyFactory f = SecretKeyFactory.getInstance(algorithm);
+
+		return f.generateSecret(spec).getEncoded();
+	}
+
+	public static void sendEmail(	String subject,
+									String toAddress,
+									String body,
+									Environment env) {
+
+		log.debug("emailbody --> " + body);
+		log.debug("environment --> " + env);
+		// Sender's email ID needs to be mentioned
+		String from = env.getProperty("mail.from");// change accordingly
+		log.debug("from --> " + from);
+		final String username = env.getProperty("mail.user");// change accordingly
+		final String password = env.getProperty("mail.pwd");// change accordingly
+
+		// Assuming you are sending email through relay.jangosmtp.net
+		String host = "smtp.gmail.com";
+
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", host);
+		props.put("mail.smtp.port", "587");
+
+		// Get the Session object.
+		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+
+			protected PasswordAuthentication getPasswordAuthentication() {
+
+				return new PasswordAuthentication(username, password);
+			}
+
+		});
+
+		try {
 
 
-    public static byte[] getEncryptedPassword(String password,
-                                       byte[] salt)
-                                throws NoSuchAlgorithmException, InvalidKeySpecException {
-        
-        // PBKDF2 with SHA-1 as the hashing algorithm. Note that the NIST
-        // specifically names SHA-1 as an acceptable hashing algorithm for PBKDF2
-        String algorithm = "PBKDF2WithHmacSHA1";
+			// Create a default MimeMessage object.
+			MimeMessage message = new MimeMessage(session);
 
-        // SHA-1 generates 160 bit hashes, so that's what makes sense here
-        int derivedKeyLength = 160;
+			// Set From: header field of the header.
+			message.setFrom(new InternetAddress(from));
 
-        // Pick an iteration count that works for you. The NIST recommends at
-        // least 1,000 iterations:
-        int iterations = 20000;
+			// Set To: header field of the header.
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(toAddress));
 
-        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, derivedKeyLength);
+			// Set Subject: header field
+			message.setSubject(subject);
 
-        SecretKeyFactory f = SecretKeyFactory.getInstance(algorithm);
+			// Create the message part
+			BodyPart messageBodyPart = new MimeBodyPart();
 
-        return f.generateSecret(spec).getEncoded();
-    }
+			// Fill the message
+			messageBodyPart.setContent(body, "text/html; charset=utf-8");
 
+			// Create a multipar message
+			Multipart multipart = new MimeMultipart();
 
-    public static void sendEmail (String subject,
-                                  String toAddress,
-                                  String body) {
+			// Set text message part
+			multipart.addBodyPart(messageBodyPart);
 
-        // Sender's email ID needs to be mentioned
-        String from = environment.getProperty ("mail.from");//change accordingly
-        final String username = environment.getProperty ("mail.user");//change accordingly
-        final String password = environment.getProperty ("mail.pwd");//change accordingly
+			// Part two is attachment
+			/*
+			 * messageBodyPart = new MimeBodyPart();
+			 * String filename = "file.txt";
+			 * DataSource source = new FileDataSource(filename);
+			 * messageBodyPart.setDataHandler(new DataHandler(source));
+			 * messageBodyPart.setFileName(filename);
+			 * multipart.addBodyPart(messageBodyPart);
+			 */
 
-        // Assuming you are sending email through relay.jangosmtp.net
-        String host = "smtp.gmail.com";
+			// Send the complete message parts
+			message.setContent(multipart);
 
-        Properties props = new Properties ();
-        props.put ("mail.smtp.auth", "true");
-        props.put ("mail.smtp.starttls.enable", "true");
-        props.put ("mail.smtp.host", host);
-        props.put ("mail.smtp.port", "587");
+			// Send message
+			Transport.send(message);
 
-        // Get the Session object.
-        Session session = Session.getInstance (props,
-                new javax.mail.Authenticator () {
-                    protected PasswordAuthentication getPasswordAuthentication () {
-                        return new PasswordAuthentication (username, password);
-                    }
+			System.out.println("Sent message successfully....");
 
-                });
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-        try {
-            // Create a default MimeMessage object.
-            Message message = new MimeMessage (session);
+	public static enum Mode {
+		ALPHA, ALPHANUMERIC, NUMERIC
+	}
 
-            // Set From: header field of the header.
-            message.setFrom (new InternetAddress (from));
+	public static String generateRandomString(	int length,
+												Mode mode) throws Exception {
 
-            // Set To: header field of the header.
-            message.setRecipients (Message.RecipientType.TO, InternetAddress.parse (toAddress));
+		StringBuffer buffer = new StringBuffer();
+		String characters = "";
 
-            // Set Subject: header field
-            message.setSubject ("Testing Subject");
+		switch (mode) {
 
-            // Now set the actual message
-            message.setText ("Hello, this is sample for to check send "
-                    + "email using JavaMailAPI ");
+			case ALPHA:
+				characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+				break;
 
-            // Send message
-            Transport.send (message);
+			case ALPHANUMERIC:
+				characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+				break;
 
-            System.out.println ("Sent message successfully....");
+			case NUMERIC:
+				characters = "1234567890";
+				break;
+		}
 
-        }
-        catch (MessagingException e) {
-            throw new RuntimeException (e);
-        }
-    }
+		int charactersLength = characters.length();
+
+		for (int i = 0; i < length; i++) {
+			double index = Math.random() * charactersLength;
+			buffer.append(characters.charAt((int) index));
+		}
+		return buffer.toString();
+	}
 
 }

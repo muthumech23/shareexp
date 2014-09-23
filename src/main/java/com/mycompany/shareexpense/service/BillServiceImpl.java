@@ -1,198 +1,242 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.shareexpense.service;
 
 import com.mycompany.shareexpense.model.Bill;
 import com.mycompany.shareexpense.model.BillSplit;
 import com.mycompany.shareexpense.model.User;
 import com.mycompany.shareexpense.repository.BillRepository;
+import com.mycompany.shareexpense.repository.BillSortAndPageRepository;
 import com.mycompany.shareexpense.repository.UserRepository;
 import com.mycompany.shareexpense.util.CommonUtil;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author AH0661755
  */
 @Service
 public class BillServiceImpl implements BillService {
 
-    private final Logger log = Logger.getLogger (BillServiceImpl.class);
+	private final Logger	log	= Logger.getLogger(BillServiceImpl.class);
 
-    @Autowired
-    private Environment env;
-    
-    @Autowired
-    private BillRepository billRepository;
+	@Autowired
+	private Environment		env;
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private BillRepository	billRepository;
+	
 
-    @Override
-    public Bill saveBill (Bill bill) throws Exception {
-        
-        Bill billResponse = billRepository.save (bill);
-        
-        if(billResponse != null){
-            
-            for(BillSplit billSplit: bill.getBillSplits ()){
-                
-                String subject = null;
-                String emailbody = null;
-                
-                if(billSplit.getAmount ().compareTo (BigDecimal.ZERO) > 0){
-                    
-                    subject = env.getProperty ("mail.template.bill.owner.subject");
-                    emailbody = env.getProperty ("mail.template.bill.owner.body");
-                    emailbody = emailbody.replaceAll ("billamount", bill.getAmount ()+"");
-                    emailbody = emailbody.replaceAll ("billdesc", bill.getDescription ());
-                    emailbody = emailbody.replaceAll ("toaddress", billSplit.getEmail ());
-                    emailbody = emailbody.replaceAll ("username", bill.getUserPaid ());
-                        
-                }else{
-                    subject = env.getProperty ("mail.template.bill.recipants.subject");
-                    subject = subject.replaceAll ("userpaid", bill.getUserPaid ()+"");
-                    
-                    emailbody = env.getProperty ("mail.template.bill.recipants.body");
-                    emailbody = emailbody.replaceAll ("billamount", bill.getAmount ()+"");
-                    emailbody = emailbody.replaceAll ("billdesc", bill.getDescription ());
-                    emailbody = emailbody.replaceAll ("toaddress", billSplit.getEmail ());
-                    emailbody = emailbody.replaceAll ("splitamount", billSplit.getAmount ()+"");
-                    emailbody = emailbody.replaceAll ("username", bill.getUserPaid ());
-                    emailbody = emailbody.replaceAll ("userpaid", bill.getUserPaid ());
-                    
-                }
-                CommonUtil.sendEmail (subject, billSplit.getEmail (), emailbody);
-            }
-        }
-        
-        return billRepository.save (bill);
-    }
+	@Autowired
+	private BillSortAndPageRepository	billSortAndPageRepository;
 
-    @Override
-    public Bill updateBill (Bill bill) throws Exception {
-        return billRepository.save (bill);
-    }
+	@Autowired
+	private UserRepository	userRepository;
 
-    @Override
-    public void deleteBill (String Id) throws Exception {
-        billRepository.delete (Id);
-    }
+	@Override
+	public Bill saveBill(Bill bill) throws Exception {
 
-    @Override
-    public List<BillSplit> usersBillDetails (String userId) throws Exception {
+		Bill billResponse = billRepository.save(bill);
 
-        User user = userRepository.findOne (userId);
-        List<User> users = null;
-        if (user.getFriends () != null) {
-            users = CommonUtil.toList (userRepository.findAll (user.getFriends ()));
-        } else {
-            users = new ArrayList<> ();
-        }
+		if (billResponse != null) {
 
-        List<Bill> bills = billRepository.findByUserPaidOrBillSplitsUserId (userId, userId);
 
-        List<BillSplit> billSpits = new ArrayList<> ();
+			String subject = null;
+			String emailbody = null;
+			String userPaid = null;
 
-        BillSplit loggedUser = new BillSplit ();
-        loggedUser.setUserId (user.getId ());
-        loggedUser.setName (user.getName ());
-        loggedUser.setEmail (user.getEmail ());
+			for (BillSplit billSplit : bill.getBillSplits()) {
 
-        billSpits.add (0, loggedUser);
+				if (billSplit.getAmount().compareTo(BigDecimal.ZERO) > 0) {
 
-        BigDecimal loggedUserAmt = BigDecimal.ZERO;
+					userPaid = billSplit.getEmail();
+					subject = env.getProperty("mail.template.bill.owner.subject");
+					emailbody = env.getProperty("mail.template.bill.owner.body");
+					emailbody = emailbody.replaceAll("<<billamount>>", bill.getAmount() + "");
+					emailbody = emailbody.replaceAll("<<billdesc>>", bill.getDescription());
+					emailbody = emailbody.replaceAll("<<username>>", bill.getBy());
+					emailbody = emailbody.replaceAll("<<siteurl>>", "http://localhost:8580/shareexpense/#/home");
+					break;
+				} 
+			}
 
-        for (User userBill : users) {
-            BillSplit billSplit = new BillSplit ();
-            String Id = userBill.getId ();
+			CommonUtil.sendEmail(subject, userPaid, emailbody, env);
 
-            BigDecimal bigDecimal = BigDecimal.ZERO;
-            for (Bill bill : bills) {
-                for (BillSplit billsplit : bill.getBillSplits ()) {
-                    if (billsplit.getUserId ().equalsIgnoreCase (Id)) {
-                        if (userId.equalsIgnoreCase (bill.getUserPaid ()) || billsplit.getUserId ().equalsIgnoreCase (bill.getUserPaid ())) {
-                            bigDecimal = bigDecimal.add (billsplit.getAmount ());
-                        }
-                    }
-                }
-            }
+			for (BillSplit billSplit : bill.getBillSplits()) {
 
-            billSplit.setUserId (Id);
-            billSplit.setName (userBill.getName ());
-            billSplit.setEmail (userBill.getEmail ());
-            billSplit.setAmount (bigDecimal);
-            loggedUserAmt = loggedUserAmt.add (bigDecimal);
-            billSpits.add (billSplit);
-        }
+				if (billSplit.getAmount().compareTo(BigDecimal.ZERO) < 0) {
 
-        billSpits.get (0).setAmount (loggedUserAmt);
-        return billSpits;
-    }
+					subject = env.getProperty("mail.template.bill.recipants.subject");
+					subject = subject.replaceAll("<<userpaid>>", userPaid + "");
 
-    @Override
-    public List<Bill> recentTrans (String userId) throws Exception {
+					emailbody = env.getProperty("mail.template.bill.recipants.body");
+					emailbody = emailbody.replaceAll("<<billamount>>", bill.getAmount() + "");
+					emailbody = emailbody.replaceAll("<<billdesc>>", bill.getDescription());
+					emailbody = emailbody.replaceAll("<<toaddress>>", billSplit.getEmail());
+					emailbody = emailbody.replaceAll("<<splitamount>>", billSplit.getAmount() + "");
+					emailbody = emailbody.replaceAll("<<username>>", bill.getBy());
+					emailbody = emailbody.replaceAll("<<useremail>>", userPaid);
+					emailbody = emailbody.replaceAll("<<siteurl>>", "http://localhost:8580/shareexpense/#/home");
 
-        List<Bill> bills = billRepository.findByUserPaidOrBillSplitsUserId (userId, userId);
+				}
+				CommonUtil.sendEmail(subject, billSplit.getEmail(), emailbody, env);
+			}
+		}
 
-        return bills;
-    }
+		return billResponse;
+	}
 
-    @Override
-    public List<Bill> recentGroupTrans (String groupId) throws Exception {
+	@Override
+	public Bill updateBill(Bill bill) throws Exception {
 
-        List<Bill> bills = billRepository.findByGroupId (groupId);
+		return billRepository.save(bill);
+	}
 
-        log.info ("Bill Details ---> " + bills.size ());
+	@Override
+	public void deleteBill(String Id) throws Exception {
 
-        return bills;
+		billRepository.delete(Id);
+	}
 
-    }
+	@Override
+	public List<BillSplit> usersBillDetails(String userId) throws Exception {
 
-    @Override
-    public Bill addBill (String userId) throws Exception {
+		User user = userRepository.findOne(userId);
+		List<User> users = null;
+		if (user.getFriends() != null) {
+			users = CommonUtil.toList(userRepository.findAll(user.getFriends()));
+		} else {
+			users = new ArrayList<>();
+		}
 
-        List<User> users = null;
-        Bill bill = null;
+		List<Bill> bills = billRepository.findByUserPaidOrBillSplitsUserId(userId, userId);
 
-        User user = userRepository.findOne (userId);
+		List<BillSplit> billSpits = new ArrayList<>();
 
-        if (user.getFriends () != null) {
-            users = CommonUtil.toList (userRepository.findAll (user.getFriends ()));
-        } else {
-            users = new ArrayList<> ();
-        }
-        users.add (user);
+		BillSplit loggedUser = new BillSplit();
+		loggedUser.setUserId(user.getId());
+		loggedUser.setName(user.getName());
+		loggedUser.setEmail(user.getEmail());
 
-        List<BillSplit> billSplits = new ArrayList<> ();
+		billSpits.add(0, loggedUser);
 
-        for (User userBill : users) {
-            BillSplit billSplit = new BillSplit ();
-            billSplit.setUserId (userBill.getId ());
-            billSplit.setName (userBill.getName ());
-            billSplit.setEmail (userBill.getEmail ());
-            billSplit.setAmount (BigDecimal.ZERO);
-            billSplits.add (billSplit);
-        }
-        bill = new Bill ();
-        bill.setBillSplits (billSplits);
-        return bill;
-    }
-    
-    @Override
-    public Bill showBill (String Id) throws Exception {
+		BigDecimal loggedUserAmt = BigDecimal.ZERO;
 
-        Bill bill = billRepository.findOne (Id);
-        return bill;
-    }
+		for (User userBill : users) {
+			BillSplit billSplit = new BillSplit();
+			String Id = userBill.getId();
+
+			BigDecimal bigDecimal = BigDecimal.ZERO;
+			for (Bill bill : bills) {
+				for (BillSplit billsplit : bill.getBillSplits()) {
+					if (billsplit.getUserId().equalsIgnoreCase(Id)) {
+						if (userId.equalsIgnoreCase(bill.getUserPaid())
+										|| billsplit.getUserId().equalsIgnoreCase(bill.getUserPaid())) {
+							bigDecimal = bigDecimal.add(billsplit.getAmount());
+						}
+					}
+				}
+			}
+
+			billSplit.setUserId(Id);
+			billSplit.setName(userBill.getName());
+			billSplit.setEmail(userBill.getEmail());
+			billSplit.setAmount(bigDecimal);
+			loggedUserAmt = loggedUserAmt.add(bigDecimal);
+			billSpits.add(billSplit);
+		}
+
+		billSpits.get(0).setAmount(loggedUserAmt);
+		return billSpits;
+	}
+
+	@Override
+	public List<Bill> recentTrans(String userId) throws Exception {
+
+		List<Bill> bills = billRepository.findByUserPaidOrBillSplitsUserId(userId, userId);
+
+		return bills;
+	}
+	
+	@Override
+	public Page<Bill> recentPageTrans(String userId, int page, int pagesize) throws Exception {
+
+		Pageable pageable =  new PageRequest(page, pagesize, Direction.DESC, "date");
+		
+		Page<Bill> bills = billSortAndPageRepository.findByUserPaidOrBillSplitsUserId(userId, userId, pageable);
+
+		return bills;
+	}
+	
+	@Override
+	public List<Bill> recentUserTrans(String userId, String loggedUser) throws Exception {
+
+		List<Bill> bills = billRepository.findByUserPaidAndBillSplitsUserId(userId, loggedUser);
+		
+		List<Bill> bills1 = billRepository.findByUserPaidAndBillSplitsUserId(loggedUser, userId);
+		
+		bills.addAll(bills1);
+		
+		return bills;
+	}
+
+	@Override
+	public List<Bill> recentGroupTrans(String groupId) throws Exception {
+
+		List<Bill> bills = billRepository.findByGroupId(groupId);
+
+		log.info("Bill Details ---> " + bills.size());
+
+		return bills;
+
+	}
+
+	@Override
+	public Bill addBill(String userId) throws Exception {
+
+		List<User> users = null;
+		Bill bill = null;
+
+		User user = userRepository.findOne(userId);
+
+		if (user.getFriends() != null) {
+			users = CommonUtil.toList(userRepository.findAll(user.getFriends()));
+		} else {
+			users = new ArrayList<>();
+		}
+		users.add(user);
+
+		List<BillSplit> billSplits = new ArrayList<>();
+
+		for (User userBill : users) {
+			BillSplit billSplit = new BillSplit();
+			billSplit.setUserId(userBill.getId());
+			billSplit.setName(userBill.getName());
+			billSplit.setEmail(userBill.getEmail());
+			billSplit.setAmount(BigDecimal.ZERO);
+			billSplits.add(billSplit);
+		}
+		bill = new Bill();
+		bill.setBillSplits(billSplits);
+		return bill;
+	}
+
+	@Override
+	public Bill showBill(String Id) throws Exception {
+
+		Bill bill = billRepository.findOne(Id);
+		return bill;
+	}
 
 }

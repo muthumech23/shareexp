@@ -1,13 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.shareexpense.controller;
 
 import com.mycompany.shareexpense.model.User;
 import com.mycompany.shareexpense.service.UserService;
+
 import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("friend")
 public class FriendController {
 
-    private final Logger log = Logger.getLogger (FriendController.class);
+	private final Logger	log	= Logger.getLogger (FriendController.class);
 
     @Autowired
     public UserService userService;
@@ -56,9 +56,9 @@ public class FriendController {
         return userService.findByFriend (userId);
     }
 
-    @RequestMapping(value = "/{Id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/remove/{Id}", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     public ResponseEntity<Void> deleteFriend (@PathVariable("Id") String Id,
-                                              @RequestParam String userId)
+                                              @RequestBody String userId)
             throws Exception {
 
         userService.deleteFriend (userId, Id);

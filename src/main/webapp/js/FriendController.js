@@ -71,18 +71,15 @@ friendControllers.controller('FriendController',
                 });
             };
 
-            $scope.removeFriend = function(friend) {
+            $scope.removeFriend = function(friendId) {
                 cfpLoadingBar.start();
-                var removeFriend = FriendServices.deleteFriends(friend.id);
+                console.log(friendId);
+                
+                var removeFriend = FriendServices.deleteFriends(friendId);
                 removeFriend.then(
                         function(response) {
                             FlashService.show("Updated Successfully.", "alert-success");
-                            var index = $scope.friends.indexOf(friend);
-
-                            if (index !== -1) {
-                                // Remove todo-item from array
-                                $scope.friends.splice(index, 1);
-                            }
+                            $state.go('billhome.friends', {}, {reload: true});
                             cfpLoadingBar.complete();
                         },
                         function(response) {
