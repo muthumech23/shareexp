@@ -80,23 +80,25 @@
                         <li ng-class="{'active':isSelected(2) }" ><a popover-trigger="mouseenter" ng-click="selectTab(2)" popover-placement="bottom" popover="Friends" ui-sref="billhome.friends">Friends</a></li>
                         <li ng-class="{'active':isSelected(3) }" ><a popover-trigger="mouseenter" ng-click="selectTab(3)" popover-placement="bottom" popover="Group" ui-sref="billhome.grouplist">Group</a></li>
                         <li ng-class="{'active':isSelected(4) }" ><a popover-trigger="mouseenter" ng-click="selectTab(4)" popover-placement="bottom" popover="About Us" ui-sref="about">About Us</a></li>
-                        <li ><a popover-trigger="mouseenter" popover-placement="bottom" popover="logout" href="" ng-click="userLogout()"><i class="glyphicon glyphicon-log-out"></i></a></li>
+                        <li ><a popover-trigger="mouseenter" popover-placement="bottom" popover="logout" href="" ng-click="userLogout()">Logout</a></li>
                         <li ng-class="{'active':isSelected(5) }"><a ui-sref="account"  ng-click="selectTab(5)" popover-trigger="mouseenter" popover-placement="bottom" popover="account"><small> {{loggedUserName}}  <i class="fa fa-smile-o"></i></small></a></li>
 
                     </ul>
                     <ul class="nav navbar-nav navbar-right span6" ng-if="!loggedIn">
                         <li ng-class="{'active':isSelected(6) }"><a ng-click="selectTab(6)" popover-trigger="mouseenter" popover="Login" popover-placement="bottom" ui-sref="home.login">Login</a></li>
-                              <li ng-class="{'active':isSelected(7) }">  <a ng-click="selectTab(7)" popover-trigger="mouseenter" popover-placement="bottom" popover="Register" ui-sref="home.signup">Register</a>
-                                </li>
+                        <li ng-class="{'active':isSelected(7) }">  <a ng-click="selectTab(7)" popover-trigger="mouseenter" popover-placement="bottom" popover="Register" ui-sref="home.signup">Register</a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="container">
-            <div class="page-header col-lg-12"><span class="alert" ng-class="msgType" ng-if="flash">{{flash}}</span>&nbsp;</div>
+            <div class="col-lg-12 alert" ng-class="msgType">
+                <p>{{flash}}</p>
+            </div>
             
             <input type="hidden" ng-model="loggedUser" value="{{loggedUser}}"/>
-            
+
             <div ui-view></div>
         </div>
 

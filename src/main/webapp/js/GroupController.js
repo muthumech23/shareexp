@@ -131,7 +131,7 @@ groupControllers.controller('GroupAddBillController',
 
             $scope.addBillData = addBill;
 
-            $scope.bill;
+            $scope.bill = {};
 
             $scope.addBillData.groupId = $stateParams.groupId;
 
@@ -139,7 +139,7 @@ groupControllers.controller('GroupAddBillController',
 
             $scope.updatedBillSPlitList = [];
 
-            $scope.splittype = 'equally';
+            $scope.bill.splitType = 'equally';
             $scope.billAmountChng = function() {
                 updateSplitAmount();
             };
@@ -152,12 +152,12 @@ groupControllers.controller('GroupAddBillController',
             var updateSplitAmount = function() {
                 //console.log($scope.billvalue.addBillSplits.length);
                 console.log($scope.updatedBillSPlitList.length);
-                console.log($scope.splittype);
-                if ($scope.splittype === 'equally') {
+                console.log($scope.bill.splitType);
+                if ($scope.bill.splitType === 'equally') {
                     updateSplitEqually();
-                } else if ($scope.splittype === 'share') {
+                } else if ($scope.bill.splitType === 'share') {
                     updateSplitShare();
-                } else if ($scope.splittype === 'exact') {
+                } else if ($scope.bill.splitType === 'exact') {
                     updateSplitExact();
                 }
             };
@@ -245,15 +245,37 @@ groupControllers.controller('GroupAddBillController',
                 return $scope.updatedBillSPlitList.indexOf(billsplit) >= 0;
             };
 
-            $scope.splitInitial = function() {
-                /*for (var i = 0; i < $scope.entities.length; i++) {
-                 var entity = $scope.entities[i];
-                 updateSelected(action, entity.id);
-                 }*/
+            $scope.isOneSelected = function() {
+                if ($scope.updatedBillSPlitList.length === 0) {
+                    FlashService.clear();
+                    return true;
+                } else if ($scope.updatedBillSPlitList.length === 1) {
+                    var saveStatus = false;
+                    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
+                        if (billsplit.userId === $scope.bill.userPaid) {
+                            FlashService.show(" Message: please include one more person other user paid.", "alert-warning");
+                            saveStatus = true;
+                        } else {
+                            FlashService.clear();
+                            saveStatus = false;
+                        }
+                    });
+                    return saveStatus;
+                } else {
+                    FlashService.clear();
+                    return false;
+                }
             };
 
             $scope.saveBill = function(billData) {
-
+                if ($scope.updatedBillSPlitList.length === 1) {
+                    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
+                        if (billsplit.userId === billData.userPaid) {
+                            FlashService.show(" Message: please include one more person other user paid.", "alert-warning");
+                            return;
+                        }
+                    });
+                }
                 console.log(billData);
                 console.log($scope.updatedBillSPlitList);
                 billData.billSplits = $scope.updatedBillSPlitList;
@@ -310,11 +332,11 @@ groupControllers.controller('GroupEditBillController',
             };
 
             var updateSplitAmount = function() {
-                if ($scope.splittype === 'equally') {
+                if ($scope.bill.splitType === 'equally') {
                     updateSplitEqually();
-                } else if ($scope.splittype === 'share') {
+                } else if ($scope.bill.splitType === 'share') {
                     updateSplitShare();
-                } else if ($scope.splittype === 'exact') {
+                } else if ($scope.bill.splitType === 'exact') {
                     updateSplitExact();
                 }
             };
@@ -412,14 +434,38 @@ groupControllers.controller('GroupEditBillController',
                 return $scope.updatedBillSPlitList.indexOf(billsplit) >= 0;
             };
 
-            $scope.splitInitial = function() {
-                /*for (var i = 0; i < $scope.entities.length; i++) {
-                 var entity = $scope.entities[i];
-                 updateSelected(action, entity.id);
-                 }*/
+            $scope.isOneSelected = function() {
+                if ($scope.updatedBillSPlitList.length === 0) {
+                    FlashService.clear();
+                    return true;
+                } else if ($scope.updatedBillSPlitList.length === 1) {
+                    var saveStatus = false;
+                    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
+                        if (billsplit.userId === $scope.bill.userPaid) {
+                            FlashService.show(" Message: please include one more person other user paid.", "alert-warning");
+                            saveStatus = true;
+                        } else {
+                            FlashService.clear();
+                            saveStatus = false;
+                        }
+                    });
+                    return saveStatus;
+                } else {
+                    FlashService.clear();
+                    return false;
+                }
             };
 
             $scope.saveBill = function(billData) {
+
+                if ($scope.updatedBillSPlitList.length === 1) {
+                    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
+                        if (billsplit.userId === billData.userPaid) {
+                            FlashService.show(" Message: please include one more person other user paid.", "alert-warning");
+                            return;
+                        }
+                    });
+                }
                 billData.billSplits = $scope.updatedBillSPlitList;
 
                 cfpLoadingBar.start();

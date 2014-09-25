@@ -1,12 +1,12 @@
-<div class="panel panel-warning">
+<div class="panel panel-primary">
     <div class="panel-heading">
         <h3 class="panel-title">EDIT</h3>
     </div>
     <div class="panel-body">
-        <form class="form-horizontal" role="form">
+        <form class="form-horizontal" name="form" novalidate rc-attempt>
             <div class="form-group">
-                <label for="inputDate" class="col-lg-2 control-label">Date</label>
-                <div class="col-lg-10">
+                <div class="form-group col-lg-6" ng-class="{'has-error': form.billdate.$invalid && (form.billdate.$dirty || rc.form.attempted)}">
+                    <label class="control-label">Bill Date</label>
                     <p class="input-group">
                         <input type="text" class="form-control input-sm" name="billdate" placeholder="Bill Date" datepicker-popup="{{'MM/dd/yyyy'}}" ng-model="bill.date" is-open="opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                         <span class="input-group-btn">
@@ -14,34 +14,49 @@
                         </span>
                     </p>
                 </div>
+
+                <div class="form-group col-lg-6">
+                    <label class="control-label">Description</label>
+                    <input type="text" ng-model="bill.description" class="form-control input-sm" placeholder="Description">
+                </div>
             </div>
             <div class="form-group">
-                <label for="inputPaid" class="col-lg-2 control-label">Who Paid</label>
-                <div class="col-lg-10">{{}}
-                    <label ng-repeat="billdata in usersBillData" >
-                        <input type="radio" ng-model="bill.userPaid" value="{{billdata.id}}" ng-checked="{{billdate.id == loggedUser}}">
-                        {{billdata.name}}
+                <div class="form-group col-lg-6">
+                    <label class="control-label">Category</label>
+                    <input type="text" ng-model="bill.category" class="form-control input-sm" placeholder="Category">
+                </div>
+                <div class="form-group col-lg-6" ng-class="{'has-error': form.billamt.$invalid && (form.billamt.$dirty || rc.form.attempted)}">
+                    <label class="control-label">Amount</label>
+                    <input type="number" ng-model="bill.amount" class="form-control input-sm" name="billamt" placeholder="Bill Amount" ng-change="billAmountChng()" required>
+                </div>
+            </div>
+            <div class="form-group col-lg-12">
+                <label class="control-label">Who Paid</label>
+                <div class="form-inline">
+                    <label class="col-lg-4 radio-inline" ng-repeat="billsplit in bill.billSplits">
+                        <input type="radio" ng-model="bill.userPaid" value="{{billsplit.userId}} " ng-change="billAmountChng()" required>
+                        {{billsplit.name}}
                     </label>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="inputAmount" class="col-lg-2 control-label">Amount</label>
-                <div class="col-lg-10">
-                    <input type="text" ng-model="bill.amount" class="form-control input-sm" placeholder="Bill Amount">
+            <div class="form-group col-lg-12">
+                <label class="control-label"></label>
+                <div class="btn-group-xs">
+                    <input type="radio" ng-model="bill.splitType" value="equally" ng-change="billAmountChng()" required> Split/Equally
+                    <input type="radio" ng-model="bill.splitType" value="exact" ng-change="billAmountChng()" required> Split/Exact
+                    <input type="radio" ng-model="bill.splitType" value="share" ng-change="billAmountChng()" required> Split/Share
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="inputUser" class="col-lg-2 control-label">To Whom</label>
-                <div class="input-group-sm col-lg-10">
-                    <label ng-repeat="billdata in usersBillData">
-                        <input type="checkbox" checklist-model="billvalue.usersBillData" checklist-value="billdata"> 
-
-                        {{billdata.name}}
-                        <input type="text" id="{{billdata.id}}" class="form-control input-xsm " ng-model="billdata.amount" placeholder="0.00">
+                <div class="form-inline">
+                    <label class="col-lg-6 checkbox-inline" ng-repeat="billsplit in bill.billSplits">
+                        <input type="checkbox" name="selected" 
+                               ng-checked="isSelected(billsplit)"
+                               ng-click="updateSelection($event, billsplit)" ng-required="isOneSelected()">
+                        {{billsplit.name}} <span class="text-danger small" ng-if="billsplit.amount < 0">{{billsplit.amount| currency}}</span><span class="text-success small" ng-if="billsplit.amount >= 0">{{billsplit.amount| currency}}</span>
+                        <input type="number" ng-model="billsplit.splitText" class="input-xsm" ng-if="bill.splitType !== 'equally'" ng-change="billAmountChng()">
                     </label>
                 </div>
             </div>
         </form>
     </div>
-    <div class="panel-footer text-right"><a class="btn btn-success btn-sm" ng-click="saveBill(bill)">Save</a><a class="btn btn-warning btn-sm right">Cancel</a></div>
+    <div class="panel-footer text-right"><a class="btn btn-success btn-sm" ng-disabled="form.$invalid || isOneSelected()" ng-click="saveBill(bill)">Save</a><span>   </span><a ui-sref="billhome.list" class="btn btn-warning btn-sm right">Cancel</a></div>
 </div>

@@ -8,13 +8,13 @@
                 <tr>
                     <td colspan="3"><p class="text-muted"><strong> {{groupList.length}} groups</strong></p></td>
                     <td class="text-center col-lg-1"><a ui-sref="billhome.groupadd" popover-trigger="mouseenter" popover="Add group" class="btn btn-success btn-xs">
-                            <i class="fa fa-group"> </i> <i class="fa fa-plus"> </i></a></td>
+                            Add Group</a></td>
                 </tr>
                 <tr ng-repeat="group in groupList">
                     <td class="col-lg-1"><a href="" ng-click="getGroupBills(group.id)">{{group.groupName}}</a></td>
                     <td class="col-lg-2"><p class="text-muted">Created on {{group.createDate | date: 'mediumdate'}} By {{group.email}}</p></td>
                     <td class="col-lg-1"><p class="text-muted">{{group.userIds.length}} persons</p></td>
-                    <td class="text-center col-lg-1"><a class="btn btn-warning btn-xs" popover-trigger="mouseenter" popover="Edit Group" ng-click="editGroup(group.id)"><i class="glyphicon glyphicon-edit"></i></a></td>
+                    <td class="text-center col-lg-1"><a class="btn btn-warning btn-xs" popover-trigger="mouseenter" popover="Edit Group" ng-click="editGroup(group.id)">edit</a></td>
                 </tr>
             </tbody>
         </table> 

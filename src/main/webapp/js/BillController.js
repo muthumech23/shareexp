@@ -4,7 +4,7 @@ var billControllers = angular.module('BillControllers', []);
 billControllers.controller('BillListController',
         function($scope, homeBillData, $state) {
             $scope.usersBillData = homeBillData;
-            
+
             $scope.userBill = function(userId) {
                 console.log(userId);
                 $state.go('billhome.userlist', {userId: userId});
@@ -20,7 +20,7 @@ billControllers.controller('BillUserController',
                 console.log(billId);
                 $state.go('billhome.edit', {billId: billId});
             };
-            
+
             if ($stateParams.userId !== null || $stateParams.userId !== "" || $stateParams.userId !== 'undefined')
             {
                 var userbill = BillingServices.getUserBills($stateParams.userId);
@@ -50,6 +50,9 @@ billControllers.controller('BillRecentController',
             };
         });
 
+
+
+
 billControllers.controller('BillAddController',
         function($scope, $state, cfpLoadingBar, FlashService, BillingServices, addBill, SessionService) {
 
@@ -62,24 +65,24 @@ billControllers.controller('BillAddController',
 
             $scope.addBillData = addBill;
 
-            $scope.bill;
+            $scope.bill = {};
 
             $scope.addBillSplits = addBill.billSplits;
 
             $scope.updatedBillSPlitList = [];
 
-            $scope.splittype = 'equally';
+            $scope.bill.splitType = 'equally';
 
             $scope.billAmountChng = function() {
                 updateSplitAmount();
             };
 
             var updateSplitAmount = function() {
-                if ($scope.splittype === 'equally') {
+                if ($scope.bill.splitType === 'equally') {
                     updateSplitEqually();
-                } else if ($scope.splittype === 'share') {
+                } else if ($scope.bill.splitType === 'share') {
                     updateSplitShare();
-                } else if ($scope.splittype === 'exact') {
+                } else if ($scope.bill.splitType === 'exact') {
                     updateSplitExact();
                 }
             };
@@ -176,14 +179,31 @@ billControllers.controller('BillAddController',
                 return $scope.updatedBillSPlitList.indexOf(billsplit) >= 0;
             };
 
-            $scope.splitInitial = function() {
-                /*for (var i = 0; i < $scope.entities.length; i++) {
-                 var entity = $scope.entities[i];
-                 updateSelected(action, entity.id);
-                 }*/
+            $scope.isOneSelected = function() {
+                
+                if($scope.updatedBillSPlitList.length === 0){
+                    FlashService.clear();
+                    return true;
+                }else if($scope.updatedBillSPlitList.length === 1) {
+                    var saveStatus = false;
+                    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
+                        if (billsplit.userId === $scope.bill.userPaid) {
+                            FlashService.show(" Message: please include one more person other user paid.", "alert-warning");
+                            saveStatus = true;
+                        }else{
+                            FlashService.clear();
+                            saveStatus = false;
+                        }
+                    });
+                    return saveStatus;
+                }else{
+                    FlashService.clear();
+                    return false;
+                }
             };
 
             $scope.saveBill = function(billData) {
+
                 billData.billSplits = $scope.updatedBillSPlitList;
                 billData.by = SessionService.get('userEmail');
 
@@ -235,11 +255,11 @@ billControllers.controller('BillEditController',
             };
 
             var updateSplitAmount = function() {
-                if ($scope.splittype === 'equally') {
+                if ($scope.bill.splitType === 'equally') {
                     updateSplitEqually();
-                } else if ($scope.splittype === 'share') {
+                } else if ($scope.bill.splitType === 'share') {
                     updateSplitShare();
-                } else if ($scope.splittype === 'exact') {
+                } else if ($scope.bill.splitType === 'exact') {
                     updateSplitExact();
                 }
             };
@@ -337,14 +357,39 @@ billControllers.controller('BillEditController',
                 return $scope.updatedBillSPlitList.indexOf(billsplit) >= 0;
             };
 
-            $scope.splitInitial = function() {
-                /*for (var i = 0; i < $scope.entities.length; i++) {
-                 var entity = $scope.entities[i];
-                 updateSelected(action, entity.id);
-                 }*/
+            $scope.isOneSelected = function() {
+                if($scope.updatedBillSPlitList.length === 0){
+                    FlashService.clear();
+                    return true;
+                }else if($scope.updatedBillSPlitList.length === 1) {
+                    var saveStatus = false;
+                    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
+                        if (billsplit.userId === $scope.bill.userPaid) {
+                            FlashService.show(" Message: please include one more person other user paid.", "alert-warning");
+                            saveStatus = true;
+                        }else{
+                            FlashService.clear();
+                            saveStatus = false;
+                        }
+                    });
+                    return saveStatus;
+                }else{
+                    FlashService.clear();
+                    return false;
+                }
             };
 
             $scope.saveBill = function(billData) {
+                
+                if ($scope.updatedBillSPlitList.length === 1) {
+                    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
+                        if (billsplit.userId === billData.userPaid) {
+                            FlashService.show(" Message: please include one more person other user paid.", "alert-warning");
+                            return;
+                        }
+                    });
+                }
+                
                 billData.billSplits = $scope.updatedBillSPlitList;
                 billData.by = SessionService.get('userEmail');
                 cfpLoadingBar.start();

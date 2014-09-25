@@ -20,7 +20,7 @@ public class BillSplit {
 	private String		email;
 
 	private String		userId;
-
+	
 	public String getSplitText() {
 
 		return splitText;

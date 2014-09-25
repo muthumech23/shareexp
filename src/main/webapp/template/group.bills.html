@@ -9,8 +9,7 @@
                 <tr>
                     <td colspan="4"><p class="text-muted"><strong> {{groupBillsData.length}} group bills</strong></p></td>
                     <td class="text-center col-lg-1"><a ng-click="addGroupBill(groupId)" popover-trigger="mouseenter" popover="Add Bill" class="btn btn-success btn-xs">
-                            <i class="fa fa-plus-circle"> </i>
-                            <i class="fa fa-money"> </i></a></td>
+                            Add Group Bill</a></td>
                 </tr>
                 <tr ng-repeat="bill in groupBillsData">
                     <td class="col-lg-1">{{bill.date| date: 'dd/MM/yy'}}</td>
@@ -21,7 +20,7 @@
                             <span class="label label-default" ng-if="billdata.userId !== bill.userPaid">{{billdata.name}}</span>
                             <span class="label label-success" ng-if="billdata.userId === bill.userPaid">{{billdata.name}}</span></span>
                     </td>
-                    <td class="text-center col-lg-1"><a class="btn btn-warning btn-xs" popover-trigger="mouseenter" popover="Edit Bill" ng-click="EditFriend(bill)"><i class="glyphicon glyphicon-edit"></i></a></td>
+                    <td class="text-center col-lg-1"><a class="btn btn-warning btn-xs" popover-trigger="mouseenter" popover="Edit Bill" ng-click="EditFriend(bill)">edit</a></td>
                 </tr>
             </tbody>
         </table> 

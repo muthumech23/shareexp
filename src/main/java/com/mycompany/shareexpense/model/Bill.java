@@ -28,6 +28,19 @@ public class Bill extends AbstractModal {
 
 	@Indexed
 	private String		groupId;
+        
+        private String		splitType;
+
+	public String getSplitType() {
+	
+		return splitType;
+	}
+
+	
+	public void setSplitType(String splitType) {
+	
+		this.splitType = splitType;
+	}
 
 	public List<BillSplit> getBillSplits() {
 
