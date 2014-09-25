@@ -1,3 +1,4 @@
+'use strict'
 var groupServices = angular.module('GroupServices', []);
 
 groupServices.factory('GroupServices', function($resource, FlashService, SessionService) {

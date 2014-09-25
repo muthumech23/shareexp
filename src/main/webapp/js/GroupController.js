@@ -1,3 +1,4 @@
+'use strict'
 var groupControllers = angular.module('GroupControllers', []);
 
 groupControllers.controller('GroupListController',

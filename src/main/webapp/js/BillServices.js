@@ -1,3 +1,4 @@
+'use strict'
 var billServices = angular.module('BillServices', []);
 
 billServices.factory('BillingServices', function($resource, FlashService, SessionService) {

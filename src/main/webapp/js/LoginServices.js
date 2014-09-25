@@ -1,3 +1,5 @@
+'use strict'
+
 var loginServices = angular.module('LoginServices', []);
 
 

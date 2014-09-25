@@ -1,3 +1,4 @@
+'use strict'
 var friendServices = angular.module('FriendServices', []);
 
 friendServices.factory('FriendServices', function($resource, FlashService, SessionService) {

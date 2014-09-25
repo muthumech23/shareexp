@@ -1,3 +1,4 @@
+'use strict'
 var billControllers = angular.module('BillControllers', []);
 
 billControllers.controller('BillListController',

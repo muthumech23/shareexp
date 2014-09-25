@@ -1,3 +1,4 @@
+'use strict'
 var loginControllers = angular.module('LoginControllers', []);
 
 loginControllers.controller('HomeController',

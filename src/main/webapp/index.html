@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html ng-app="ShareExpApp">
+<html  ng-app="ShareExpApp">
     <head>
         <title>Share Expenses</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <!-- CSS -->
-        <link rel="stylesheet" href="css/bootstrap.css">
-        <link rel="stylesheet" href="css/bootstrap-responsive.css">
+        <link rel="stylesheet" href="css/bootstrap.css" media="screen">
+        <link rel="stylesheet" href="css/bootstrap-responsive.css" media="screen">
         <link rel="stylesheet" href="css/loading-bar.css">
-        <link rel="stylesheet" href="css/flexslider.css">
-        <link rel="stylesheet" href="css/prettyPhoto.css">
-        <link rel="stylesheet" href="css/jquery.lightbox-0.5.css">
         <link rel="stylesheet" href="css/font-awesome.min.css">
 
         <!--[if lt IE 9]>
-            <script src="assets/html5.js"></script>
-            <link rel="stylesheet" href="css/style-ie.css"/>
+            <script src="assets/html5shiv.js"></script>
+            <script src="assets/html5shiv-printshiv.js"></script>
+            <script src="assets/respond.matchmedia.addListener.min.js"></script>
+            <script src="assets/respond.min.js"></script>
+            
         <![endif]-->
 
         <link rel="shortcut icon" href="img/favicon.ico">
@@ -27,11 +27,6 @@
         <!-- JS  -->
         <script src="assets/jquery-1.11.1.min.js"></script>
         <script src="assets/bootstrap.js"></script>
-        <script src="assets/jquery.custom.js"></script>
-        <script src="assets/jquery.flexslider.js"></script>
-        <script src="assets/jquery.prettyPhoto.js"></script>
-        <script src="assets/jquery.easing.1.3.js"></script>
-        <script src="assets/jquery.quicksand.js"></script>
         <script src="assets/TweenMax.min.js"></script>
 
         <script src="assets/angular.js"></script>
@@ -77,22 +72,22 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand span6 right" ui-sref="home">SHARE EXPENSE</a>
+                    <a class="navbar-brand span5 right" popover-trigger="mouseenter" ng-click="selectTab(0)" popover-placement="bottom" popover="Home" ui-sref="home">SHARE EXPENSE</a>
                 </div>
                 <div class="navbar-collapse collapse navbar-inverse-collapse">
                     <ul class="nav navbar-nav navbar-right span6" ng-if="loggedIn">
-                        <li><form class="navbar-form navbar-left"><a class="btn btn-warning btn-sm" ui-sref="billhome.list">Bills</a>
-                                <a class="btn btn-warning btn-sm" ui-sref="billhome.friends">Friends</a>
-                                <a class="btn btn-warning btn-sm" ui-sref="billhome.grouplist">Group</a>
-                                <a class="btn btn-warning btn-sm" ui-sref="about">About Us</a>
-                                <a class="btn btn-warning btn-sm" href="" ng-click="userLogout()"><i class="glyphicon glyphicon-log-out"></i></a></form></li>
-                                <li><a ui-sref="account" class="navbar-brand" ><small> {{loggedUserName}}  <i class="fa fa-smile-o"></i></small></a></li>
+                        <li ng-class="{'active': isSelected(1)}" ><a ng-click="selectTab(1)" popover-placement="bottom" popover-trigger="mouseenter" popover="Bills" ui-sref="billhome.list">Bills</a></li>
+                        <li ng-class="{'active':isSelected(2) }" ><a popover-trigger="mouseenter" ng-click="selectTab(2)" popover-placement="bottom" popover="Friends" ui-sref="billhome.friends">Friends</a></li>
+                        <li ng-class="{'active':isSelected(3) }" ><a popover-trigger="mouseenter" ng-click="selectTab(3)" popover-placement="bottom" popover="Group" ui-sref="billhome.grouplist">Group</a></li>
+                        <li ng-class="{'active':isSelected(4) }" ><a popover-trigger="mouseenter" ng-click="selectTab(4)" popover-placement="bottom" popover="About Us" ui-sref="about">About Us</a></li>
+                        <li ><a popover-trigger="mouseenter" popover-placement="bottom" popover="logout" href="" ng-click="userLogout()"><i class="glyphicon glyphicon-log-out"></i></a></li>
+                        <li ng-class="{'active':isSelected(5) }"><a ui-sref="account"  ng-click="selectTab(5)" popover-trigger="mouseenter" popover-placement="bottom" popover="account"><small> {{loggedUserName}}  <i class="fa fa-smile-o"></i></small></a></li>
 
                     </ul>
                     <ul class="nav navbar-nav navbar-right span6" ng-if="!loggedIn">
-                        <li><form class="navbar-form navbar-left"><a class="btn btn-warning btn-sm" ui-sref="home.login">Login</a>
-                                <a class="btn btn-warning btn-sm" ui-sref="home.signup">Register</a>
-                                </form></li>
+                        <li ng-class="{'active':isSelected(6) }"><a ng-click="selectTab(6)" popover-trigger="mouseenter" popover="Login" popover-placement="bottom" ui-sref="home.login">Login</a></li>
+                              <li ng-class="{'active':isSelected(7) }">  <a ng-click="selectTab(7)" popover-trigger="mouseenter" popover-placement="bottom" popover="Register" ui-sref="home.signup">Register</a>
+                                </li>
                     </ul>
                 </div>
             </div>
