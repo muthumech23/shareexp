@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="form-group col-lg-12">
-                <label class="control-label">Who Paid</label>
+                <label class="control-label">Who Paid?</label>
                 <div class="form-inline">
                     <label class="col-lg-4 radio-inline" ng-repeat="billsplit in addBillSplits">
                         <input type="radio" ng-model="bill.userPaid" value="{{billsplit.userId}} " ng-change="billAmountChng()" required>
@@ -39,13 +39,26 @@
                     </label>
                 </div>
             </div>
-            <div class="form-group col-lg-12">
-                <label class="control-label"></label>
-                <div class="btn-group-xs">
-                    <input type="radio" ng-model="bill.splitType" value="equally" ng-change="billAmountChng()" required> Split/Equally
-                    <input type="radio" ng-model="bill.splitType" value="exact" ng-change="billAmountChng()" required> Split/Exact
-                    <input type="radio" ng-model="bill.splitType" value="share" ng-change="billAmountChng()" required> Split/Share
+           <div class="form-group col-lg-12">
+                <label class="control-label">Split</label>
+                                <div class="form-inline">
+                    <label class="col-lg-4 radio-inline">
+                        <input type="radio" ng-model="bill.splitType" value="equally" ng-change="billAmountChng()" required>
+                        By Equally
+                    </label>
+                    <label class="col-lg-4 radio-inline">
+                        <input type="radio" ng-model="bill.splitType" value="exact" ng-change="billAmountChng()" required>
+                        By Exact
+                    </label>
+                    <label class="col-lg-4 radio-inline">
+                        <input type="radio" ng-model="bill.splitType" value="share" ng-change="billAmountChng()" required>
+                        By Share
+                    </label>
                 </div>
+
+            </div>
+            <div class="form-group col-lg-12">
+                <label class="control-label">To Whom?</label>
                 <div class="form-inline">
                     <label class="col-lg-6 checkbox-inline" ng-repeat="billsplit in addBillSplits">
                         <input type="checkbox" name="selected"

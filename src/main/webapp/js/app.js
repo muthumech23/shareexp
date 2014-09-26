@@ -31,10 +31,6 @@ shareExpApp.config(function($stateProvider, $urlRouterProvider) {
         url: '/chgpwd',
         controller: 'ChgpwdController',
         templateUrl: 'template/changepwd.html'
-    }).state('account', {
-        url: '/account',
-        controller: 'UpdateUserController',
-        templateUrl: 'template/account.html'
     }).state('about', {
         url: '/about',
         controller: 'HomeController',
@@ -113,6 +109,10 @@ shareExpApp.config(function($stateProvider, $urlRouterProvider) {
         url: '/friends',
         controller: 'FriendController',
         templateUrl: 'template/billhome.friends.html'
+    }).state('billhome.account', {
+        url: '/account',
+        controller: 'UpdateUserController',
+        templateUrl: 'template/account.html'
     });
 }, function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = true;
@@ -297,7 +297,7 @@ shareExpApp.run(function($rootScope, $location, AuthenticationService, FlashServ
         console.log('$stateChangeError - fired when an error occurs during transition.');
     });
 
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, $scope) {
          FlashService.clear();
          if (!_(routesThatRequireAuth).contains($location.path())
                 && !AuthenticationService.isLoggedIn()) {

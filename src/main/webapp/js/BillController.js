@@ -4,7 +4,7 @@ var billControllers = angular.module('BillControllers', []);
 billControllers.controller('BillListController',
         function($scope, homeBillData, $state) {
             $scope.usersBillData = homeBillData;
-
+            
             $scope.userBill = function(userId) {
                 console.log(userId);
                 $state.go('billhome.userlist', {userId: userId});
@@ -180,23 +180,23 @@ billControllers.controller('BillAddController',
             };
 
             $scope.isOneSelected = function() {
-                
-                if($scope.updatedBillSPlitList.length === 0){
+
+                if ($scope.updatedBillSPlitList.length === 0) {
                     FlashService.clear();
                     return true;
-                }else if($scope.updatedBillSPlitList.length === 1) {
+                } else if ($scope.updatedBillSPlitList.length === 1) {
                     var saveStatus = false;
                     angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
                         if (billsplit.userId === $scope.bill.userPaid) {
                             FlashService.show(" Message: please include one more person other user paid.", "alert-warning");
                             saveStatus = true;
-                        }else{
+                        } else {
                             FlashService.clear();
                             saveStatus = false;
                         }
                     });
                     return saveStatus;
-                }else{
+                } else {
                     FlashService.clear();
                     return false;
                 }
@@ -358,29 +358,29 @@ billControllers.controller('BillEditController',
             };
 
             $scope.isOneSelected = function() {
-                if($scope.updatedBillSPlitList.length === 0){
+                if ($scope.updatedBillSPlitList.length === 0) {
                     FlashService.clear();
                     return true;
-                }else if($scope.updatedBillSPlitList.length === 1) {
+                } else if ($scope.updatedBillSPlitList.length === 1) {
                     var saveStatus = false;
                     angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
                         if (billsplit.userId === $scope.bill.userPaid) {
                             FlashService.show(" Message: please include one more person other user paid.", "alert-warning");
                             saveStatus = true;
-                        }else{
+                        } else {
                             FlashService.clear();
                             saveStatus = false;
                         }
                     });
                     return saveStatus;
-                }else{
+                } else {
                     FlashService.clear();
                     return false;
                 }
             };
 
             $scope.saveBill = function(billData) {
-                
+
                 if ($scope.updatedBillSPlitList.length === 1) {
                     angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
                         if (billsplit.userId === billData.userPaid) {
@@ -389,7 +389,7 @@ billControllers.controller('BillEditController',
                         }
                     });
                 }
-                
+
                 billData.billSplits = $scope.updatedBillSPlitList;
                 billData.by = SessionService.get('userEmail');
                 cfpLoadingBar.start();

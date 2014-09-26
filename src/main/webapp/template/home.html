@@ -2,84 +2,38 @@
     <div class="row">
         <div class="col-lg-8">
             <div class="bs-component">
-                <div class="row">
-                    <div class="col-lg-9"><h4 class="text-success">Share your expense with friends</h4></div>
-                    <div class="col-lg-3">
-                        <button id="btn-blog-prev" class="btn btn-success btn-xs " type="button">&laquo;</button>
-                        <button id="btn-blog-next" class="btn btn-success btn-xs" type="button">&raquo;</button>
-                    </div>
-                </div>
-                <div id="banner">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="sponsor">
-
-                                <div id="blogCarousel" class="carousel slide ">
-
-                                    <!-- Carousel items -->
-                                    <div class="carousel-inner">
-
-                                        <!-- Blog Item 2 -->
-                                        <div class="active item">
-                                            <div class="post-info clearfix">
-                                                <h4><a href="blog-single.htm">A great artist is always before his time</a></h4>
-                                                <ul class="blog-details-preview">
-                                                    <li><i class="icon-calendar"></i><strong>Posted on:</strong> Sept 4, 2015<li>
-                                                    <li><i class="icon-user"></i><strong>Posted by:</strong> <a href="#" title="Link">Admin</a><li>
-                                                    <li><i class="icon-comment"></i><strong>Comments:</strong> <a href="#" title="Link">12</a><li>
-                                                    <li><i class="icon-tags"></i> <a href="#">photoshop</a>, <a href="#">tutorials</a>, <a href="#">illustration</a>
-                                                </ul>
-                                            </div>
-                                            <p class="blog-summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum felis fermentum ipsum molestie sed porttitor ligula rutrum. Vestibulum lectus tellus, aliquet et iaculis sed, volutpat vel erat. <a href="#">Read more</a><p>
-                                        </div>
-
-                                        <!-- Blog Item 3 -->
-                                        <div class="item">
-                                            <div class="post-info clearfix">
-                                                <h4><a href="blog-single.htm">Is art everything to anybody?</a></h4>
-                                                <ul class="blog-details-preview">
-                                                    <li><i class="icon-calendar"></i><strong>Posted on:</strong> Sept 4, 2015<li>
-                                                    <li><i class="icon-user"></i><strong>Posted by:</strong> <a href="#" title="Link">Admin</a><li>
-                                                    <li><i class="icon-comment"></i><strong>Comments:</strong> <a href="#" title="Link">12</a><li>
-                                                    <li><i class="icon-tags"></i> <a href="#">photoshop</a>, <a href="#">tutorials</a>, <a href="#">illustration</a>
-                                                </ul>
-                                            </div>
-                                            <p class="blog-summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum felis fermentum ipsum molestie sed porttitor ligula rutrum. Vestibulum lectus tellus, aliquet et iaculis sed, volutpat vel erat. <a href="#">Read more</a><p>
-                                        </div>
-
-                                    </div>
-                                </div> 	
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                <h1><img src="img/logo.png"/></h1>
+                <p class="lead">Share your expense bills between roommates and friends</p>
             </div>
         </div>
         <div class="col-lg-4">
             <div ui-view></div>
         </div>
     </div>
-</div>
-<div class="bs-docs-section">
-    <script type="text/javascript">
-        $(document).ready(function() {
 
-            $("#btn-blog-next").click(function() {
-                $('#blogCarousel').carousel('next')
-            });
-            $("#btn-blog-prev").click(function() {
-                $('#blogCarousel').carousel('prev')
-            });
+    <div class="row">
 
-            $("#btn-client-next").click(function() {
-                $('#clientCarousel').carousel('next')
-            });
-            $("#btn-client-prev").click(function() {
-                $('#clientCarousel').carousel('prev')
-            });
-
-        });
-
-    </script>
+        <div class="col-lg-6">
+            <div class="bs-component">
+                <blockquote>
+                    <p>How does it work?</p>
+                    <small>You share bills with your friends and roommates</small>
+                    <small>Tracks what they owe you</small>
+                    <small>Your friends pay you back</small>
+                    <small>Takes it off their total</small>
+                    <small>You get peace of mind</small>
+                </blockquote>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="bs-component">
+                <blockquote class="pull-right">
+                    <p>Friends not on Share Expense yet?</p>
+                    <small>You can send a bill to anyone with an email address.</small>
+                    <small>Even if they're not on Share Expense yet.</small>
+                    <small>They will still see your bills when they sign up.</small>
+                </blockquote>
+            </div>
+        </div>
+    </div> 	
 </div>

@@ -1,15 +1,12 @@
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <h3 class="panel-title">Groups</h3>
+        <h3 class="panel-title">Groups <span class="badge">{{groupList.length}}</span>
+        <a ui-sref="billhome.groupadd" popover-trigger="mouseenter" popover="Add group" class="btn btn-success btn-xs pull-right">
+                            Add Group</a></h3>
     </div>
     <div class="panel-body">
         <table class="table table-striped table-hover " id="table">
             <tbody>
-                <tr>
-                    <td colspan="3"><p class="text-muted"><strong> {{groupList.length}} groups</strong></p></td>
-                    <td class="text-center col-lg-1"><a ui-sref="billhome.groupadd" popover-trigger="mouseenter" popover="Add group" class="btn btn-success btn-xs">
-                            Add Group</a></td>
-                </tr>
                 <tr ng-repeat="group in groupList">
                     <td class="col-lg-1"><a href="" ng-click="getGroupBills(group.id)">{{group.groupName}}</a></td>
                     <td class="col-lg-2"><p class="text-muted">Created on {{group.createDate | date: 'mediumdate'}} By {{group.email}}</p></td>
