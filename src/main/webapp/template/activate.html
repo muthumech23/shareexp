@@ -34,7 +34,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label">Activation Code</label>
+					<label class="control-label">Activation Code</label><a class="pull-right text-warning" ng-click="regenerateactivationCode(userSecure.userId)">(Generate Activation Code?)</a></div>
 					<div class="input-group required-field-block"
 						ng-class="{'has-error': form.activation.$invalid && (form.activation.$dirty || rc.form.attempted)}">
 						<span class="input-group-addon input-sm"><i

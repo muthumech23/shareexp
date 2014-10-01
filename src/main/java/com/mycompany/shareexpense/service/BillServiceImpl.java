@@ -29,20 +29,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class BillServiceImpl implements BillService {
 
-	private final Logger	log	= Logger.getLogger(BillServiceImpl.class);
+	private final Logger log = Logger.getLogger(BillServiceImpl.class);
 
 	@Autowired
-	private Environment		env;
+	private Environment env;
 
 	@Autowired
-	private BillRepository	billRepository;
-	
+	private BillRepository billRepository;
+
 
 	@Autowired
-	private BillSortAndPageRepository	billSortAndPageRepository;
+	private BillSortAndPageRepository billSortAndPageRepository;
 
 	@Autowired
-	private UserRepository	userRepository;
+	private UserRepository userRepository;
 
 	@Override
 	public Bill saveBill(Bill bill) throws Exception {
@@ -66,9 +66,9 @@ public class BillServiceImpl implements BillService {
 					emailbody = emailbody.replaceAll("<<billamount>>", bill.getAmount() + "");
 					emailbody = emailbody.replaceAll("<<billdesc>>", bill.getDescription());
 					emailbody = emailbody.replaceAll("<<username>>", bill.getBy());
-					emailbody = emailbody.replaceAll("<<siteurl>>", "http://localhost:8580/shareexpense/#/home");
+					emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home");
 					break;
-				} 
+				}
 			}
 
 			CommonUtil.sendEmail(subject, userPaid, emailbody, env);
@@ -87,7 +87,7 @@ public class BillServiceImpl implements BillService {
 					emailbody = emailbody.replaceAll("<<splitamount>>", billSplit.getAmount() + "");
 					emailbody = emailbody.replaceAll("<<username>>", bill.getBy());
 					emailbody = emailbody.replaceAll("<<useremail>>", userPaid);
-					emailbody = emailbody.replaceAll("<<siteurl>>", "http://localhost:8580/shareexpense/#/home");
+					emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home");
 
 				}
 				CommonUtil.sendEmail(subject, billSplit.getEmail(), emailbody, env);
@@ -141,8 +141,7 @@ public class BillServiceImpl implements BillService {
 			for (Bill bill : bills) {
 				for (BillSplit billsplit : bill.getBillSplits()) {
 					if (billsplit.getUserId().equalsIgnoreCase(Id)) {
-						if (userId.equalsIgnoreCase(bill.getUserPaid())
-										|| billsplit.getUserId().equalsIgnoreCase(bill.getUserPaid())) {
+						if (userId.equalsIgnoreCase(bill.getUserPaid()) || billsplit.getUserId().equalsIgnoreCase(bill.getUserPaid())) {
 							bigDecimal = bigDecimal.add(billsplit.getAmount());
 						}
 					}
@@ -168,26 +167,29 @@ public class BillServiceImpl implements BillService {
 
 		return bills;
 	}
-	
-	@Override
-	public Page<Bill> recentPageTrans(String userId, int page, int pagesize) throws Exception {
 
-		Pageable pageable =  new PageRequest(page, pagesize, Direction.DESC, "date");
-		
+	@Override
+	public Page<Bill> recentPageTrans(	String userId,
+										int page,
+										int pagesize) throws Exception {
+
+		Pageable pageable = new PageRequest(page, pagesize, Direction.DESC, "date");
+
 		Page<Bill> bills = billSortAndPageRepository.findByUserPaidOrBillSplitsUserId(userId, userId, pageable);
 
 		return bills;
 	}
-	
+
 	@Override
-	public List<Bill> recentUserTrans(String userId, String loggedUser) throws Exception {
+	public List<Bill> recentUserTrans(	String userId,
+										String loggedUser) throws Exception {
 
 		List<Bill> bills = billRepository.findByUserPaidAndBillSplitsUserId(userId, loggedUser);
-		
+
 		List<Bill> bills1 = billRepository.findByUserPaidAndBillSplitsUserId(loggedUser, userId);
-		
+
 		bills.addAll(bills1);
-		
+
 		return bills;
 	}
 

@@ -1,135 +1,139 @@
 'use strict'
-var shareExpApp = angular.module("ShareExpApp", ['ui.router', 'ngSanitize',
-    'ngRoute', 'chieffancypants.loadingBar', 'ngAnimate', 'ngResource',
-    'ngCookies', 'LoginControllers', 'FriendControllers',
-    'BillControllers', 'GroupControllers', 'LoginServices',
-    'FriendServices', 'BillServices', 'GroupServices',
-    'ShareExpDirectives', 'ShareExpFilters', 'ui.bootstrap',
-    'checklist-model']);
+var shareExpApp = angular.module("ShareExpApp", [ 'ui.router', 'ngSanitize', 'ngRoute', 'chieffancypants.loadingBar', 'ngAnimate', 'ngResource',
+	'ngCookies', 'LoginControllers', 'FriendControllers', 'BillControllers', 'GroupControllers', 'LoginServices', 'FriendServices',
+	'BillServices', 'GroupServices', 'ShareExpDirectives', 'ShareExpFilters', 'ui.bootstrap', 'checklist-model' ]);
 
 shareExpApp.config(function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/home');
 
     $stateProvider.state('home', {
-        url: '/home',
-        controller: 'HomeController',
-        templateUrl: 'template/home.html'
+	url : '/home',
+	controller : 'HomeController',
+	templateUrl : 'template/home.html'
     }).state('home.login', {
-        url: '/login',
-        controller: 'LoginController',
-        templateUrl: 'template/login.html'
+	url : '/login',
+	controller : 'LoginController',
+	templateUrl : 'template/login.html'
+    }).state('home.forgot', {
+	url : '/forgot',
+	controller : 'LoginController',
+	templateUrl : 'template/forgotpwd.html'
     }).state('home.signup', {
-        url: '/signup',
-        controller: 'LoginController',
-        templateUrl: 'template/register.html'
+	url : '/signup',
+	controller : 'LoginController',
+	templateUrl : 'template/register.html'
     }).state('home.activation', {
-        url: '/activation',
-        controller: 'ActivateController',
-        templateUrl: 'template/activate.html'
+	url : '/activation',
+	controller : 'ActivateController',
+	templateUrl : 'template/activate.html'
     }).state('home.chgpwd', {
-        url: '/chgpwd',
-        controller: 'ChgpwdController',
-        templateUrl: 'template/changepwd.html'
+	url : '/chgpwd',
+	controller : 'ChgpwdController',
+	templateUrl : 'template/changepwd.html'
     }).state('about', {
-        url: '/about',
-        controller: 'HomeController',
-        templateUrl: 'template/aboutus.html'
+	url : '/about',
+	controller : 'HomeController',
+	templateUrl : 'template/aboutus.html'
     }).state('billhome', {
-        abstract: true,
-        url: '/billhome',
-        controller: 'BillListController',
-        templateUrl: 'template/billhome.html',
-        resolve: {
-            homeBillData: function(BillingServices) {
-                return BillingServices.getUsersBill();
-            }
-        }
+	abstract : true,
+	url : '/billhome',
+	controller : 'BillListController',
+	templateUrl : 'template/billhome.html',
+	resolve : {
+	    homeBillData : function(BillingServices) {
+		return BillingServices.getUsersBill();
+	    }
+	}
     }).state('billhome.list', {
-        url: '/list',
-        controller: 'BillRecentController',
-        templateUrl: 'template/billhome.list.html',
-        resolve: {
-            recentBills: function(BillingServices) {
-                return BillingServices.getBills();
-            }
-        }
+	url : '/list',
+	controller : 'BillRecentController',
+	templateUrl : 'template/billhome.list.html',
+	resolve : {
+	    recentBills : function(BillingServices) {
+		return BillingServices.getBills();
+	    }
+	}
     }).state('billhome.userlist', {
-        url: '/userlist/:userId',
-        controller: 'BillUserController',
-        templateUrl: 'template/billhome.userlist.html'
+	url : '/userlist/:userId',
+	controller : 'BillUserController',
+	templateUrl : 'template/billhome.userlist.html'
     }).state('billhome.add', {
-        url: '/add',
-        controller: 'BillAddController',
-        templateUrl: 'template/billhome.add.html',
-        resolve: {
-            addBill: function(BillingServices) {
-                return BillingServices.addBillPage();
-            }
-        }
+	url : '/add',
+	controller : 'BillAddController',
+	templateUrl : 'template/billhome.add.html',
+	resolve : {
+	    addBill : function(BillingServices) {
+		return BillingServices.addBillPage();
+	    }
+	}
     }).state('billhome.edit', {
-        url: '/edit/:billId',
-        controller: 'BillEditController',
-        templateUrl: 'template/billhome.edit.html'
+	url : '/edit/:billId',
+	controller : 'BillEditController',
+	templateUrl : 'template/billhome.edit.html'
     }).state('billhome.grouplist', {
-        url: '/grouplist',
-        controller: 'GroupListController',
-        templateUrl: 'template/group.list.html',
-        resolve: {
-            getGroupList: function(GroupServices) {
-                return GroupServices.getGroups();
-            }
-        }
+	url : '/grouplist',
+	controller : 'GroupListController',
+	templateUrl : 'template/group.list.html',
+	resolve : {
+	    getGroupList : function(GroupServices) {
+		return GroupServices.getGroups();
+	    }
+	}
     }).state('billhome.groupbills', {
-        url: '/groupbills/:groupId',
-        controller: 'GroupRecentController',
-        templateUrl: 'template/group.bills.html'
+	url : '/groupbills/:groupId',
+	controller : 'GroupRecentController',
+	templateUrl : 'template/group.bills.html'
     }).state('billhome.groupadd', {
-        url: '/groupadd',
-        controller: 'GroupController',
-        templateUrl: 'template/group.add.html'
+	url : '/groupadd',
+	controller : 'GroupController',
+	templateUrl : 'template/group.add.html'
     }).state('billhome.grpaddbill', {
-        url: '/grpaddbill/:groupId',
-        controller: 'GroupAddBillController',
-        templateUrl: 'template/group.addbill.html',
-        resolve: {
-            addBill: function(BillingServices) {
-                return BillingServices.addBillPage();
-            }
-        }
+	url : '/grpaddbill/:groupId',
+	controller : 'GroupAddBillController',
+	templateUrl : 'template/group.addbill.html',
+	resolve : {
+	    addBill : function(BillingServices) {
+		return BillingServices.addBillPage();
+	    }
+	}
     }).state('billhome.groupedit', {
-        url: '/groupedit/:groupId',
-        controller: 'GroupController',
-        templateUrl: 'template/group.edit.html'
+	url : '/groupedit/:groupId',
+	controller : 'GroupController',
+	templateUrl : 'template/group.edit.html'
     }).state('billhome.grpeditbill', {
-        url: '/grpeditbill/:billId',
-        controller: 'GroupEditBillController',
-        templateUrl: 'template/group.editbill.html'
+	url : '/grpeditbill/:billId',
+	controller : 'GroupEditBillController',
+	templateUrl : 'template/group.editbill.html'
     }).state('billhome.friends', {
-        url: '/friends',
-        controller: 'FriendController',
-        templateUrl: 'template/billhome.friends.html'
+	url : '/friends',
+	controller : 'FriendController',
+	templateUrl : 'template/billhome.friends.html'
     }).state('billhome.account', {
-        url: '/account',
-        controller: 'UpdateUserController',
-        templateUrl: 'template/account.html'
+	url : '/account',
+	controller : 'UpdateUserController',
+	templateUrl : 'template/account.html'
     });
 }, function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = true;
 });
 
-shareExpApp.controller('IndexController', function($scope, $state, $location, cfpLoadingBar,
-        CookieService, SessionService, AuthenticationService, FlashService) {
+shareExpApp.controller('IndexController', function($scope, $state, $location, cfpLoadingBar, CookieService, SessionService, AuthenticationService,
+	FlashService) {
 
     $scope.tab = 1;
 
     $scope.selectTab = function(setTab) {
-        console.log(setTab);
-        $scope.tab = setTab;
+	console.log(setTab);
+	$scope.tab = setTab;
     };
     $scope.isSelected = function(checkTab) {
 
-        return $scope.tab === checkTab;
+	return $scope.tab === checkTab;
+    };
+
+    $scope.clearFlash = function() {
+	FlashService.clear();
     };
 
     $scope.loggedIn = AuthenticationService.isLoggedIn();
@@ -138,211 +142,234 @@ shareExpApp.controller('IndexController', function($scope, $state, $location, cf
     $scope.loggedEmail = SessionService.get('userEmail');
 
     $scope.userLogin = function(user) {
-        cfpLoadingBar.start();
-        var sanitizeCredentials = AuthenticationService
-                .sanitizeCredentials(user);
+	cfpLoadingBar.start();
+	var sanitizeCredentials = AuthenticationService.sanitizeCredentials(user);
 
-        var userVerify = AuthenticationService.login().login(
-                sanitizeCredentials).$promise;
+	var userVerify = AuthenticationService.login().login(sanitizeCredentials).$promise;
 
-        userVerify.then(function(response) {
-            $scope.user = response;
+	userVerify.then(function(response) {
+	    $scope.user = response;
 
-            console.log($scope.user);
-            console.log($scope.user.status);
-            if ($scope.user.status === 'I') {
-                FlashService.show('Please provide activation Code to Login',
-                        'alert-warning');
-                AuthenticationService.cacheSession('userEmail',
-                        $scope.user.email);
-                $scope.loggedEmail = SessionService.get('userEmail');
-                cfpLoadingBar.complete();
-                $state.go('home.activation');
-            }
+	    console.log($scope.user);
+	    console.log($scope.user.status);
+	    if ($scope.user.status === 'I') {
+		FlashService.show('Please provide activation Code to Login', 'alert-info');
+		AuthenticationService.cacheSession('userEmail', $scope.user.email);
+		$scope.loggedEmail = SessionService.get('userEmail');
+		cfpLoadingBar.complete();
+		$state.go('home.activation');
+	    }
 
-            if ($scope.user.status === 'R') {
-                FlashService.show('Please change password', 'alert-danger');
-                AuthenticationService.cacheSession('userEmail',
-                        $scope.user.email);
-                $scope.loggedEmail = SessionService.get('userEmail');
-                cfpLoadingBar.complete();
-                $state.go('home.chgpwd');
-            }
+	    if ($scope.user.status === 'R') {
+		FlashService.show('Please change password', 'alert-danger');
+		AuthenticationService.cacheSession('userEmail', $scope.user.email);
+		$scope.loggedEmail = SessionService.get('userEmail');
+		cfpLoadingBar.complete();
+		$state.go('home.chgpwd');
+	    }
 
-            console.log('Outside after IF');
-            if ($scope.user.status === 'A') {
-                AuthenticationService.cacheSession('userId', $scope.user.id);
-                AuthenticationService
-                        .cacheSession('userName', $scope.user.name);
-                AuthenticationService.cacheSession('userEmail',
-                        $scope.user.email);
-                AuthenticationService.cacheSession('authenticated', true);
+	    console.log('Outside after IF');
+	    if ($scope.user.status === 'A') {
+		AuthenticationService.cacheSession('userId', $scope.user.id);
+		AuthenticationService.cacheSession('userName', $scope.user.name);
+		AuthenticationService.cacheSession('userEmail', $scope.user.email);
+		AuthenticationService.cacheSession('authenticated', true);
 
-                CookieService.set('authenticated', true);
-                $scope.loggedUser = SessionService.get('userId');
-                $scope.loggedIn = AuthenticationService.isLoggedIn();
-                $scope.loggedUserName = SessionService.get('userName');
-                $scope.loggedEmail = SessionService.get('userEmail');
+		CookieService.set('authenticated', true);
+		$scope.loggedUser = SessionService.get('userId');
+		$scope.loggedIn = AuthenticationService.isLoggedIn();
+		$scope.loggedUserName = SessionService.get('userName');
+		$scope.loggedEmail = SessionService.get('userEmail');
 
-                $state.go('billhome.list');
-            }
-        }, function(response) {
-            FlashService.show('Status Code: ' + response.status + response.data,
-                    'alert-danger');
-            cfpLoadingBar.complete();
-        });
+		$state.go('billhome.list');
+	    }
+	}, function(response) {
+	    $scope.errorresource = response.data;
+	    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+	    cfpLoadingBar.complete();
+	});
     };
 
     $scope.activateUser = function(userSecure) {
-        cfpLoadingBar.start();
+	cfpLoadingBar.start();
 
-        var userVerify = AuthenticationService.activation()
-                .activate(userSecure).$promise;
+	var userVerify = AuthenticationService.activation().activate(userSecure).$promise;
 
-        userVerify.then(function(response) {
-            $scope.user = response;
+	userVerify.then(function(response) {
+	    $scope.user = response;
 
-            AuthenticationService.cacheSession('userId', $scope.user.id);
-            AuthenticationService.cacheSession('userName', $scope.user.name);
-            AuthenticationService.cacheSession('userEmail', $scope.user.email);
-            AuthenticationService.cacheSession('authenticated', true);
+	    AuthenticationService.cacheSession('userId', $scope.user.id);
+	    AuthenticationService.cacheSession('userName', $scope.user.name);
+	    AuthenticationService.cacheSession('userEmail', $scope.user.email);
+	    AuthenticationService.cacheSession('authenticated', true);
 
-            CookieService.set('authenticated', true);
-            $scope.loggedUser = SessionService.get('userId');
-            $scope.loggedIn = AuthenticationService.isLoggedIn();
-            $scope.loggedUserName = SessionService.get('userName');
+	    CookieService.set('authenticated', true);
+	    $scope.loggedUser = SessionService.get('userId');
+	    $scope.loggedIn = AuthenticationService.isLoggedIn();
+	    $scope.loggedUserName = SessionService.get('userName');
 
-            $location.path('/billhome/list');
-        }, function(response) {
-            FlashService.show('Status Code: ' + response.status + response.data,
-                    'alert-danger');
-            cfpLoadingBar.complete();
-        });
+	    $location.path('/billhome/list');
+	}, function(response) {
+	    $scope.errorresource = response.data;
+	    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+	    cfpLoadingBar.complete();
+	});
+    };
+
+    $scope.regenerateactivationCode = function(emailId) {
+	cfpLoadingBar.start();
+
+	if (emaildId === null || emailId === '') {
+	    FlashService.show('Please enter email address to regenerate Activation Code', 'alert-danger');
+	}
+	var userVerify = AuthenticationService.regenerateActivation().regenerateActivate(emailId).$promise;
+
+	userVerify.then(function(response) {
+
+	    FlashService.show('Please provide activation Code to Login', 'alert-info');
+	    cfpLoadingBar.complete();
+
+	}, function(response) {
+	    $scope.errorresource = response.data;
+	    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+	    cfpLoadingBar.complete();
+	});
+    };
+
+    $scope.forgotPwd = function(emailId) {
+	cfpLoadingBar.start();
+
+	var userVerify = AuthenticationService.forgot().forgot(emailId).$promise;
+
+	userVerify.then(function(response) {
+
+	    FlashService.show('Please provide activation Code to Login', 'alert-info');
+	    $location.path('/home');
+	    cfpLoadingBar.complete();
+
+	}, function(response) {
+	    $scope.errorresource = response.data;
+	    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+	    cfpLoadingBar.complete();
+	});
     };
 
     $scope.changePwd = function(user) {
-        cfpLoadingBar.start();
-        var userAdd = UserServices.save(user).$promise;
-        userAdd.then(function(response) {
-            $scope.user = response;
+	cfpLoadingBar.start();
+	var userAdd = UserServices.save(user).$promise;
+	userAdd.then(function(response) {
+	    $scope.user = response;
 
-            AuthenticationService.cacheSession('userId', $scope.user.id);
-            AuthenticationService.cacheSession('userName', $scope.user.name);
-            AuthenticationService.cacheSession('userEmail', $scope.user.email);
-            AuthenticationService.cacheSession('authenticated', true);
+	    AuthenticationService.cacheSession('userId', $scope.user.id);
+	    AuthenticationService.cacheSession('userName', $scope.user.name);
+	    AuthenticationService.cacheSession('userEmail', $scope.user.email);
+	    AuthenticationService.cacheSession('authenticated', true);
 
-            CookieService.set('authenticated', true);
-            $scope.loggedUser = SessionService.get('userId');
-            $scope.loggedIn = AuthenticationService.isLoggedIn();
-            $scope.loggedUserName = SessionService.get('userName');
+	    CookieService.set('authenticated', true);
+	    $scope.loggedUser = SessionService.get('userId');
+	    $scope.loggedIn = AuthenticationService.isLoggedIn();
+	    $scope.loggedUserName = SessionService.get('userName');
 
-            $location.path('/billhome/list');
-        }, function(response) {
-            FlashService.show("Status Code: " + response.status
-                    + " Message: Registeration failed.", "alert-danger");
-            cfpLoadingBar.complete();
-        }
+	    $location.path('/billhome/list');
+	}, function(response) {
+	    $scope.errorresource = response.data;
+	    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+	    cfpLoadingBar.complete();
+	}
 
-        );
+	);
     };
 
     $scope.userLogout = function() {
-        cfpLoadingBar.start();
-        var userSignout = AuthenticationService.logout().logout().$promise;
-        userSignout.then(function(response) {
-            AuthenticationService.uncacheSession('userId');
-            AuthenticationService.uncacheSession('userName');
-            AuthenticationService.uncacheSession('userEmail');
-            AuthenticationService.uncacheSession('authenticated');
-            CookieService.unset('authenticated');
-            $scope.loggedIn = AuthenticationService.isLoggedIn();
-            $location.path('/home');
-        }, function(response) {
-            FlashService.show('Status Code: ' + response.status
-                    + ' Message: Logout Failed.', 'alert-danger');
-            cfpLoadingBar.complete();
-        });
+	cfpLoadingBar.start();
+	var userSignout = AuthenticationService.logout().logout().$promise;
+	userSignout.then(function(response) {
+	    AuthenticationService.uncacheSession('userId');
+	    AuthenticationService.uncacheSession('userName');
+	    AuthenticationService.uncacheSession('userEmail');
+	    AuthenticationService.uncacheSession('authenticated');
+	    CookieService.unset('authenticated');
+	    $scope.loggedIn = AuthenticationService.isLoggedIn();
+	    $location.path('/home');
+	}, function(response) {
+	    $scope.errorresource = response.data;
+	    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+	    cfpLoadingBar.complete();
+	});
     };
 });
 
 shareExpApp.run(function($rootScope, $location, AuthenticationService, FlashService) {
 
-    var routesThatRequireAuth = ['/home', '/home/signup', "/home/login",
-        '/home/activation'];
+    var routesThatRequireAuth = [ '/home', '/home/signup', '/home/forgot', '/home/chgpwd', "/home/login", '/home/activation' ];
 
     $rootScope.$on('$locationChangeStart', function(event) {
-        if (!_(routesThatRequireAuth).contains($location.path())
-                && !AuthenticationService.isLoggedIn()) {
-            $location.path('/home');
-            FlashService.show(' please login to continue.', 'alert-info');
-            return;
-        }
+	if (!_(routesThatRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn()) {
+	    $location.path('/home');
+	    FlashService.show(' please login to continue.', 'alert-info');
+	    return;
+	}
     });
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
-        FlashService.clear();
-        if (!_(routesThatRequireAuth).contains($location.path())
-                && !AuthenticationService.isLoggedIn()) {
-            $location.path('/home');
-            FlashService.show(' please login to continue.', 'alert-info');
-            return;
-        }
-        console.log('$routeChangeStart - fired when an error occurs during transition.');
+	if (!_(routesThatRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn()) {
+	    $location.path('/home');
+	    FlashService.show(' please login to continue.', 'alert-info');
+	    return;
+	}
+	console.log('$routeChangeStart - fired when an error occurs during transition.');
     });
     $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
-        $rootScope.newLocation = $location.path();
+	$rootScope.newLocation = $location.path();
 
     });
-    $rootScope.$on('$routeChangeError', function(event, current, previous,
-            rejection) {
-        console.log('$stateChangeError - fired when an error occurs during transition.');
+    $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
+	console.log('$stateChangeError - fired when an error occurs during transition.');
     });
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, $scope) {
-         FlashService.clear();
-         if (!_(routesThatRequireAuth).contains($location.path())
-                && !AuthenticationService.isLoggedIn()) {
-            $location.path('/home');
-            FlashService.show(' please login to continue.', 'alert-info');
-            return;
-        }
+	if (!_(routesThatRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn()) {
+	    $location.path('/home');
+	    FlashService.show(' please login to continue.', 'alert-info');
+	    return;
+	}
     });
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams) {
-        console.log('$stateChangeError - fired when an error occurs during transition.');
-        console.log(arguments);
+	console.log('$stateChangeError - fired when an error occurs during transition.');
+	console.log(arguments);
     });
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-        
+
     });
 
     $rootScope.$on('$viewContentLoaded', function(event) {
     });
     $rootScope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
-        console.log('$stateNotFound ' + unfoundState.to + '  - fired when a state cannot be found by its name.');
-        console.log(unfoundState, fromState, fromParams);
+	console.log('$stateNotFound ' + unfoundState.to + '  - fired when a state cannot be found by its name.');
+	console.log(unfoundState, fromState, fromParams);
     });
 
 });
 
 shareExpApp.animation('.alert', function($timeout, FlashService) {
     return {
-        leave: function(element, done) {
-            TweenMax.fromTo(element, 1, {
-                opacity: 1
-            }, {
-                opacity: 0,
-                onComplete: done
-            });
-        },
-        enter: function(element, done) {
-            TweenMax.fromTo(element, 1, {
-                opacity: 0
-            }, {
-                opacity: 1,
-                onComplete: done
-            });
-            /*$timeout(function() {
-             FlashService.clear();
-             }, 3000);*/
-        }
+	leave : function(element, done) {
+	    TweenMax.fromTo(element, 1, {
+		opacity : 1
+	    }, {
+		opacity : 0,
+		onComplete : done
+	    });
+	},
+	enter : function(element, done) {
+	    TweenMax.fromTo(element, 1, {
+		opacity : 0
+	    }, {
+		opacity : 1,
+		onComplete : done
+	    });
+	    /*
+	     * $timeout(function() { FlashService.clear(); }, 3000);
+	     */
+	}
     };
 });

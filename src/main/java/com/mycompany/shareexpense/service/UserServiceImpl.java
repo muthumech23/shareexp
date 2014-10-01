@@ -7,6 +7,8 @@ import com.mycompany.shareexpense.model.UserSecure;
 import com.mycompany.shareexpense.repository.UserRepository;
 import com.mycompany.shareexpense.repository.UserSecureRepository;
 import com.mycompany.shareexpense.util.CommonUtil;
+import com.mycompany.shareexpense.util.CustomException;
+import com.mycompany.shareexpense.util.ErrorConstants;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,322 +25,437 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-	private final Logger		log			= Logger.getLogger(UserController.class);
+	private final Logger log = Logger.getLogger(UserController.class);
 
-	DateFormat					dateFormat	= new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-
-	@Autowired
-	private Environment			env;
+	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
 	@Autowired
-	public UserRepository		userRepository;
+	private Environment env;
 
 	@Autowired
-	public UserSecureRepository	userSecureRepository;
+	public UserRepository userRepository;
+
+	@Autowired
+	public UserSecureRepository userSecureRepository;
 
 	@Override
 	public User authenticateLogin(	String email,
-									String password) throws Exception {
+									String password) throws CustomException {
 
 		String passwordSecure = null;
 		User user = null;
-		UserSecure userSecure = userSecureRepository.findByUserId(email);
+		try {
+			UserSecure userSecure = userSecureRepository.findByUserId(email);
 
-
-		if (userSecure == null) {
-			throw new Exception("Login failed. User Id or Password is incorrect.");
-		}
-
-		if ("R".equalsIgnoreCase(userSecure.getStatus())) {
-			passwordSecure = userSecure.getRandomString();
-		} else if ("I".equalsIgnoreCase(userSecure.getStatus())) {
-			passwordSecure = userSecure.getPassword();
-			password = Arrays.toString(CommonUtil.getEncryptedPassword(password, email.getBytes()));
-		} else {
-			passwordSecure = userSecure.getPassword();
-			password = Arrays.toString(CommonUtil.getEncryptedPassword(password, email.getBytes()));
-		}
-
-		if (password.equalsIgnoreCase(passwordSecure)) {
-
-			user = userRepository.findByEmail(email);
-
-			if (user == null) {
-				throw new Exception("User is not available");
+			if (userSecure == null) {
+				throw new CustomException(ErrorConstants.ERR_LOGIN_FAILED, "The email address provided for login is not correct.");
 			}
 
-			user.setStatus(userSecure.getStatus());
+			if ("R".equalsIgnoreCase(userSecure.getStatus())) {
+				passwordSecure = userSecure.getRandomString();
+			} else if ("I".equalsIgnoreCase(userSecure.getStatus())) {
+				passwordSecure = userSecure.getPassword();
+				password = Arrays.toString(CommonUtil.getEncryptedPassword(password, email.getBytes()));
+			} else {
+				passwordSecure = userSecure.getPassword();
+				password = Arrays.toString(CommonUtil.getEncryptedPassword(password, email.getBytes()));
+			}
 
-		} else {
-			throw new Exception("Login failed. User Id or Password is incorrect.");
+			if (password.equalsIgnoreCase(passwordSecure)) {
+
+				user = userRepository.findByEmail(email);
+
+				if (user == null) {
+					throw new CustomException(ErrorConstants.ERR_LOGIN_FAILED, "The email address provided is not correct.");
+				}
+
+				user.setStatus(userSecure.getStatus());
+
+			} else {
+				throw new CustomException(ErrorConstants.ERR_LOGIN_FAILED, "The password provided is incorrect.");
+			}
+
+			log.info("Secure ID ---> " + userSecure.getUserId());
+		} catch (CustomException ce) {
+			log.error("userServiceImpl", ce);
+			throw ce;
+		} catch (Exception exception) {
+			log.error("userServiceImpl", exception);
+			throw new CustomException(ErrorConstants.ERR_LOGIN_FAILED, "Transaction requested has been failed. Please try again.");
 		}
-
-		log.info("Secure ID ---> " + userSecure.getUserId());
 		return user;
 	}
 
 	@Override
-	public boolean forgotPassword(String email) throws Exception {
+	public boolean forgotPassword(String email) throws CustomException {
 
 		boolean status = false;
 
 		Date sysDate = new Date();
+		try {
+			UserSecure userSecure = userSecureRepository.findByUserId(email);
 
-		UserSecure userSecure = userSecureRepository.findByUserId(email);
+			if (userSecure == null) {
+				throw new CustomException(ErrorConstants.ERR_FORGOT_PWD_FAILED, "The email address provided is not correct.");
+			}
 
-		if (userSecure == null) {
-			throw new Exception("User Id or Password is incorrect.");
+			userSecure.setRandomString(CommonUtil.generateRandomString(6, CommonUtil.Mode.ALPHANUMERIC));
+			userSecure.setStatus("R");
+
+			userSecure.setModifiedDate(dateFormat.format(sysDate));
+			userSecureRepository.save(userSecure);
+
+			String emailbody = env.getProperty("mail.template.forgot.pwd");
+
+			log.debug("emailbody --> " + emailbody);
+			emailbody = emailbody.replaceAll("<<passwordreset>>", userSecure.getRandomString());
+			emailbody = emailbody.replaceAll("<<siteUrl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/login");
+
+			CommonUtil.sendEmail("Reset Password Request", email, emailbody, env);
+			status = true;
+		} catch (CustomException ce) {
+			log.error("userServiceImpl", ce);
+			throw ce;
+		} catch (Exception exception) {
+			log.error("userServiceImpl", exception);
+			throw new CustomException(ErrorConstants.ERR_FORGOT_PWD_FAILED, "Transaction requested has been failed. Please try again.");
 		}
-
-		userSecure.setRandomString(CommonUtil.generateRandomString(6, CommonUtil.Mode.ALPHANUMERIC));
-		userSecure.setStatus("R");
-
-		userSecure.setModifiedDate(dateFormat.format(sysDate));
-		userSecureRepository.save(userSecure);
-
-
-		String emailbody = env.getProperty("mail.template.forgot.pwd");
-		
-		log.debug("emailbody --> "+emailbody);
-		emailbody = emailbody.replaceAll("<<passwordreset>>", userSecure.getRandomString());
-		emailbody = emailbody.replaceAll("<<siteUrl>>", "http://localhost:8580/shareexpense/#/home/login");
-
-		CommonUtil.sendEmail("Reset Password Request", email, emailbody, env);
-		status = true;
 		return status;
 	}
 
 	@Override
-	public User createAccount(User user) throws Exception {
+	public boolean regenerateActivation(String email) throws CustomException {
+
+		boolean status = false;
+
+		Date sysDate = new Date();
+		try {
+			UserSecure userSecure = userSecureRepository.findByUserId(email);
+
+			if (userSecure == null) {
+				throw new CustomException(ErrorConstants.ERR_ACTIVATION_FAILED, "The email address provided is not correct.");
+			}
+
+			userSecure.setRandomString(CommonUtil.generateRandomString(6, CommonUtil.Mode.NUMERIC));
+
+			userSecure.setModifiedDate(dateFormat.format(sysDate));
+			userSecureRepository.save(userSecure);
+
+			String emailbody = env.getProperty("mail.template.activate.pwd");
+
+			log.debug("emailbody --> " + emailbody);
+			emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString());
+			emailbody = emailbody.replaceAll("<<siteUrl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/login");
+
+			CommonUtil.sendEmail("Activation Code Generated", email, emailbody, env);
+			status = true;
+		} catch (CustomException ce) {
+			log.error("userServiceImpl", ce);
+			throw ce;
+		} catch (Exception exception) {
+			log.error("userServiceImpl", exception);
+			throw new CustomException(ErrorConstants.ERR_ACTIVATION_FAILED, "Transaction requested has been failed. Please try again.");
+		}
+		return status;
+	}
+
+	@Override
+	public User createAccount(User user) throws CustomException {
 
 		User userResponse = null;
 		UserSecure userSecure = null;
 
 		Date sysDate = new Date();
+		try {
+			log.debug(user.getEmail());
+			User userExists = userRepository.findByEmail(user.getEmail());
 
-		log.debug(user.getEmail());
-		User userExists = userRepository.findByEmail(user.getEmail());
+			if (userExists != null) {
 
-		if (userExists != null) {
+				userSecure = userSecureRepository.findByUserId(user.getEmail());
 
-			userSecure = userSecureRepository.findByUserId(user.getEmail());
+				if (userSecure == null) {
 
-			if (userSecure == null) {
+					userSecure = new UserSecure();
+					userSecure.setUserId(user.getEmail());
+					userSecure.setPassword(Arrays.toString(CommonUtil.getEncryptedPassword(user.getPassword(), userExists.getEmail().getBytes())));
+					userSecure.setCreateDate(dateFormat.format(sysDate));
+					userSecure.setModifiedDate(dateFormat.format(sysDate));
+					userSecure.setRandomString(CommonUtil.generateRandomString(6, CommonUtil.Mode.NUMERIC));
+					userSecure.setStatus("I");
+					userSecureRepository.save(userSecure);
+
+					String emailbody = env.getProperty("mail.template.activate.body");
+					emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString());
+					emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/activation");
+
+					CommonUtil.sendEmail("User Registration", user.getEmail(), emailbody, env);
+
+				} else {
+					throw new CustomException(ErrorConstants.ERR_USER_REGISTERATION, "User is already register, please login to continue.");
+				}
+
+			} else {
+				userResponse = userRepository.save(user);
 
 				userSecure = new UserSecure();
 				userSecure.setUserId(user.getEmail());
-				userSecure.setPassword(Arrays.toString(CommonUtil.getEncryptedPassword(user.getPassword(), userExists
-								.getEmail().getBytes())));
+				userSecure.setPassword(Arrays.toString(CommonUtil.getEncryptedPassword(user.getPassword(), userResponse.getEmail().getBytes())));
 				userSecure.setCreateDate(dateFormat.format(sysDate));
 				userSecure.setModifiedDate(dateFormat.format(sysDate));
 				userSecure.setRandomString(CommonUtil.generateRandomString(6, CommonUtil.Mode.NUMERIC));
 				userSecure.setStatus("I");
+
 				userSecureRepository.save(userSecure);
 
 				String emailbody = env.getProperty("mail.template.activate.body");
+
+				log.debug("emailbody --> " + emailbody);
+
 				emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString());
-				emailbody = emailbody.replaceAll("<<siteurl>>", "http://localhost:8580/shareexpense/#/home/activation");
+				emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/activation");
 
 				CommonUtil.sendEmail("User Registration", user.getEmail(), emailbody, env);
 
-			} else {
-				throw new Exception("User already register, please login to continue");
 			}
-
-		} else {
-			userResponse = userRepository.save(user);
-
-			userSecure = new UserSecure();
-			userSecure.setUserId(user.getEmail());
-			userSecure.setPassword(Arrays.toString(CommonUtil.getEncryptedPassword(user.getPassword(), userResponse
-							.getEmail().getBytes())));
-			userSecure.setCreateDate(dateFormat.format(sysDate));
-			userSecure.setModifiedDate(dateFormat.format(sysDate));
-			userSecure.setRandomString(CommonUtil.generateRandomString(6, CommonUtil.Mode.NUMERIC));
-			userSecure.setStatus("I");
-
-			userSecureRepository.save(userSecure);
-
-
-			String emailbody = env.getProperty("mail.template.activate.body");
-			
-			log.debug("emailbody --> "+emailbody);
-			
-			emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString());
-			emailbody = emailbody.replaceAll("<<siteurl>>", "http://localhost:8580/shareexpense/#/home/activation");
-
-			CommonUtil.sendEmail("User Registration", user.getEmail(), emailbody, env);
-
+		} catch (CustomException ce) {
+			log.error("userServiceImpl", ce);
+			throw ce;
+		} catch (Exception exception) {
+			log.error("userServiceImpl", exception);
+			throw new CustomException(ErrorConstants.ERR_USER_REGISTERATION, "Transaction requested has been failed. Please try again.");
 		}
-
 		return userResponse;
 	}
 
+	@Override
+	public User activateAccount(UserSecure userInput) throws CustomException {
+
+
+		String passwordSecure = null;
+		User user = null;
+		try {
+			UserSecure userSecure = userSecureRepository.findByUserId(userInput.getUserId());
+
+			if (userSecure == null) {
+				throw new CustomException(ErrorConstants.ERR_ACTIVATION_FAILED, "The email address provided is not correct.");
+			}
+
+
+			passwordSecure = Arrays.toString(CommonUtil.getEncryptedPassword(userInput.getPassword(), userInput.getUserId().getBytes()));
+
+			if (passwordSecure.equalsIgnoreCase(userSecure.getPassword())) {
+
+				if (userSecure.getRandomString().equalsIgnoreCase(userInput.getRandomString())) {
+
+					Date sysDate = new Date();
+
+					userSecure.setStatus("A");
+					userSecure.setRandomString(null);
+					userSecure.setModifiedDate(dateFormat.format(sysDate));
+					userSecureRepository.save(userSecure);
+				} else {
+					throw new CustomException(ErrorConstants.ERR_ACTIVATION_FAILED, "The activation code provided is incorrect.");
+				}
+
+				user = userRepository.findByEmail(userInput.getUserId());
+
+
+				if (user == null) {
+					throw new CustomException(ErrorConstants.ERR_ACTIVATION_FAILED, "The email address provided is not correct.");
+				}
+
+				user.setStatus(userSecure.getStatus());
+
+			} else {
+				throw new CustomException(ErrorConstants.ERR_ACTIVATION_FAILED, "The password provided is incorrect.");
+			}
+
+
+		} catch (CustomException ce) {
+			log.error("userServiceImpl", ce);
+			throw ce;
+		} catch (Exception exception) {
+			log.error("userServiceImpl", exception);
+			throw new CustomException(ErrorConstants.ERR_ACTIVATION_FAILED, "Transaction requested has been failed. Please try again.");
+		}
+		return user;
+
+	}
 
 	@Override
-	public User activateAccount(UserSecure userInput) throws Exception {
+	public User updateAccount(User userInput) throws CustomException {
 
-		String password =
-						Arrays.toString(CommonUtil.getEncryptedPassword(userInput.getPassword(), userInput.getUserId()
-										.getBytes()));
+		User user = null;
+		try {
+			UserSecure userSecure = userSecureRepository.findByUserId(userInput.getEmail());
 
-		UserSecure userSecure = userSecureRepository.findByUserIdAndPassword(userInput.getUserId(), password);
+			if (userSecure == null) {
+				throw new CustomException(ErrorConstants.ERR_UPDATE_ACCOUNT_FAILED, "The email address provided is not correct.");
+			}
 
-		if (userSecure == null) {
-			throw new Exception("Login failed. User Id or Password is incorrect.");
-		}
-
-
-		if (userSecure.getRandomString().equalsIgnoreCase(userInput.getRandomString())) {
+			if ("R".equalsIgnoreCase(userSecure.getStatus())) {
+				userSecure.setStatus("A");
+				userSecure.setRandomString(null);
+			}
 
 			Date sysDate = new Date();
 
-			userSecure.setStatus("A");
-			userSecure.setRandomString(null);
+			userSecure.setPassword(Arrays.toString(CommonUtil.getEncryptedPassword(userInput.getPassword(), userInput.getEmail().getBytes())));
+
 			userSecure.setModifiedDate(dateFormat.format(sysDate));
 			userSecureRepository.save(userSecure);
-		}else{
-			throw new Exception("Invalid activation code");
+
+			user = userRepository.findByEmail(userInput.getEmail());
+		} catch (CustomException ce) {
+			log.error("userServiceImpl", ce);
+			throw ce;
+		} catch (Exception exception) {
+			log.error("userServiceImpl", exception);
+			throw new CustomException(ErrorConstants.ERR_UPDATE_ACCOUNT_FAILED, "Transaction requested has been failed. Please try again.");
 		}
-
-		User user = userRepository.findByEmail(userInput.getUserId());
-
-		return user;
-
-	}
-
-	@Override
-	public User updateAccount(User userInput) throws Exception {
-
-
-		UserSecure userSecure = userSecureRepository.findByUserId(userInput.getEmail());
-
-		if (userSecure == null) {
-			throw new Exception("User Id or Password is incorrect.");
-		}
-
-		if ("R".equalsIgnoreCase(userSecure.getStatus())) {
-			userSecure.setStatus("A");
-			userSecure.setRandomString(null);
-		}
-
-		Date sysDate = new Date();
-
-		userSecure.setPassword(Arrays.toString(CommonUtil.getEncryptedPassword(userInput.getPassword(), userInput
-						.getEmail().getBytes())));
-
-		userSecure.setModifiedDate(dateFormat.format(sysDate));
-		userSecureRepository.save(userSecure);
-
-		User user = userRepository.findByEmail(userInput.getEmail());
-
 		return user;
 	}
 
 	@Override
-	public User showAccount(String Id) throws Exception {
+	public User showAccount(String Id) throws CustomException {
 
-		return userRepository.findOne(Id);
+		User user = null;
+		try {
+			user = userRepository.findOne(Id);
+		}
 
+		catch (Exception exception) {
+			log.error("userServiceImpl", exception);
+			throw new CustomException(ErrorConstants.ERR_SHOW_ACCOUNT_DETAILS, "Transaction requested has been failed. Please try again.");
+		}
+		return user;
 	}
 
 	@Override
 	public User createFriend(	User user,
-								String Id) throws Exception {
+								String Id) throws CustomException {
 
 		Date sysDate = new Date();
 		List<String> friends = null;
+		User friendExist = null;
+		try {
+			friendExist = userRepository.findByEmail(user.getEmail());
+			if (friendExist == null) {
+				user.setModifiedDate(dateFormat.format(sysDate));
+				user.setCreateDate(dateFormat.format(sysDate));
 
-		User friendExist = userRepository.findByEmail(user.getEmail());
-		if (friendExist == null) {
-			user.setModifiedDate(dateFormat.format(sysDate));
-			user.setCreateDate(dateFormat.format(sysDate));
+				friends = user.getFriends() != null ? user.getFriends() : new ArrayList<String>();
+				friends.add(Id);
 
-			friends = user.getFriends() != null ? user.getFriends() : new ArrayList<String>();
-			friends.add(Id);
+				friendExist = userRepository.save(user);
+			}
 
-			friendExist = userRepository.save(user);
+			User loggedUser = userRepository.findOne(Id);
+
+			if (loggedUser.getFriends() != null) {
+				loggedUser.getFriends().add(friendExist.getId());
+			} else {
+				List<String> loggedFriends = new ArrayList<>();
+				loggedFriends.add(friendExist.getId());
+				loggedUser.setFriends(loggedFriends);
+			}
+			loggedUser.setModifiedDate(dateFormat.format(sysDate));
+			userRepository.save(loggedUser);
+
+			if (friendExist.getFriends() != null) {
+				friendExist.getFriends().add(Id);
+			} else {
+				List<String> friendsList = new ArrayList<>();
+				friendsList.add(Id);
+				friendExist.setFriends(friendsList);
+			}
+
+			friendExist.setModifiedDate(dateFormat.format(sysDate));
+			userRepository.save(friendExist);
+
+			String emailbody = env.getProperty("mail.template.friend.add.body");
+
+			log.debug("emailbody --> " + emailbody);
+
+			emailbody = emailbody.replaceAll("<<username>>", loggedUser.getName());
+			emailbody = emailbody.replaceAll("<<useremail>>", loggedUser.getEmail());
+			emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home");
+
+			CommonUtil.sendEmail("Friend Addition", friendExist.getEmail(), emailbody, env);
 		}
 
-		User loggedUser = userRepository.findOne(Id);
-
-		if (loggedUser.getFriends() != null) {
-			loggedUser.getFriends().add(friendExist.getId());
-		} else {
-			List<String> loggedFriends = new ArrayList<>();
-			loggedFriends.add(friendExist.getId());
-			loggedUser.setFriends(loggedFriends);
+		catch (Exception exception) {
+			log.error("userServiceImpl", exception);
+			throw new CustomException(ErrorConstants.ERR_FRIEND_REGISTERATION, "Transaction requested has been failed. Please try again.");
 		}
-		loggedUser.setModifiedDate(dateFormat.format(sysDate));
-		userRepository.save(loggedUser);
-
-		if (friendExist.getFriends() != null) {
-			friendExist.getFriends().add(Id);
-		} else {
-			List<String> friendsList = new ArrayList<>();
-			friendsList.add(Id);
-			friendExist.setFriends(friendsList);
-		}
-
-		friendExist.setModifiedDate(dateFormat.format(sysDate));
-		userRepository.save(friendExist);
-		
-		String emailbody = env.getProperty("mail.template.friend.add.body");
-		
-		log.debug("emailbody --> "+emailbody);
-		
-		emailbody = emailbody.replaceAll("<<username>>", loggedUser.getName());
-		emailbody = emailbody.replaceAll("<<useremail>>", loggedUser.getEmail());
-		emailbody = emailbody.replaceAll("<<siteurl>>", "http://localhost:8580/shareexpense/#/home");
-
-		CommonUtil.sendEmail("Friend Addition", friendExist.getEmail(), emailbody, env);
-		
 		return friendExist;
 	}
 
 	@Override
-	public User updateFriend(User user) throws Exception {
+	public User updateFriend(User user) throws CustomException {
 
-		User friendUpdated = userRepository.save(user);
+		User friendUpdated = null;
+		try {
+			friendUpdated = userRepository.save(user);
+		}
 
+		catch (Exception exception) {
+			log.error("userServiceImpl", exception);
+			throw new CustomException(ErrorConstants.ERR_FRIEND_UPDATE, "Transaction requested has been failed. Please try again.");
+		}
 		return friendUpdated;
 	}
 
 	@Override
-	public List<User> findByFriend(String userId) throws Exception {
+	public List<User> findByFriend(String userId) throws CustomException {
 
 		List<User> friendList = null;
-		User user = userRepository.findOne(userId);
+		try {
+			User user = userRepository.findOne(userId);
 
-		if (user.getFriends() != null) {
-			Iterable<User> friends = userRepository.findAll(user.getFriends());
-			friendList = CommonUtil.toList(friends);
+			if (user.getFriends() != null) {
+				Iterable<User> friends = userRepository.findAll(user.getFriends());
+				friendList = CommonUtil.toList(friends);
 
-		} else {
-			friendList = new ArrayList<>();
+			} else {
+				friendList = new ArrayList<>();
+			}
+
+			friendList.add(user);
 		}
 
-		friendList.add(user);
+		catch (Exception exception) {
+			log.error("userServiceImpl", exception);
+			throw new CustomException(ErrorConstants.ERR_FRIEND_SHOW_DETAIL, "Transaction requested has been failed. Please try again.");
+		}
 		return friendList;
 	}
 
 	@Override
 	public void deleteFriend(	String userId,
-								String Id) throws Exception {
+								String Id) throws CustomException {
 
-		Date sysDate = new Date();
+		try {
+			Date sysDate = new Date();
 
-		User user = userRepository.findOne(userId);
-		List<String> friends = user.getFriends();
+			User user = userRepository.findOne(userId);
+			List<String> friends = user.getFriends();
 
-		if (friends != null) {
-			friends.remove(Id);
+			if (friends != null) {
+				friends.remove(Id);
 
-			user.setFriends(friends);
+				user.setFriends(friends);
 
-			user.setModifiedDate(dateFormat.format(sysDate));
+				user.setModifiedDate(dateFormat.format(sysDate));
 
-			userRepository.save(user);
+				userRepository.save(user);
+			}
+		}
+
+		catch (Exception exception) {
+			log.error("userServiceImpl", exception);
+			throw new CustomException(ErrorConstants.ERR_FRIEND_DELETION, "Transaction requested has been failed. Please try again.");
 		}
 	}
 

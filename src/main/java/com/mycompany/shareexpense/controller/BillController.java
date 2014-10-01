@@ -4,6 +4,8 @@ package com.mycompany.shareexpense.controller;
 import com.mycompany.shareexpense.model.Bill;
 import com.mycompany.shareexpense.model.BillSplit;
 import com.mycompany.shareexpense.service.BillService;
+import com.mycompany.shareexpense.util.CustomException;
+import com.mycompany.shareexpense.util.ErrorConstants;
 
 import java.util.List;
 
@@ -19,13 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class BillController.
- */
 @RestController
 @RequestMapping("bill")
-public class BillController {
+public class BillController extends AbstractController {
 
 	/** The log. */
 	private final Logger	log	= Logger.getLogger(BillController.class);
@@ -43,14 +41,21 @@ public class BillController {
 	 */
 	@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
 					method = RequestMethod.POST)
-	public ResponseEntity<Bill> submitBill(@RequestBody Bill bill) throws Exception {
+	public ResponseEntity<Bill> submitBill(@RequestBody Bill bill) throws CustomException {
 
-		log.debug("Inside Submit Bill --->");
-		log.debug(bill.getUserPaid());
-		Bill returnBill = billService.saveBill(bill);
+		Bill returnBill = null;
+		try {
+			returnBill = billService.saveBill(bill);
 
-		ResponseEntity<Bill> responseEntity = new ResponseEntity<>(returnBill, HttpStatus.CREATED);
-		return responseEntity;
+		} catch (CustomException ce) {
+			log.error("/bill/create", ce);
+			throw ce;
+		} catch (Exception e) {
+			log.error("/bill/create", e);
+			throw new CustomException(ErrorConstants.ERR_GENERAL_FAILURE, "Transaction requested has been failed. Please try again.");
+		}
+
+		return new ResponseEntity<>(returnBill, HttpStatus.CREATED);
 	}
 
 	/**
@@ -63,13 +68,21 @@ public class BillController {
 	@RequestMapping(value = "/{Id}",
 					produces = MediaType.APPLICATION_JSON_VALUE,
 					method = RequestMethod.GET)
-	public ResponseEntity<Bill> showBill(@PathVariable("Id") String Id) throws Exception {
+	public ResponseEntity<Bill> showBill(@PathVariable("Id") String Id) throws CustomException {
 
-		log.debug("Inside show Bill --->");
-		Bill returnBill = billService.showBill(Id);
+		Bill returnBill = null;
+		try {
 
-		ResponseEntity<Bill> responseEntity = new ResponseEntity<>(returnBill, HttpStatus.CREATED);
-		return responseEntity;
+			returnBill = billService.showBill(Id);
+
+		} catch (CustomException ce) {
+			log.error("/bill/show", ce);
+			throw ce;
+		} catch (Exception e) {
+			log.error("/bill/show", e);
+			throw new CustomException(ErrorConstants.ERR_GENERAL_FAILURE, "Transaction requested has been failed. Please try again.");
+		}
+		return new ResponseEntity<>(returnBill, HttpStatus.OK);
 	}
 
 	/**
@@ -82,9 +95,20 @@ public class BillController {
 	@RequestMapping(value = "/total/{userId}",
 					produces = MediaType.APPLICATION_JSON_VALUE,
 					method = RequestMethod.GET)
-	public List<BillSplit> usersBillDetails(@PathVariable("userId") String userId) throws Exception {
+	public ResponseEntity<List<BillSplit>> usersBillDetails(@PathVariable("userId") String userId) throws CustomException {
 
-		return billService.usersBillDetails(userId);
+		List<BillSplit> billSplitList = null;
+		try {
+			billSplitList = billService.usersBillDetails(userId);
+		} catch (CustomException ce) {
+			log.error("/bill/total", ce);
+			throw ce;
+		} catch (Exception e) {
+			log.error("/bill/total", e);
+			throw new CustomException(ErrorConstants.ERR_GENERAL_FAILURE, "Transaction requested has been failed. Please try again.");
+		}
+
+		return new ResponseEntity<List<BillSplit>>(billSplitList, HttpStatus.OK);
 	}
 
 	/**
@@ -98,11 +122,21 @@ public class BillController {
 	@RequestMapping(value = "/recent/{userId}",
 					produces = MediaType.APPLICATION_JSON_VALUE,
 					method = RequestMethod.GET)
-	public List<Bill> recentTrans(	@RequestBody String month,
-									@PathVariable("userId") String userId) throws Exception {
+	public ResponseEntity<List<Bill>> recentTrans(	@RequestBody String month,
+													@PathVariable("userId") String userId) throws CustomException {
 
-		System.out.println(month);
-		return billService.recentTrans(userId);
+		List<Bill> recentTransList = null;
+		try {
+
+			recentTransList = billService.recentTrans(userId);
+		} catch (CustomException ce) {
+			log.error("/bill/recent", ce);
+			throw ce;
+		} catch (Exception e) {
+			log.error("/bill/recent", e);
+			throw new CustomException(ErrorConstants.ERR_GENERAL_FAILURE, "Transaction requested has been failed. Please try again.");
+		}
+		return new ResponseEntity<List<Bill>>(recentTransList, HttpStatus.OK);
 	}
 
 	/**
@@ -116,13 +150,22 @@ public class BillController {
 	@RequestMapping(value = "/recent1/{userId}",
 					produces = MediaType.APPLICATION_JSON_VALUE,
 					method = RequestMethod.GET)
-	public Page<Bill> recentPageTrans(	@RequestBody int page,
-										int pagesize,
-										String month,
-										@PathVariable("userId") String userId) throws Exception {
+	public ResponseEntity<Page<Bill>> recentPageTrans(	@RequestBody int page,
+														int pagesize,
+														String month,
+														@PathVariable("userId") String userId) throws CustomException {
 
-		System.out.println(month);
-		return billService.recentPageTrans(userId, page, pagesize);
+		Page<Bill> recentPageTransList = null;
+		try {
+			recentPageTransList = billService.recentPageTrans(userId, page, pagesize);
+		} catch (CustomException ce) {
+			log.error("/bill/recent1", ce);
+			throw ce;
+		} catch (Exception e) {
+			log.error("/bill/recent1", e);
+			throw new CustomException(ErrorConstants.ERR_GENERAL_FAILURE, "Transaction requested has been failed. Please try again.");
+		}
+		return new ResponseEntity<Page<Bill>>(recentPageTransList, HttpStatus.OK);
 	}
 
 	/**
@@ -135,14 +178,23 @@ public class BillController {
 	 */
 	@RequestMapping(value = "/recentuser/{userId}",
 					produces = MediaType.APPLICATION_JSON_VALUE,
-					consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-	public List<Bill> recentUserTrans(	@PathVariable("userId") String userId,
-										@RequestBody String loggedUser) throws Exception {
+					consumes = MediaType.APPLICATION_JSON_VALUE,
+					method = RequestMethod.POST)
+	public ResponseEntity<List<Bill>> recentUserTrans(	@PathVariable("userId") String userId,
+														@RequestBody String loggedUser) throws CustomException {
 
-		log.debug("Inside recentUserTrans");
-		log.debug("Logged User -->" + loggedUser);
-		log.debug("userId -->" + userId);
-		return billService.recentUserTrans(userId, loggedUser);
+		List<Bill> recentUserTrans = null;
+		try {
+			recentUserTrans = billService.recentUserTrans(userId, loggedUser);
+		} catch (CustomException ce) {
+			log.error("/bill/recentuser", ce);
+			throw ce;
+		} catch (Exception e) {
+			log.error("/bill/recentuser", e);
+			throw new CustomException(ErrorConstants.ERR_GENERAL_FAILURE, "Transaction requested has been failed. Please try again.");
+		}
+
+		return new ResponseEntity<List<Bill>>(recentUserTrans, HttpStatus.OK);
 	}
 
 	/**
@@ -155,9 +207,19 @@ public class BillController {
 	@RequestMapping(value = "/group/{groupId}",
 					produces = MediaType.APPLICATION_JSON_VALUE,
 					method = RequestMethod.GET)
-	public List<Bill> recentGroupTrans(@PathVariable("groupId") String groupId) throws Exception {
+	public ResponseEntity<List<Bill>> recentGroupTrans(@PathVariable("groupId") String groupId) throws CustomException {
 
-		return billService.recentGroupTrans(groupId);
+		List<Bill> recentGrpTrans = null;
+		try {
+			recentGrpTrans = billService.recentGroupTrans(groupId);
+		} catch (CustomException ce) {
+			log.error("/bill/group", ce);
+			throw ce;
+		} catch (Exception e) {
+			log.error("/bill/group", e);
+			throw new CustomException(ErrorConstants.ERR_GENERAL_FAILURE, "Transaction requested has been failed. Please try again.");
+		}
+		return new ResponseEntity<List<Bill>>(recentGrpTrans, HttpStatus.OK);
 	}
 
 	/**
@@ -170,9 +232,19 @@ public class BillController {
 	@RequestMapping(value = "/add/{userId}",
 					produces = MediaType.APPLICATION_JSON_VALUE,
 					method = RequestMethod.GET)
-	public Bill addBill(@PathVariable("userId") String userId) throws Exception {
+	public ResponseEntity<Bill> addBill(@PathVariable("userId") String userId) throws CustomException {
 
-		return billService.addBill(userId);
+		Bill addBill = null;
+		try {
+			addBill = billService.addBill(userId);
+		} catch (CustomException ce) {
+			log.error("/bill/add", ce);
+			throw ce;
+		} catch (Exception e) {
+			log.error("/bill/add", e);
+			throw new CustomException(ErrorConstants.ERR_GENERAL_FAILURE, "Transaction requested has been failed. Please try again.");
+		}
+		return new ResponseEntity<Bill>(addBill, HttpStatus.OK);
 	}
 
 }

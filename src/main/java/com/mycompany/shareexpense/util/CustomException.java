@@ -1,28 +1,69 @@
 package com.mycompany.shareexpense.util;
 
-import org.springframework.http.HttpStatus;
+
+/**
+ * The Class CustomException.
+ */
+@SuppressWarnings("serial")
+public class CustomException extends RuntimeException {
+    /** The error code. */
+    private String errorCode = null;
 
 
-public class CustomException extends Exception {
-	
-	private CustomHttpStatus httpStatus = null;
-	
-	public CustomException(HttpStatus httpStatus, String statusText) {
-		
-		new CustomHttpStatus(httpStatus, statusText);
-		
-	}
+    /** The error msg. */
+    private String errorMsg = null;
 
-	
-	public CustomHttpStatus getHttpStatus() {
-	
-		return httpStatus;
-	}
 
-	
-	public void setHttpStatus(CustomHttpStatus httpStatus) {
-	
-		this.httpStatus = httpStatus;
-	}
+/**
+     * Instantiates a new custom exception.
+     *
+     * @param errorCode the error code
+     * @param errorMsg the error msg
+     */
+    public CustomException(String errorCode,
+                           String errorMsg) {
+        super(errorMsg);
+        this.errorCode = errorCode;
+        this.errorMsg = errorMsg;
+    }
 
+
+    /**
+     * Gets the error code.
+     *
+     * @return the error code
+     */
+    public String getErrorCode() {
+        return errorCode;
+    }
+
+
+    /**
+     * Sets the error code.
+     *
+     * @param errorCode the new error code
+     */
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
+    }
+
+
+    /**
+     * Gets the error msg.
+     *
+     * @return the error msg
+     */
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+
+    /**
+     * Sets the error msg.
+     *
+     * @param errorMsg the new error msg
+     */
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
 }

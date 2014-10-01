@@ -1,0 +1,31 @@
+<div class="bs-component">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Forgot your Password?</h3>
+        </div>
+        <div class="panel-body">
+            <p>Enter your email address, and we will reset and send you a temporary password to login.</p>
+            <form class="form-horizontal" name="form" rc-attempt novalidate>
+                <div class="form-group"
+                     ng-class="{'has-error': form.email.$invalid && (form.email.$dirty || rc.form.attempted)}">
+                    <label class="control-label">Email</label>
+                    <div class="input-group required-field-block">
+                        <span class="input-group-addon input-sm"><i
+                                class="glyphicon glyphicon-envelope"></i></span> <input type="email"
+                                                                                placeholder="Email" name='email' class="form-control input-sm"
+                                                                                ng-model="user.email" required>
+                        <div class="required-icon">
+                            <div class="text">*</div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer text-right">
+            <a class="btn btn-success btn-sm" ng-disabled="!form.$valid"
+               ng-click="forgotPwd(user.email)">Reset</a> <a ui-sref="home"
+               class="btn btn-warning btn-sm right">Cancel</a>
+        </div>
+    </div>
+
+</div>
