@@ -27,4 +27,6 @@ public class ErrorConstants {
 	
 	public static final String  ERR_FRIEND_SHOW_DETAIL = "ERR_FRIEND_SHOW_DETAIL";
 	
+	public static final String  ERR_EMAIL_SENT_FAILED = "ERR_EMAIL_SENT_FAILED";
+	
 }

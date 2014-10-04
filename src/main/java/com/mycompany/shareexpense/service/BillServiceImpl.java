@@ -8,6 +8,7 @@ import com.mycompany.shareexpense.repository.BillRepository;
 import com.mycompany.shareexpense.repository.BillSortAndPageRepository;
 import com.mycompany.shareexpense.repository.UserRepository;
 import com.mycompany.shareexpense.util.CommonUtil;
+import com.mycompany.shareexpense.util.ErrorConstants;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -70,8 +71,12 @@ public class BillServiceImpl implements BillService {
 					break;
 				}
 			}
-
-			CommonUtil.sendEmail(subject, userPaid, emailbody, env);
+			try{
+				CommonUtil.sendEmail(subject, userPaid, emailbody, env);
+			}catch(Exception exception){
+				log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
+			}
+			
 
 			for (BillSplit billSplit : bill.getBillSplits()) {
 
@@ -90,7 +95,11 @@ public class BillServiceImpl implements BillService {
 					emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home");
 
 				}
-				CommonUtil.sendEmail(subject, billSplit.getEmail(), emailbody, env);
+				try{
+					CommonUtil.sendEmail(subject, billSplit.getEmail(), emailbody, env);
+				}catch(Exception exception){
+					log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
+				}
 			}
 		}
 
@@ -233,11 +242,23 @@ public class BillServiceImpl implements BillService {
 		bill.setBillSplits(billSplits);
 		return bill;
 	}
+	
+	
 
 	@Override
 	public Bill showBill(String Id) throws Exception {
 
 		Bill bill = billRepository.findOne(Id);
+		
+		List<BillSplit> billSplits = bill.getBillSplits();
+		
+		for (BillSplit userBill : billSplits) {
+			
+			User user = userRepository.findOne(userBill.getUserId());
+			userBill.setEmail(user.getEmail());
+		}
+		
+		
 		return bill;
 	}
 

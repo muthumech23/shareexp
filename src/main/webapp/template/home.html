@@ -2,23 +2,20 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="bs-component">
-                <p class="lead">Share Expense takes the trouble out of sharing expenses with friends, with roommates, with anyone.</p>
+                <p class="lead text-danger">Share Expense takes the trouble out of sharing expenses with friends, with roommates, with anyone.</p>
             </div>
         </div>
     </div> 	
     <div class="row">
         <div class="col-lg-6">
-            <div class="bs-component">
-                <h1><img src="img/logo.png"/></h1>
-            </div>
+            <img src="img/logo.png"/>
         </div>
         <div class="col-lg-6">
             <div ui-view> 
                 <div class='row' ng-if="!loggedIn" >
                     <blockquote class="pull-right">
                         <p>It's easy to start sharing right away.</p>
-                        <small>Introduce yourself</small>
-                        <small><a ui-sref="home.signup" class="btn btn-success btn-xs" popover-trigger="mouseenter" popover="Register" popover-placement="bottom">Sign Up</a></small>
+                        <small>Introduce yourself &nbsp;&nbsp;&nbsp;<a ui-sref="home.signup" class="btn btn-success btn-xs" popover-trigger="mouseenter" popover="Register" popover-placement="bottom">Sign Up</a></small>
                     </blockquote>
                 </div>
                 <div class='row' ng-if="loggedIn" >

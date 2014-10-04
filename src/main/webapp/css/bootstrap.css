@@ -67,7 +67,7 @@ mark {
     color: #000;
 }
 small {
-    font-size: 80%;
+    font-size: 70%;
 }
 sub,
 sup {
@@ -892,6 +892,7 @@ body {
     line-height: 1.42857143;
     color: #2c3e50;
     background-color: #ffffff;
+    
 }
 input,
 button,
@@ -1096,13 +1097,16 @@ p {
 }
 .lead {
     margin-bottom: 21px;
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 300;
     line-height: 1.4;
+    font-style: italic;
+    text-align: center;
+    
 }
 @media (min-width: 768px) {
     .lead {
-        font-size: 22.5px;
+        font-size: 18px;
     }
 }
 small,
@@ -1275,7 +1279,7 @@ abbr[data-original-title] {
 blockquote {
     padding: 10.5px 21px;
     margin: 0 0 21px;
-    font-size: 18.75px;
+    font-size: 16.75px;
     border-left: 5px solid #ecf0f1;
 }
 blockquote p:last-child,
@@ -1287,14 +1291,15 @@ blockquote footer,
 blockquote small,
 blockquote .small {
     display: block;
-    font-size: 80%;
+    font-size: 72%;
     line-height: 1.42857143;
     color: #b4bcc2;
+    font-style: italic;
 }
 blockquote footer:before,
 blockquote small:before,
 blockquote .small:before {
-    content: '\2014 \00A0';
+    content: '\2013 \00A0';
 }
 .blockquote-reverse,
 blockquote.pull-right {
@@ -1318,7 +1323,7 @@ blockquote.pull-right footer:after,
 blockquote.pull-right small:after,
 .blockquote-reverse .small:after,
 blockquote.pull-right .small:after {
-    content: '\00A0 \2014';
+    content: '\00A0 \2013';
 }
 blockquote:before,
 blockquote:after {
@@ -1385,21 +1390,25 @@ pre code {
     margin-left: auto;
     padding-left: 15px;
     padding-right: 15px;
+        min-height: 100%;
 
 }
 @media (min-width: 768px) {
     .container {
         width: 750px;
+            min-height: 100%;
     }
 }
 @media (min-width: 992px) {
     .container {
         width: 970px;
+            min-height: 100%;
     }
 }
 @media (min-width: 1200px) {
     .container {
         width: 1170px;
+            min-height: 100%;
     }
 }
 .container-fluid {
@@ -3886,6 +3895,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     position: fixed;
     right: 0;
     left: 0;
+    min-height: 0px;
 }
 @media (min-width: 768px) {
     .navbar-fixed-top,
@@ -3954,9 +3964,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     margin: 9.75px -15px;
 }
 .navbar-nav > li > a {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    line-height: 21px;
+    margin-top: 15px;
 
 }
 @media (max-width: 767px) {
@@ -3990,8 +3998,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
         float: left;
     }
     .navbar-nav > li > a {
-        padding-top: 19.5px;
-        padding-bottom: 19.5px;
+        margin-top: 15px;
     }
     .navbar-nav.navbar-right:last-child {
         margin-right: -15px;
@@ -4146,7 +4153,10 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-default .navbar-nav > .active > a:hover,
 .navbar-default .navbar-nav > .active > a:focus {
     color: #ffffff;
-    background-color: #1a242f;
+    background-color: #ff0000;
+     -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+     border-radius: 4px;
 }
 .navbar-default .navbar-nav > .disabled > a,
 .navbar-default .navbar-nav > .disabled > a:hover,
@@ -4639,17 +4649,25 @@ a.thumbnail.active {
     padding: 9px;
     color: #2c3e50;
 }
+
 .alert {
     padding: 10px;
     margin-bottom: 10px;
-    margin-top: 20px;
+    margin-top: 30px;
     border: 1px solid transparent;
     border-radius: 4px;
+    opacity: 0.8;
+  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
+  filter: alpha(opacity=80);
+    -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+
 }
+
 .alert h4 {
-    margin-top: 0;
-    color: inherit;
+  margin: 0;
 }
+
 .alert .alert-link {
     font-weight: bold;
 }
@@ -4671,10 +4689,18 @@ a.thumbnail.active {
     right: -21px;
     color: inherit;
 }
+
+.alert .close {
+  position: relative;
+  top: -2px;
+  right: -21px;
+  line-height: 20px;
+}
+
 .alert-success {
-    background-color: #18bc9c;
-    border-color: #18bc9c;
-    color: #ffffff;
+  color: #468847;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
 }
 .alert-success hr {
     border-top-color: #15a589;
@@ -4682,10 +4708,13 @@ a.thumbnail.active {
 .alert-success .alert-link {
     color: #e6e6e6;
 }
+
+
+
 .alert-info {
-    background-color: #3498db;
-    border-color: #3498db;
-    color: #ffffff;
+  color: #3a87ad;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
 }
 .alert-info hr {
     border-top-color: #258cd1;
@@ -4694,9 +4723,10 @@ a.thumbnail.active {
     color: #e6e6e6;
 }
 .alert-warning {
-    background-color: #f39c12;
-    border-color: #f39c12;
-    color: #ffffff;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  color: #c09853;
+  background-color: #fcf8e3;
 }
 .alert-warning hr {
     border-top-color: #e08e0b;
@@ -4704,10 +4734,11 @@ a.thumbnail.active {
 .alert-warning .alert-link {
     color: #e6e6e6;
 }
-.alert-danger {
-    background-color: #e74c3c;
-    border-color: #e74c3c;
-    color: #ffffff;
+.alert-danger,
+.alert-error {
+  color: #b94a48;
+  background-color: #f2dede;
+  border-color: #eed3d7;
 }
 .alert-danger hr {
     border-top-color: #e43725;
@@ -5039,7 +5070,7 @@ a.list-group-item-danger.active:focus {
 .panel-title {
     margin-top: 0;
     margin-bottom: 0;
-    font-size: 14px;
+    font-size: 12px;
     color: inherit;
 }
 .panel-title > a {
@@ -5373,7 +5404,7 @@ a.list-group-item-danger.active:focus {
 }
 .close {
     float: right;
-    font-size: 22.5px;
+    font-size: 18.5px;
     font-weight: bold;
     line-height: 1;
     color: #000000;
@@ -6390,7 +6421,7 @@ input:focus {
 .close {
     color: #fff;
     text-decoration: none;
-    opacity: 0.4;
+    opacity: 0.8;
 }
 .close:hover,
 .close:focus {
@@ -6491,3 +6522,30 @@ input:focus {
     margin: -3px 0 0 12px;
 }
 /* Required field END */
+
+.footer-col {color:#ababab; font-size: 11px;}
+.footer-col a {color:#dcdcdc; font-weight: bold;}
+.footer-col a:hover {color:#d8450b; text-decoration: none;}
+.footer-col h5, .footer-col strong {color:#f9f9f9; text-shadow:none;}
+.footer-col h5 {margin-bottom: 25px;}
+.footer-col ul {margin: 0px;}
+.footer-col ul li {list-style: none; padding-bottom: 20px;}
+.footer-col ul.post-list li {
+	border-bottom: 1px dashed #504f4f;
+	padding: 10px 0px;
+}
+/* All Mobile Sizes */
+@media only screen and (max-width: 767px) {
+	.footer-col {
+		clear:both;
+		overflow: auto;
+		margin-bottom: 20px;
+	}
+	.footer-sub .right {display: none;}
+}
+
+
+/**** Sub Footer ****/
+.footer-sub {padding: 10px 0px;}
+.footer-sub div div span {padding: 0px 20px;}
+

@@ -1,20 +1,17 @@
 'use strict'
 var groupControllers = angular.module('GroupControllers', []);
 
-groupControllers.controller('GroupListController', function($scope, $log, $state, cfpLoadingBar, SessionService, FlashService, GroupServices,
-	getGroupList) {
+groupControllers.controller('GroupListController', function($scope, $log, $state, cfpLoadingBar, SessionService, flash, GroupServices, getGroupList) {
 
     $scope.groupList = getGroupList;
 
     $scope.getGroupBills = function(groupId) {
-	console.log(groupId);
 	$state.go('billhome.groupbills', {
 	    groupId : groupId
 	});
     };
 
     $scope.editGroup = function(groupId) {
-	console.log(groupId);
 	$state.go('billhome.groupedit', {
 	    groupId : groupId
 	});
@@ -22,10 +19,8 @@ groupControllers.controller('GroupListController', function($scope, $log, $state
 
 });
 
-groupControllers.controller('GroupRecentController', function($scope, $stateParams, $state, cfpLoadingBar, SessionService, FlashService,
-	GroupServices) {
+groupControllers.controller('GroupRecentController', function($scope, $stateParams, $state, cfpLoadingBar, SessionService, flash, GroupServices) {
 
-    console.log($stateParams.groupId);
     $scope.groupId = $stateParams.groupId;
     var groupBill = GroupServices.getGroupBills($scope.groupId);
 
@@ -34,91 +29,90 @@ groupControllers.controller('GroupRecentController', function($scope, $statePara
 	cfpLoadingBar.complete();
     }, function(response) {
 	$scope.errorresource = response.data;
-	    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+	flash.pop({
+	    title : '',
+	    body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+	    type : 'alert-danger'
+	});
 	cfpLoadingBar.complete();
     });
 
     $scope.addGroupBill = function(grpId) {
-	console.log('Group Add' + grpId);
 	$state.go('billhome.grpaddbill', {
 	    groupId : grpId
 	});
     };
 });
 
-groupControllers.controller('GroupController', function($scope, $state, $stateParams, cfpLoadingBar, SessionService, FlashService, GroupServices) {
-
-    console.log("Inside Edit Group" + $stateParams.groupId);
+groupControllers.controller('GroupController', function($scope, $state, $stateParams, cfpLoadingBar, SessionService, flash, GroupServices) {
 
     $scope.shareGroup;
 
     $scope.updatedFriendList = [];
 
-    if ($stateParams.groupId !== null || $stateParams.groupId !== "" || $stateParams.groupId !== 'undefined') {
-	console.log("Inside Edit Group");
+    if (!($stateParams.groupId === null || $stateParams.groupId === "" || $stateParams.groupId === undefined)) {
 	$scope.groupId = $stateParams.groupId;
 	var group = GroupServices.getGroup($scope.groupId);
 
 	group.then(function(response) {
 	    $scope.shareGroup = response;
-	    console.log("success");
-	    console.log($scope.shareGroup);
-	    console.log($scope.shareGroup.userIds);
 	    $scope.updatedFriendList = $scope.shareGroup.userIds;
 	    cfpLoadingBar.complete();
 	}, function(response) {
 	    $scope.errorresource = response.data;
-	    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+	    flash.pop({
+		title : '',
+		body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+		type : 'alert-danger'
+	    });
 	    cfpLoadingBar.complete();
 	});
     }
-    console.log($scope.updatedFriendList);
     var updateSelected = function(action, userId) {
 	if (action === 'add' && $scope.updatedFriendList.indexOf(userId) === -1) {
 	    $scope.updatedFriendList.push(userId);
-	    console.log($scope.updatedFriendList);
 
 	}
 	if (action === 'remove' && $scope.updatedFriendList.indexOf(userId) !== -1) {
 	    $scope.updatedFriendList.splice($scope.updatedFriendList.indexOf(userId), 1);
-	    console.log($scope.updatedFriendList);
 	}
     };
 
     $scope.updateSelection = function($event, userId) {
 	var checkbox = $event.target;
 	var action = (checkbox.checked ? 'add' : 'remove');
-	console.log(action);
 	updateSelected(action, userId);
     };
 
     $scope.isSelected = function(userId) {
-	console.log('isSelected --<' + userId);
 	return $scope.updatedFriendList.indexOf(userId) >= 0;
     };
 
     $scope.saveGroup = function(group) {
 
-	console.log(group);
-
-	console.log($scope.updatedFriendList);
 	group.userIds = $scope.updatedFriendList;
 	group.email = SessionService.get('userEmail');
 	group.userId = SessionService.get('userId');
-	console.log(group);
 
 	cfpLoadingBar.start();
 	var saveGroup = GroupServices.addGroup(group);
 	saveGroup.then(function(response) {
-	    FlashService.show("Group added Successfully", "alert-success");
-	    console.log(response);
+	    flash.pop({
+		title : '',
+		body : "Group add/update successfully done.",
+		type : 'alert-success'
+	    });
 	    cfpLoadingBar.complete();
 	    $state.go('billhome.grouplist', {}, {
 		reload : true
 	    });
 	}, function(response) {
 	    $scope.errorresource = response.data;
-	    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+	    flash.pop({
+		title : '',
+		body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+		type : 'alert-danger'
+	    });
 	    cfpLoadingBar.complete();
 	}
 
@@ -126,8 +120,8 @@ groupControllers.controller('GroupController', function($scope, $state, $statePa
     };
 });
 
-groupControllers.controller('GroupAddBillController', function($scope, $stateParams, $state, cfpLoadingBar, SessionService, FlashService,
-	GroupServices, addBill) {
+groupControllers.controller('GroupAddBillController', function($scope, $stateParams, $state, cfpLoadingBar, SessionService, flash, GroupServices,
+	addBill) {
 
     $scope.addBillData = addBill;
 
@@ -150,9 +144,6 @@ groupControllers.controller('GroupAddBillController', function($scope, $statePar
 	$scope.opened = true;
     };
     var updateSplitAmount = function() {
-	// console.log($scope.billvalue.addBillSplits.length);
-	console.log($scope.updatedBillSPlitList.length);
-	console.log($scope.bill.splitType);
 	if ($scope.bill.splitType === 'equally') {
 	    updateSplitEqually();
 	} else if ($scope.bill.splitType === 'share') {
@@ -163,106 +154,86 @@ groupControllers.controller('GroupAddBillController', function($scope, $statePar
     };
 
     var updateSelected = function(action, billsplit) {
-	console.log($scope.updatedBillSPlitList.indexOf(billsplit));
 	if (action === 'add' && $scope.updatedBillSPlitList.indexOf(billsplit) === -1) {
 	    $scope.updatedBillSPlitList.push(billsplit);
-	    console.log($scope.bill.amount);
-	    console.log($scope.updatedBillSPlitList);
 
 	    updateSplitAmount();
 	}
 	if (action === 'remove' && $scope.updatedBillSPlitList.indexOf(billsplit) !== -1) {
 	    $scope.updatedBillSPlitList.splice($scope.updatedBillSPlitList.indexOf(billsplit), 1);
-	    console.log($scope.updatedBillSPlitList);
 	    updateSplitAmount();
 	}
     };
 
     var updateSplitEqually = function() {
 	var splitcount = $scope.updatedBillSPlitList.length;
-	console.log('splitCount --<' + splitcount);
 	var billAmount = $scope.bill.amount;
 
 	angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
-	    console.log(billsplit.userId);
-	    console.log(billAmount / splitcount);
-	    console.log(billsplit.amount);
 	    if ($scope.bill.userPaid === billsplit.userId) {
 		billsplit.amount = billAmount / splitcount;
 	    } else {
 		billsplit.amount = -(billAmount / splitcount);
 	    }
 
-	    console.log(billsplit.amount);
 	});
     };
 
     var updateSplitShare = function() {
 	var splitcount = $scope.updatedBillSPlitList.length;
-	console.log('splitCount --<' + splitcount);
 	var billAmount = $scope.bill.amount;
 
 	angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
-	    console.log(billsplit.userId);
-	    console.log(billAmount / splitcount);
-	    console.log(billsplit.amount);
 	    if ($scope.bill.userPaid === billsplit.userId) {
 		billsplit.amount = billAmount / splitcount;
 	    } else {
 		billsplit.amount = -(billAmount / splitcount);
 	    }
-	    console.log(billsplit.amount);
 	});
     };
 
     var updateSplitExact = function() {
 	var splitcount = $scope.updatedBillSPlitList.length;
-	console.log('splitCount --<' + splitcount);
 	var billAmount = $scope.bill.amount;
 
 	angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
-	    console.log(billsplit.userId);
-	    console.log(billAmount / splitcount);
-	    console.log(billsplit.amount);
 	    if ($scope.bill.userPaid === billsplit.userId) {
 		billsplit.amount = billAmount / splitcount;
 	    } else {
 		billsplit.amount = -(billAmount / splitcount);
 	    }
-	    console.log(billsplit.amount);
 	});
     };
 
     $scope.updateSelection = function($event, billsplit) {
 	var checkbox = $event.target;
 	var action = (checkbox.checked ? 'add' : 'remove');
-	console.log(action);
 	updateSelected(action, billsplit);
     };
 
     $scope.isSelected = function(billsplit) {
-	console.log('isSelected --<' + billsplit);
 	return $scope.updatedBillSPlitList.indexOf(billsplit) >= 0;
     };
 
     $scope.isOneSelected = function() {
 	if ($scope.updatedBillSPlitList.length === 0) {
-	    FlashService.clear();
 	    return true;
 	} else if ($scope.updatedBillSPlitList.length === 1) {
 	    var saveStatus = false;
 	    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
 		if (billsplit.userId === $scope.bill.userPaid) {
-		    FlashService.show(" Message: please include one more person other user paid.", "alert-warning");
+		    flash.pop({
+			title : '',
+			body : "Please include one more person other than the user paid.",
+			type : 'alert-warning'
+		    });
 		    saveStatus = true;
 		} else {
-		    FlashService.clear();
 		    saveStatus = false;
 		}
 	    });
 	    return saveStatus;
 	} else {
-	    FlashService.clear();
 	    return false;
 	}
     };
@@ -271,28 +242,36 @@ groupControllers.controller('GroupAddBillController', function($scope, $statePar
 	if ($scope.updatedBillSPlitList.length === 1) {
 	    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
 		if (billsplit.userId === billData.userPaid) {
-		    FlashService.show(" Message: please include one more person other user paid.", "alert-warning");
+		    flash.pop({
+			title : '',
+			body : "Please include one more person other than the user paid.",
+			type : 'alert-warning'
+		    });
 		    return;
 		}
 	    });
 	}
-	console.log(billData);
-	console.log($scope.updatedBillSPlitList);
 	billData.billSplits = $scope.updatedBillSPlitList;
-	console.log(billData);
 
 	cfpLoadingBar.start();
 	var saveBill = BillingServices.getBillResource(billData);
 	saveBill.then(function(response) {
-	    FlashService.show("Bill added Successfully", "alert-success");
-	    console.log(response);
+	    flash.pop({
+		title : '',
+		body : "Group Bill added Successfully.",
+		type : 'alert-success'
+	    });
 	    cfpLoadingBar.complete();
 	    $state.go('billhome.list', {}, {
 		reload : true
 	    });
 	}, function(response) {
 	    $scope.errorresource = response.data;
-	    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+	    flash.pop({
+		title : '',
+		body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+		type : 'alert-danger'
+	    });
 	    cfpLoadingBar.complete();
 	}
 
@@ -301,18 +280,42 @@ groupControllers.controller('GroupAddBillController', function($scope, $statePar
 
 });
 
-groupControllers.controller('GroupEditBillController', function($scope, $state, $stateParams, cfpLoadingBar, FlashService, BillingServices) {
+groupControllers.controller('GroupEditBillController', function($scope, $state, $stateParams, addBill, cfpLoadingBar, flash, BillingServices) {
 
-    if ($stateParams.billId !== null || $stateParams.billId !== "" || $stateParams.billId !== 'undefined') {
+    $scope.addBillData = addBill;
+
+    $scope.addBillSplits = addBill.billSplits;
+
+    $scope.updatedBillSPlitList = [];
+
+    if (!($stateParams.billId === null || $stateParams.billId === "" || $stateParams.billId === undefined)) {
 	var bill = BillingServices.showBillResource($stateParams.billId);
 
 	bill.then(function(response) {
 	    $scope.bill = response;
+	    var billingDate = $filter('date')($scope.bill.date, 'yyyy-MM-dd');
+	    $scope.bill.date = billingDate;
+
 	    $scope.updatedBillSPlitList = $scope.bill.billSplits;
+	    angular.forEach($scope.updatedBillSPlitList, function(AddBillsplit) {
+		console.log("Add Bill:" + AddBillsplit);
+		angular.forEach($scope.addBillSplits, function(split) {
+		    console.log("Edit Bill:" + split);
+		    if (AddBillsplit.userId === split.userId) {
+			$scope.addBillSplits.splice($scope.addBillSplits.indexOf(split), 1);
+
+			$scope.addBillSplits.push(AddBillsplit);
+		    }
+		});
+	    });
 	    cfpLoadingBar.complete();
 	}, function(response) {
 	    $scope.errorresource = response.data;
-	    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+	    flash.pop({
+		title : '',
+		body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+		type : 'alert-danger'
+	    });
 	    cfpLoadingBar.complete();
 	});
     }
@@ -419,31 +422,32 @@ groupControllers.controller('GroupEditBillController', function($scope, $state, 
 	var checkbox = $event.target;
 	var action = (checkbox.checked ? 'add' : 'remove');
 	updateSelected(action, billsplit);
+	isOneSelected();
     };
 
     $scope.isSelected = function(billsplit) {
-	console.log('isSelected' + $scope.updatedBillSPlitList.indexOf(billsplit));
 	return $scope.updatedBillSPlitList.indexOf(billsplit) >= 0;
     };
 
-    $scope.isOneSelected = function() {
+    var isOneSelected = function() {
 	if ($scope.updatedBillSPlitList.length === 0) {
-	    FlashService.clear();
 	    return true;
 	} else if ($scope.updatedBillSPlitList.length === 1) {
 	    var saveStatus = false;
 	    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
 		if (billsplit.userId === $scope.bill.userPaid) {
-		    FlashService.show(" Message: please include one more person other user paid.", "alert-warning");
+		    flash.pop({
+			title : '',
+			body : "Please include one more person other than the user paid.",
+			type : 'alert-warning'
+		    });
 		    saveStatus = true;
 		} else {
-		    FlashService.clear();
 		    saveStatus = false;
 		}
 	    });
 	    return saveStatus;
 	} else {
-	    FlashService.clear();
 	    return false;
 	}
     };
@@ -453,7 +457,11 @@ groupControllers.controller('GroupEditBillController', function($scope, $state, 
 	if ($scope.updatedBillSPlitList.length === 1) {
 	    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
 		if (billsplit.userId === billData.userPaid) {
-		    FlashService.show(" Message: please include one more person other user paid.", "alert-warning");
+		    flash.pop({
+			title : '',
+			body : "Please include one more person other than the user paid.",
+			type : 'alert-warning'
+		    });
 		    return;
 		}
 	    });
@@ -463,14 +471,22 @@ groupControllers.controller('GroupEditBillController', function($scope, $state, 
 	cfpLoadingBar.start();
 	var saveBill = BillingServices.getBillResource(billData);
 	saveBill.then(function(response) {
-	    FlashService.show("Bill added Successfully", "alert-success");
+	    flash.pop({
+		title : '',
+		body : "Group Bill updated Successfully.",
+		type : 'alert-success'
+	    });
 	    cfpLoadingBar.complete();
 	    $state.go('billhome.list', {}, {
 		reload : true
 	    });
 	}, function(response) {
 	    $scope.errorresource = response.data;
-	    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+	    flash.pop({
+		title : '',
+		body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+		type : 'alert-danger'
+	    });
 	    cfpLoadingBar.complete();
 	});
     };

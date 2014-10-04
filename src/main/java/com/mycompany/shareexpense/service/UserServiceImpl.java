@@ -109,9 +109,13 @@ public class UserServiceImpl implements UserService {
 
 			log.debug("emailbody --> " + emailbody);
 			emailbody = emailbody.replaceAll("<<passwordreset>>", userSecure.getRandomString());
-			emailbody = emailbody.replaceAll("<<siteUrl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/login");
+			emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/login");
 
-			CommonUtil.sendEmail("Reset Password Request", email, emailbody, env);
+				try{	
+					CommonUtil.sendEmail("Reset Password Request", email, emailbody, env);
+				}catch(Exception exception){
+					log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
+				}
 			status = true;
 		} catch (CustomException ce) {
 			log.error("userServiceImpl", ce);
@@ -146,8 +150,11 @@ public class UserServiceImpl implements UserService {
 			log.debug("emailbody --> " + emailbody);
 			emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString());
 			emailbody = emailbody.replaceAll("<<siteUrl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/login");
-
+try{
 			CommonUtil.sendEmail("Activation Code Generated", email, emailbody, env);
+		}catch(Exception exception){
+			log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
+		}
 			status = true;
 		} catch (CustomException ce) {
 			log.error("userServiceImpl", ce);
@@ -188,8 +195,11 @@ public class UserServiceImpl implements UserService {
 					String emailbody = env.getProperty("mail.template.activate.body");
 					emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString());
 					emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/activation");
-
+try{
 					CommonUtil.sendEmail("User Registration", user.getEmail(), emailbody, env);
+				}catch(Exception exception){
+					log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
+				}
 
 				} else {
 					throw new CustomException(ErrorConstants.ERR_USER_REGISTERATION, "User is already register, please login to continue.");
@@ -214,9 +224,11 @@ public class UserServiceImpl implements UserService {
 
 				emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString());
 				emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/activation");
-
+try{
 				CommonUtil.sendEmail("User Registration", user.getEmail(), emailbody, env);
-
+			}catch(Exception exception){
+				log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
+			}
 			}
 		} catch (CustomException ce) {
 			log.error("userServiceImpl", ce);
@@ -381,8 +393,11 @@ public class UserServiceImpl implements UserService {
 			emailbody = emailbody.replaceAll("<<username>>", loggedUser.getName());
 			emailbody = emailbody.replaceAll("<<useremail>>", loggedUser.getEmail());
 			emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home");
-
+try{
 			CommonUtil.sendEmail("Friend Addition", friendExist.getEmail(), emailbody, env);
+		}catch(Exception exception){
+			log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
+		}
 		}
 
 		catch (Exception exception) {

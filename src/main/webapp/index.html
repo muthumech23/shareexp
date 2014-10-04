@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html  ng-app="ShareExpApp">
-    <head>
-        <title>Share Expenses</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html ng-app="ShareExpApp">
+<head>
+<title>Share Expenses</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!-- CSS -->
-        <link rel="stylesheet" href="css/bootstrap.css" media="screen">
-        <link rel="stylesheet" href="css/bootstrap-responsive.css" media="screen">
-        <link rel="stylesheet" href="css/loading-bar.css">
-        <link rel="stylesheet" href="css/font-awesome.min.css">
+<!-- CSS -->
+<link rel="stylesheet" href="css/bootstrap.css" media="screen">
+<link rel="stylesheet" href="css/bootstrap-responsive.css" media="screen">
+<link rel="stylesheet" href="css/loading-bar.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="css/toastr.css">
 
-        <!--[if lt IE 9]>
+<!--[if lt IE 9]>
             <script src="assets/html5shiv.js"></script>
             <script src="assets/html5shiv-printshiv.js"></script>
             <script src="assets/respond.matchmedia.addListener.min.js"></script>
@@ -19,120 +20,115 @@
             
         <![endif]-->
 
-        <link rel="shortcut icon" href="img/favicon.ico">
-        <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
-        <link rel="apple-touch-icon" sizes="72x72" href="img/apple-touch-icon-72x72.png">
-        <link rel="apple-touch-icon" sizes="114x114" href="img/apple-touch-icon-114x114.png">
+<link rel="shortcut icon" href="img/favicon.ico">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="img/apple-touch-icon-114x114.png">
 
-        <!-- JS  -->
-        <script src="assets/jquery-1.11.1.min.js"></script>
-        <script src="assets/bootstrap.js"></script>
-        <script src="assets/TweenMax.min.js"></script>
+<!-- JS  -->
+<script src="assets/jquery-1.11.1.min.js"></script>
+<script src="assets/bootstrap.js"></script>
+<script src="assets/TweenMax.min.js"></script>
+<script src="assets/toastr.js"></script>
 
-        <script src="assets/angular.js"></script>
-        <script src="assets/angular-resource.min.js"></script>
-        <script src="assets/angular-route.min.js"></script>
-        <script src="assets/angular-messages.min.js"></script>
-        <script src="assets/angular-animate.min.js"></script>
-        <script src="assets/angular-cookies.min.js"></script>
-        <script src="assets/angular-loader.min.js"></script>
-        <script src="assets/angular-sanitize.min.js"></script>
-        <script src="assets/angular-touch.min.js"></script>
-        <script src="assets/angular-ui-router.js"></script>
-        <script src="assets/underscore.js"></script>
-        <script src="assets/loading-bar.js"></script>
-        <script src="assets/ui-bootstrap-tpls-0.11.0.min.js"></script>
-        <script src="assets/jquery.searchable-1.1.0.min.js"></script>
-        <script src="assets/jquery.searchable-ie-1.1.0.min.js"></script>
+<script src="assets/angular.js"></script>
+<script src="assets/angular-resource.min.js"></script>
+<script src="assets/angular-route.min.js"></script>
+<script src="assets/angular-messages.min.js"></script>
+<script src="assets/angular-animate.min.js"></script>
+<script src="assets/angular-cookies.min.js"></script>
+<script src="assets/angular-loader.min.js"></script>
+<script src="assets/angular-sanitize.min.js"></script>
+<script src="assets/angular-touch.min.js"></script>
+<script src="assets/angular-ui-router.js"></script>
+<script src="assets/underscore.js"></script>
+<script src="assets/loading-bar.js"></script>
+<script src="assets/ui-bootstrap-tpls-0.11.0.min.js"></script>
+<script src="assets/jquery.searchable-1.1.0.min.js"></script>
+<script src="assets/jquery.searchable-ie-1.1.0.min.js"></script>
 
-        <!-- Application Javascript Files -->
-        <script src="js/app.js"></script>
+<!-- Application Javascript Files -->
+<script src="js/app.js"></script>
 
-        <script src="js/FriendController.js"></script>
-        <script src="js/LoginController.js"></script>
-        <script src="js/GroupController.js"></script>
-        <script src="js/BillController.js"></script>
+<script src="js/FriendController.js"></script>
+<script src="js/LoginController.js"></script>
+<script src="js/GroupController.js"></script>
+<script src="js/BillController.js"></script>
 
-        <script src="js/BillServices.js"></script>
-        <script src="js/GroupServices.js"></script>
-        <script src="js/LoginServices.js"></script>
-        <script src="js/FriendServices.js"></script>
+<script src="js/BillServices.js"></script>
+<script src="js/GroupServices.js"></script>
+<script src="js/LoginServices.js"></script>
+<script src="js/FriendServices.js"></script>
 
-        <script src="js/checklist-model.js"></script>
-        <script src="js/directives.js"></script>
-        <script src="js/filters.js"></script>
-        <script src="js/custom.js"></script>
-    </head>
-    <body ng-controller="IndexController">
-        <div class="container">
-            <div class="navbar navbar-default navbar-fixed-top">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" popover-trigger="mouseenter" ng-click="selectTab(0)" popover-placement="bottom" popover="Home" ui-sref="home"><img src="img/headerlogo.png"/> SHARE EXPENSE</a>
-                    </div>
-                    <div class="navbar-collapse collapse navbar-inverse-collapse">
-                        <ul class="nav navbar-nav navbar-right" ng-if="loggedIn">
-                            <li ng-class="{'active':isSelected(5) }"><a ui-sref="billhome.account"  ng-click="selectTab(5)" popover-trigger="mouseenter" popover-placement="bottom" popover="account"><small> {{loggedUserName}}  <i class="fa fa-smile-o"></i></small></a></li>
-                            <li ng-class="{'active': isSelected(1)}" ><a ng-click="selectTab(1)" popover-placement="bottom" popover-trigger="mouseenter" popover="Bills" ui-sref="billhome.list"><span class="btn btn-warning btn-xs">Bills</span></a></li>
-                            <li ng-class="{'active':isSelected(2) }" ><a popover-trigger="mouseenter" ng-click="selectTab(2)" popover-placement="bottom" popover="Friends" ui-sref="billhome.friends"><span class="btn btn-warning btn-xs">Friends</span></a></li>
-                            <li ng-class="{'active':isSelected(3) }" ><a popover-trigger="mouseenter" ng-click="selectTab(3)" popover-placement="bottom" popover="Group" ui-sref="billhome.grouplist"><span class="btn btn-warning btn-xs">Group</span></a></li>
-                            <li ><a popover-trigger="mouseenter" popover-placement="bottom" popover="logout" href="" ng-click="userLogout()"><span class="btn btn-warning btn-xs">Logout</span></a></li>
-                        </ul>
-                        <form class="navbar-form navbar-right" role="search" ng-if="!loggedIn" name="form" rc-attempt novalidate>
-                            <div class="form-group"
-                                 ng-class="{'has-error': form.email.$invalid && (form.email.$dirty || rc.form.attempted)}">
-                                <div class="input-group">
-                                    <span class="input-group-addon input-sm"><i
-                                            class="glyphicon glyphicon-envelope"></i></span> <input type="email"
-                                                                                            placeholder="Email" name='email' class="form-control input-sm"
-                                                                                            ng-model="user.email" required>
-                                </div><br/>&nbsp;
-                            </div>
-                            <div class="form-group"
-                                 ng-class="{'has-error': form.password.$invalid && (form.password.$dirty || rc.form.attempted)}">
-                                <div class="input-group">
-                                    <span class="input-group-addon input-sm"><i
-                                            class="glyphicon glyphicon-lock"></i></span> <input type="password"
-                                                                                        placeholder="Password" name='password'
-                                                                                        class="form-control input-sm" ng-model="user.password"
-                                                                                        ng-minlength="6" required>
+<script src="js/checklist-model.js"></script>
+<script src="js/directives.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/custom.js"></script>
+</head>
+<body ng-controller="IndexController">
+	<div class="container">
+		<div class="navbar navbar-default navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+						<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" popover-trigger="mouseenter" ng-click="selectTab(0)" popover-placement="bottom" popover="Home" ui-sref="home"><img
+						src="img/headerlogo.png" /><small> SHARE EXPENSE</small></a>
+				</div>
+				<div class="navbar-collapse collapse navbar-inverse-collapse">
+					<ul class="nav navbar-nav navbar-right small" ng-if="loggedIn">
+						<li ng-class="{'active':isSelected(5) }"><a ui-sref="billhome.account" popover-trigger="mouseenter"
+							popover-placement="bottom" popover="account"> {{loggedUserName}} <i class="fa fa-smile-o"></i></a></li>
+						<li ng-class="{'active': isSelected(1)}"><a ng-click="selectTab(1)" popover-placement="bottom" popover-trigger="mouseenter"
+							popover="Bills" ui-sref="billhome.list">BILLS</a></li>
+						<li ng-class="{'active':isSelected(2) }"><a popover-trigger="mouseenter" ng-click="selectTab(2)" popover-placement="bottom"
+							popover="Friends" ui-sref="billhome.friends">FRIENDS</a></li>
+						<li ng-class="{'active':isSelected(3) }"><a popover-trigger="mouseenter" ng-click="selectTab(3)" popover-placement="bottom"
+							popover="Groups" ui-sref="billhome.grouplist">GROUPS</a></li>
+						<li><a popover-trigger="mouseenter" popover-placement="bottom" popover="logout" href="" ng-click="userLogout()">LOGOUT</a></li>
+					</ul>
+					<form class="navbar-form navbar-right" role="search" ng-if="!loggedIn" name="form" rc-attempt novalidate>
+						<div class="form-group" ng-class="{'has-error': form.email.$invalid && (form.email.$dirty || rc.form.attempted)}">
+							<div class="input-group">
+								<span class="input-group-addon input-sm"><i class="glyphicon glyphicon-envelope"></i></span> <input type="email" placeholder="Email"
+									name='email' class="form-control input-sm" ng-model="userLogin.email" required>
+							</div>
+							<br />&nbsp;
+						</div>
+						<div class="form-group" ng-class="{'has-error': form.password.$invalid && (form.password.$dirty || rc.form.attempted)}">
+							<div class="input-group">
+								<span class="input-group-addon input-sm"><i class="glyphicon glyphicon-lock"></i></span> <input type="password" placeholder="Password"
+									name='password' class="form-control input-sm" ng-model="userLogin.password" ng-minlength="6" required>
 
-                                </div>
-                                <br/>
-                                <a class="pull-right text-warning" ui-sref="home.forgot">forgot password?</a>&nbsp;&nbsp;</div>
-                            <div class="form-group"><a class="btn btn-warning btn-sm" ng-disabled="!form.$valid"
-                                                       ng-click="userLogin(user)">Sign In</a> <br/>&nbsp;
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="col-lg-12 alert" ng-class="msgType">
-                    <button type="button" class="close" ng-click="clearFlash();" ng-if="flash"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                    {{flash}}
-                </div>
-                
-                <input type="hidden" ng-model="loggedUser" value="{{loggedUser}}"/>
+							</div>
+							<br /> <a class="pull-right text-warning" ui-sref="home.forgot">forgot password?</a>&nbsp;&nbsp;
+						</div>
+						<div class="form-group">
+							<a class="btn btn-warning btn-sm" ng-disabled="!form.$valid" ng-click="userLogin(userLogin)">Sign In</a> <br />&nbsp;
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="alert" ng-class="flash.get().type">{{flash.get().body}}</div>
 
-                <div ui-view></div>
-            </div>
-            <div class="navbar">
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <ul class="list-inline">
-                            <li><a href="#" class="text-muted">Terms of Use</a></li>
-                            <li><a href="#" class="text-muted">Privacy Policy</a></li>
-                            <li><a ui-sref="about" class="text-muted">About Us</a></li>         
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </body>
+			<input type="hidden" ng-model="loggedUser" value="{{loggedUser}}" />
+
+			<div ui-view></div>
+		</div>
+
+		
+
+	</div>
+</body>
+<footer>
+
+			<ul class="list-inline text-center">
+				<li><a ui-sref="terms" class="text-muted">Terms of Use</a></li>
+				<li><a ui-sref="privacy" class="text-muted">Privacy Policy</a></li>
+				<li><a ui-sref="about" class="text-muted">About Us</a></li>
+			</ul>
+</footer>
 </html>

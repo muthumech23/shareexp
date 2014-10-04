@@ -1,7 +1,7 @@
 'use strict'
 var friendServices = angular.module('FriendServices', []);
 
-friendServices.factory('FriendServices', function($resource, FlashService, SessionService) {
+friendServices.factory('FriendServices', function($resource, flash, SessionService) {
 
     var friendRes = $resource('api/friend/:Id', {
 	friendId : '@friendid'
@@ -33,7 +33,7 @@ friendServices.factory('FriendServices', function($resource, FlashService, Sessi
 		return response.data;
 	    }, function(response) {
 		$scope.errorresource = response.data;
-		    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+		flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
 	    });
 	    return friends;
 	},
@@ -48,7 +48,6 @@ friendServices.factory('FriendServices', function($resource, FlashService, Sessi
 	    return friends;
 	},
 	deleteFriends : function(friendId) {
-	    console.log(friendId);
 	    var friends = friendRes1.removeUser({
 		Id : friendId
 	    }, userId).$promise;

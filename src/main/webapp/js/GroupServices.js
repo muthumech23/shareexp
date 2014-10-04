@@ -1,7 +1,7 @@
 'use strict'
 var groupServices = angular.module('GroupServices', []);
 
-groupServices.factory('GroupServices', function($resource, FlashService, SessionService) {
+groupServices.factory('GroupServices', function($resource, flash, SessionService) {
 
     var groupRes = $resource('api/group/:Id', {
 	groupId : '@groupid'
@@ -20,7 +20,7 @@ groupServices.factory('GroupServices', function($resource, FlashService, Session
 		return response.data;
 	    }, function(response) {
 		$scope.errorresource = response.data;
-		    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+		flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
 	    });
 	    return groups;
 	},

@@ -1,7 +1,7 @@
 'use strict'
 var billServices = angular.module('BillServices', []);
 
-billServices.factory('BillingServices', function($resource, FlashService, SessionService) {
+billServices.factory('BillingServices', function($resource, flash, SessionService) {
 
     var billAllRes = $resource('api/bill/total/:userId', {}, {
 	getUsersBillData : {
@@ -46,7 +46,7 @@ billServices.factory('BillingServices', function($resource, FlashService, Sessio
 		return response.data;
 	    }, function(response) {
 		$scope.errorresource = response.data;
-		    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+		flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
 	    });
 	    return billData;
 	},
@@ -70,7 +70,7 @@ billServices.factory('BillingServices', function($resource, FlashService, Sessio
 		return response.data;
 	    }, function(response) {
 		$scope.errorresource = response.data;
-		    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+		flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
 	    });
 	    return addBill;
 	},
@@ -84,12 +84,11 @@ billServices.factory('BillingServices', function($resource, FlashService, Sessio
 		return response.data;
 	    }, function(response) {
 		$scope.errorresource = response.data;
-		    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+		flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
 	    });
 	    return bills;
 	},
 	getUserBills : function(id) {
-	    console.log(id);
 	    var bills = billUserRecentRes.getUserRecentBills({
 		Id : id
 	    }, userId).$promise;
@@ -98,7 +97,7 @@ billServices.factory('BillingServices', function($resource, FlashService, Sessio
 		return response.data;
 	    }, function(response) {
 		$scope.errorresource = response.data;
-		    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+		flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
 	    });
 	    return bills;
 	}

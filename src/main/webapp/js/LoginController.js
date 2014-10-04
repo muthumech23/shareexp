@@ -39,7 +39,7 @@ loginControllers.controller('ChgpwdController', function($scope, SessionService)
 });
 
 /* Login Controller */
-loginControllers.controller('LoginController', function($scope, $location, cfpLoadingBar, UserServices, FlashService) {
+loginControllers.controller('LoginController', function($scope, $state, cfpLoadingBar, UserServices, flash) {
 
     $scope.title = 'Share Expenses - Login';
 
@@ -47,11 +47,11 @@ loginControllers.controller('LoginController', function($scope, $location, cfpLo
 	cfpLoadingBar.start();
 	var userAdd = UserServices.save(user).$promise;
 	userAdd.then(function(response) {
-	    FlashService.show("Register completed successfully! please login to continue...", "alert-success");
-	    $location.path("/home/activation");
+	    flash.show({title: '', body: "Register has been completed successfully! Activation code has been sent your Inbox (please check your spam in case not available in inbox). Please enter activation code to activate your account.", type: 'alert-success'});
+	    $state.go("home.activation");
 	}, function(response) {
 	    $scope.errorresource = response.data;
-	    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+	    flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
 	    cfpLoadingBar.complete();
 	}
 
@@ -62,10 +62,10 @@ loginControllers.controller('LoginController', function($scope, $location, cfpLo
 	cfpLoadingBar.start();
 	var userAdd = UserServices.save(user).$promise;
 	userAdd.then(function(response) {
-	    FlashService.show("Password updated successfully", "alert-success");
+	    flash.pop({title: '', body: "Your password has been updated successfully", type: 'alert-success'});
 	}, function(response) {
 	    $scope.errorresource = response.data;
-	    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+	    flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
 	    cfpLoadingBar.complete();
 	}
 
@@ -74,7 +74,7 @@ loginControllers.controller('LoginController', function($scope, $location, cfpLo
 });
 
 /* Login Controller */
-loginControllers.controller('UpdateUserController', function($scope, SessionService, cfpLoadingBar, UserServices, FlashService) {
+loginControllers.controller('UpdateUserController', function($scope, SessionService, cfpLoadingBar, UserServices, flash) {
 
     var user = SessionService.get('userId');
     var getUser = UserServices.get({
@@ -84,7 +84,7 @@ loginControllers.controller('UpdateUserController', function($scope, SessionServ
 	$scope.user = response;
     }, function(response) {
 	$scope.errorresource = response.data;
-	    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+	flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
 	cfpLoadingBar.complete();
     }
 
@@ -94,10 +94,10 @@ loginControllers.controller('UpdateUserController', function($scope, SessionServ
 	cfpLoadingBar.start();
 	var userAdd = UserServices.save(user).$promise;
 	userAdd.then(function(response) {
-	    FlashService.show("Password updated successfully", "alert-success");
+	    flash.pop({title: '', body: "Your password has been updated successfully.", type: 'alert-success'});
 	}, function(response) {
 	    $scope.errorresource = response.data;
-	    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+	    flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
 	    cfpLoadingBar.complete();
 	}
 

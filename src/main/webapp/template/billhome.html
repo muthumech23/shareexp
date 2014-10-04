@@ -3,19 +3,19 @@
         <div class="col-lg-4">
             <div class="bs-component">
                 <ul class="nav nav-pills nav-stacked">
-                    <li class="disabled" ng-repeat="userInfo in usersBillData" ng-if="userInfo.userId === loggedUser">
+                    <li ng-class="{'active':isUserSelected(1) }" class="disabled" ng-repeat="userInfo in usersBillData" ng-if="userInfo.userId === loggedUser">
                         <a class="list-group-item">
-                        <Strong>{{userInfo.name}}</strong><br/><span class="text-muted"><i class="glyphicon glyphicon-envelope small"></i> {{userInfo.email}}</span>
-                        <span class="label-success badge" ng-if="userInfo.amount <= 0">{{userInfo.amount| currency}}</span>
-                        <span class="label-danger badge" ng-if="userInfo.amount > 0">{{userInfo.amount| currency}}</span></a>
+                        <Strong>{{userInfo.name}}</strong><br/><span class="text-muted small"><i class="glyphicon glyphicon-envelope "></i> {{userInfo.email}}</span>
+                        <span class="text-success pull-right small" ng-if="userInfo.amount < 0">Total balance <strong>{{userInfo.amount| currency}}</strong></span>
+                        <span class="text-danger pull-right small" ng-if="userInfo.amount > 0">Total balance <strong>{{userInfo.amount| currency}}</strong></span></a>
                     </li>
                 </ul>
                 <ul class="nav nav-pills nav-stacked">
-                    <li ng-repeat="userInfo in usersBillData"><a class="list-group-item" ng-if="userInfo.userId !== loggedUser" ng-click="userBill(userInfo.userId);">
+                    <li ng-repeat="userInfo in usersBillData" ng-class="{'active': isUserSelected(userInfo.userId) }"><a class="list-group-item" ng-if="userInfo.userId !== loggedUser" ng-click="userBill(userInfo.userId);">
                         <strong>{{userInfo.name}} </strong><br/>
-                        <span class="text-muted"><i class="glyphicon glyphicon-envelope small"></i>  {{userInfo.email}}</span>
-                        <span class="label-success badge" ng-if="userInfo.amount <= 0">{{userInfo.amount| currency}}</span>
-                        <span class="label-danger badge" ng-if="userInfo.amount > 0">{{userInfo.amount| currency}}</span>
+                        <span class="text-muted small"><i class="glyphicon glyphicon-envelope"></i>  {{userInfo.email}}</span>
+                        <span class="text-success pull-right small" ng-if="userInfo.amount < 0">owes you <strong>{{userInfo.amount| currency}}</strong></span>
+                        <span class="text-danger pull-right small" ng-if="userInfo.amount > 0">you owe <strong>{{userInfo.amount| currency}}</strong></span>
                     </a></li>
                 </ul>
             </div>

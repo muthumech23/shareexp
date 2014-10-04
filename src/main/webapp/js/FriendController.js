@@ -2,7 +2,7 @@
 var friendControllers = angular.module('FriendControllers', []);
 
 /* Friends Controller */
-friendControllers.controller('FriendController', function($scope, $state, cfpLoadingBar, FriendServices, $modal, FlashService, SessionService) {
+friendControllers.controller('FriendController', function($scope, $state, cfpLoadingBar, FriendServices, $modal, flash, SessionService) {
 
     $scope.AddFriend = function() {
 	$scope.friend = {};
@@ -23,14 +23,15 @@ friendControllers.controller('FriendController', function($scope, $state, cfpLoa
 
 	    var friendAdd = FriendServices.addFriends(friend, user);
 	    friendAdd.then(function(response) {
-		FlashService.show("Friend Added Successfully", "alert-success");
+		flash.pop({title: '', body: "Your friend added successfully and invite has been sent to the address. ", type: 'alert-success'});
+		
 		$state.go('billhome.friends', {}, {
 		    reload : true
 		});
 		cfpLoadingBar.complete();
 	    }, function(response) {
 		$scope.errorresource = response.data;
-		    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+		flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
 		cfpLoadingBar.complete();
 	    });
 	}, function() {
@@ -41,7 +42,6 @@ friendControllers.controller('FriendController', function($scope, $state, cfpLoa
     $scope.EditFriend = function(friend) {
 
 	$scope.friend = friend;
-	console.log(friend);
 	var modalInstance = $modal.open({
 	    templateUrl : 'friendmodal.html',
 	    controller : ModalInstanceCtrl,
@@ -57,11 +57,12 @@ friendControllers.controller('FriendController', function($scope, $state, cfpLoa
 
 	    var friendAdd = FriendServices.editFriends(friend);
 	    friendAdd.then(function(response) {
-		FlashService.show("Updated Successfully", "alert-success");
+		flash.pop({title: '', body: "Your friend details hsa been Updated Successfully.", type: 'alert-success'});
+		
 		cfpLoadingBar.complete();
 	    }, function(response) {
 		$scope.errorresource = response.data;
-		    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+		flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
 		cfpLoadingBar.complete();
 	    });
 	}, function() {
@@ -71,18 +72,17 @@ friendControllers.controller('FriendController', function($scope, $state, cfpLoa
 
     $scope.removeFriend = function(friendId) {
 	cfpLoadingBar.start();
-	console.log(friendId);
 
 	var removeFriend = FriendServices.deleteFriends(friendId);
 	removeFriend.then(function(response) {
-	    FlashService.show("Updated Successfully.", "alert-success");
+	    flash.pop({title: '', body: "Friend has been removed from your list Successfully", type: 'alert-success'});
 	    $state.go('billhome.friends', {}, {
 		reload : true
 	    });
 	    cfpLoadingBar.complete();
 	}, function(response) {
 	    $scope.errorresource = response.data;
-	    FlashService.show($scope.errorresource.code + ": " + $scope.errorresource.message, 'alert-danger');
+	    flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
 	    cfpLoadingBar.complete();
 	});
     };
@@ -97,7 +97,6 @@ var ModalInstanceCtrl = function($scope, $modalInstance, friendData) {
     };
 
     $scope.cancel = function() {
-	console.log('inside');
 	$modalInstance.dismiss('cancel');
     };
 };

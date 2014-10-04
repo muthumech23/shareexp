@@ -4,13 +4,21 @@ var loginServices = angular.module('LoginServices', []);
 
 loginServices.factory("FlashService", function($rootScope) {
     return {
-	show : function(message, msgType) {
-	    $rootScope.flash = message;
-	    $rootScope.msgType = msgType;
+	setMainTab : function(tab) {
+	    $rootScope.mainTabSelected = tab;
+	},
+	getMainTab : function() {
+	    return $rootScope.mainTabSelected;
+	},
+	setUserTab : function(user) {
+	    $rootScope.userTabSelected = user;
+	},
+	getUserTab : function() {
+	    return $rootScope.userTabSelected;
 	},
 	clear : function() {
-	    $rootScope.flash = "";
-	    $rootScope.msgType = "";
+	    $rootScope.mainTabSelected = "";
+	    $rootScope.userTabSelected = "";
 	}
     };
 });
