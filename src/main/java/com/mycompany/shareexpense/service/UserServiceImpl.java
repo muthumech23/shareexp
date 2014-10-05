@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
 			emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/login");
 
 				try{	
-					CommonUtil.sendEmail("Reset Password Request", email, emailbody, env);
+					CommonUtil.sendEmail("Your password reset request", email, emailbody, env);
 				}catch(Exception exception){
 					log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
 				}
@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
 			emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString());
 			emailbody = emailbody.replaceAll("<<siteUrl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/login");
 try{
-			CommonUtil.sendEmail("Activation Code Generated", email, emailbody, env);
+			CommonUtil.sendEmail("Your activation Code", email, emailbody, env);
 		}catch(Exception exception){
 			log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
 		}
@@ -196,7 +196,7 @@ try{
 					emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString());
 					emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/activation");
 try{
-					CommonUtil.sendEmail("User Registration", user.getEmail(), emailbody, env);
+					CommonUtil.sendEmail("Welcome to Share Expense", user.getEmail(), emailbody, env);
 				}catch(Exception exception){
 					log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
 				}
@@ -225,7 +225,7 @@ try{
 				emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString());
 				emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/activation");
 try{
-				CommonUtil.sendEmail("User Registration", user.getEmail(), emailbody, env);
+				CommonUtil.sendEmail("Welcome to Share Expense", user.getEmail(), emailbody, env);
 			}catch(Exception exception){
 				log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
 			}
@@ -394,7 +394,7 @@ try{
 			emailbody = emailbody.replaceAll("<<useremail>>", loggedUser.getEmail());
 			emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home");
 try{
-			CommonUtil.sendEmail("Friend Addition", friendExist.getEmail(), emailbody, env);
+			CommonUtil.sendEmail("You are invited to join Share Expense", friendExist.getEmail(), emailbody, env);
 		}catch(Exception exception){
 			log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
 		}

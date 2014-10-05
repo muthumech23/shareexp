@@ -139,6 +139,8 @@ public class CommonUtil {
 
 			// Create the message part
 			BodyPart messageBodyPart = new MimeBodyPart();
+			
+			body = env.getProperty("mail.template.top") + body + env.getProperty("mail.template.bottom");
 
 			// Fill the message
 			messageBodyPart.setContent(body, "text/html; charset=utf-8");
