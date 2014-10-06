@@ -2,7 +2,7 @@
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h3 class="panel-title">Friends <span class="badge small">{{usersBillData.length -1}}</span>
-        <a ng-click="AddFriend()" popover-trigger="mouseenter" popover="Add Friends" class="btn btn-xs btn-success pull-right">Add Friend</a></h3>
+        <button ng-click="AddFriend()" popover-trigger="mouseenter" popover="Add Friends" class="btn btn-xs btn-success pull-right">Add Friend</button></h3>
     </div>
     <div class="panel-body">
 
@@ -13,7 +13,7 @@
                     <td class="col-lg-5">{{friend.email}}</td>
                     <td class="col-lg-2"><span class="label label-success" ng-if="friend.amount < 0">Owes you {{friend.amount| currency}}</span>
                     <span class="label label-danger" ng-if="friend.amount > 0">You owe {{friend.amount| currency}}</span></td>
-                    <td class="pull-right"><a class="btn btn-danger btn-xs" popover-trigger="mouseenter" popover="Delete" ng-click="removeFriend(friend.userId)" ng-if="friend.amount === 0"><i class="glyphicon glyphicon-trash"></i></a></td>
+                    <td class="pull-right"><button class="btn btn-danger btn-xs" popover-trigger="mouseenter" popover="Delete" ng-click="removeFriend(friend.userId)" ng-if="friend.amount === 0"><i class="glyphicon glyphicon-trash"></i></button></td>
                 </tr>
             </tbody>
         </table> 

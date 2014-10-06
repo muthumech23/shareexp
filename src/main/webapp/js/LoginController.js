@@ -39,39 +39,72 @@ loginControllers.controller('ChgpwdController', function($scope, SessionService)
 });
 
 /* Login Controller */
-loginControllers.controller('LoginController', function($scope, $state, cfpLoadingBar, UserServices, flash) {
+loginControllers
+	.controller(
+		'LoginController',
+		function($scope, $state, cfpLoadingBar, UserServices, flash) {
 
-    $scope.title = 'Share Expenses - Login';
+		    $scope.title = 'Share Expenses - Login';
 
-    $scope.registerUser = function(user) {
-	cfpLoadingBar.start();
-	var userAdd = UserServices.save(user).$promise;
-	userAdd.then(function(response) {
-	    flash.show({title: '', body: "Register has been completed successfully! Activation code has been sent your Inbox (please check your spam in case not available in inbox). Please enter activation code to activate your account.", type: 'alert-success'});
-	    $state.go("home.activation");
-	}, function(response) {
-	    $scope.errorresource = response.data;
-	    flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
-	    cfpLoadingBar.complete();
-	}
+		    $scope.registerUser = function(user) {
 
-	);
-    };
+			if (user.password !== $scope.confirmpassword) {
+			    flash.pop({
+				title : '',
+				body : 'Password and Confirm password are different. Please correct it.',
+				type : 'alert-danger'
+			    });
+			    return;
+			} else {
+			    cfpLoadingBar.start();
+			    var userAdd = UserServices.save(user).$promise;
+			    userAdd
+				    .then(
+					    function(response) {
+						flash.set({
+							    title : '',
+							    body : "Register has been completed successfully! Activation code has been sent your Inbox (please check your spam in case not available in inbox). Please enter activation code to activate your account.",
+							    type : 'alert-success'
+							});
+						$state.go("home.activation");
+					    }, function(response) {
+						$scope.errorresource = response.data;
+						flash.pop({
+						    title : '',
+						    body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+						    type : 'alert-danger'
+						});
+						cfpLoadingBar.complete();
+					    }
 
-    $scope.saveUser = function(user) {
-	cfpLoadingBar.start();
-	var userAdd = UserServices.save(user).$promise;
-	userAdd.then(function(response) {
-	    flash.pop({title: '', body: "Your password has been updated successfully", type: 'alert-success'});
-	}, function(response) {
-	    $scope.errorresource = response.data;
-	    flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
-	    cfpLoadingBar.complete();
-	}
+				    );
 
-	);
-    };
-});
+			}
+
+		    };
+
+		    $scope.saveUser = function(user) {
+			cfpLoadingBar.start();
+			var userAdd = UserServices.save(user).$promise;
+			userAdd.then(function(response) {
+			    flash.pop({
+				title : '',
+				body : "Your password has been updated successfully",
+				type : 'alert-success'
+			    });
+			}, function(response) {
+			    $scope.errorresource = response.data;
+			    flash.pop({
+				title : '',
+				body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+				type : 'alert-danger'
+			    });
+			    cfpLoadingBar.complete();
+			}
+
+			);
+		    };
+		});
 
 /* Login Controller */
 loginControllers.controller('UpdateUserController', function($scope, SessionService, cfpLoadingBar, UserServices, flash) {
@@ -84,20 +117,34 @@ loginControllers.controller('UpdateUserController', function($scope, SessionServ
 	$scope.user = response;
     }, function(response) {
 	$scope.errorresource = response.data;
-	flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
+	flash.pop({
+	    title : '',
+	    body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+	    type : 'alert-danger'
+	});
 	cfpLoadingBar.complete();
     }
 
     );
 
     $scope.saveUser = function(user) {
+
 	cfpLoadingBar.start();
 	var userAdd = UserServices.save(user).$promise;
+
 	userAdd.then(function(response) {
-	    flash.pop({title: '', body: "Your password has been updated successfully.", type: 'alert-success'});
+	    flash.pop({
+		title : '',
+		body : "Your password has been updated successfully.",
+		type : 'alert-success'
+	    });
 	}, function(response) {
 	    $scope.errorresource = response.data;
-	    flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
+	    flash.pop({
+		title : '',
+		body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+		type : 'alert-danger'
+	    });
 	    cfpLoadingBar.complete();
 	}
 

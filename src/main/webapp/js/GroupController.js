@@ -209,13 +209,14 @@ groupControllers.controller('GroupAddBillController', function($scope, $statePar
 	var checkbox = $event.target;
 	var action = (checkbox.checked ? 'add' : 'remove');
 	updateSelected(action, billsplit);
+	isOneSelected();
     };
 
     $scope.isSelected = function(billsplit) {
 	return $scope.updatedBillSPlitList.indexOf(billsplit) >= 0;
     };
 
-    $scope.isOneSelected = function() {
+    var isOneSelected = function() {
 	if ($scope.updatedBillSPlitList.length === 0) {
 	    return true;
 	} else if ($scope.updatedBillSPlitList.length === 1) {

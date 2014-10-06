@@ -23,7 +23,7 @@ loginServices.factory("FlashService", function($rootScope) {
     };
 });
 
-loginServices.factory("CookieService", function($cookieStore) {
+loginServices.factory("CookieService", function($cookieStore, $cookies) {
     return {
 	get : function(key) {
 	    return $cookieStore.get(key);
@@ -32,7 +32,7 @@ loginServices.factory("CookieService", function($cookieStore) {
 	    return $cookieStore.put(key, val);
 	},
 	unset : function(key) {
-	    return $cookieStore.put(key, "");
+	    return delete $cookies[key];
 	}
     };
 });

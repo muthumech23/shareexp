@@ -1,7 +1,7 @@
 
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <h3 class="panel-title">{{userSelectedName}} Recent Bills <span class="badge small">{{bills.length}}</span><a ng-if="usersBillData.length > 1" ui-sref="billhome.add" class="btn btn-success btn-xs pull-right" popover-trigger="mouseenter" popover="Add Bill">Add Bill</a></h3>
+        <h3 class="panel-title">{{userSelectedName}} Recent Bills <span class="badge small">{{bills.length}}</span><a ng-if="usersBillData.length > 1" ui-sref="billhome.add" class="pull-right"><button class="btn btn-success btn-xs" popover-trigger="mouseenter" popover="Add Bill">Add Bill</button></a></h3>
         
     </div>
     <div class="panel-body">
@@ -16,7 +16,10 @@
                             <span class="label label-success small" ng-if="billdata.userId === bill.userPaid">{{billdata.name}} ({{billdata.amount |currency}})</span>
                     </td>
                     
-                    <td class="pull-right"><a class="btn btn-warning btn-xs" ng-click="editBill(bill.id)" popover-trigger="mouseenter" popover="Edit Bill">edit</a></td>
+                    <td class="pull-right"><button class="btn btn-warning btn-xs" ng-click="editBill(bill.id)" popover-trigger="mouseenter" popover="Edit Bill">edit</button></td>
+                </tr>
+                <tr ng-if="usersBillData.length === 1" >
+                	<td class="col-lg-10">Please add friends as first step in your list to add/share bills.</td>
                 </tr>
                 
             </tbody>

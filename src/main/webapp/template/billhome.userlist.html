@@ -14,7 +14,7 @@
                             <span class="label label-default small" ng-if="billdata.userId !== bill.userPaid">{{billdata.name}} {{billdata.amount |currency}}</span>
                             <span class="label label-success small" ng-if="billdata.userId === bill.userPaid">{{billdata.name}} {{billdata.amount |currency}}</span>
                     </td>
-                    <td class="pull-right"><a class="btn btn-warning btn-xs" ng-click="editBill(bill.id)">edit</a></td>
+                    <td class="pull-right"><button class="btn btn-warning btn-xs" ng-click="editBill(bill.id)">edit</button></td>
                 </tr>
                 
             </tbody>

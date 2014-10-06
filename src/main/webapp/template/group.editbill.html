@@ -52,7 +52,7 @@
                     </label>
                     <label class="col-lg-4 radio-inline">
                         <input type="radio" ng-model="bill.splitType" value="share" ng-change="billAmountChng()" required>
-                        By Share
+                        By Share <span class="text-muted small">(e.g = 1, 2, 3 ...)</span>
                     </label>
                 </div>
 
@@ -72,5 +72,5 @@
             </div>
         </form>
     </div>
-    <div class="panel-footer text-right"><a class="btn btn-success btn-sm" ng-disabled="form.$invalid" ng-click="saveBill(bill)">Save</a><span>   </span><a ui-sref="billhome.list" class="btn btn-warning btn-sm right">Cancel</a></div>
+    <div class="panel-footer text-right"><button class="btn btn-success btn-sm" ng-disabled="form.$invalid" ng-click="saveBill(bill)">Save</button><span>   </span><a ui-sref="billhome.list"><button class="btn btn-warning btn-sm right">Cancel</button></a></div>
 </div>

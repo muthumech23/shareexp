@@ -65,7 +65,7 @@ billControllers.controller('BillRecentController', function($scope, recentBills,
 
 });
 
-billControllers.controller('BillAddController', function($scope, $state, cfpLoadingBar, flash, BillingServices, addBill, SessionService) {
+billControllers.controller('BillAddController', function($scope, $state, cfpLoadingBar, flash, BillingServices, addBill, SessionService, $filter) {
 
     $scope.open = function($event) {
 	$event.preventDefault();
@@ -85,6 +85,7 @@ billControllers.controller('BillAddController', function($scope, $state, cfpLoad
     $scope.bill.splitType = 'equally';
 
     $scope.billAmountChng = function() {
+	console.log('Inside Bill Amount Change');
 	updateSplitAmount();
     };
 
@@ -94,6 +95,7 @@ billControllers.controller('BillAddController', function($scope, $state, cfpLoad
 	} else if ($scope.bill.splitType === 'share') {
 	    updateSplitShare();
 	} else if ($scope.bill.splitType === 'exact') {
+	    console.log('Inside update split Amount');
 	    updateSplitExact();
 	}
     };
@@ -181,13 +183,14 @@ billControllers.controller('BillAddController', function($scope, $state, cfpLoad
 	var checkbox = $event.target;
 	var action = (checkbox.checked ? 'add' : 'remove');
 	updateSelected(action, billsplit);
+	isOneSelected();
     };
 
     $scope.isSelected = function(billsplit) {
 	return $scope.updatedBillSPlitList.indexOf(billsplit) >= 0;
     };
 
-    $scope.isOneSelected = function() {
+    var isOneSelected = function() {
 
 	if ($scope.updatedBillSPlitList.length === 0) {
 	    return true;
@@ -213,6 +216,19 @@ billControllers.controller('BillAddController', function($scope, $state, cfpLoad
     };
 
     $scope.saveBill = function(billData) {
+
+	if ($scope.updatedBillSPlitList.length === 1) {
+	    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
+		if (billsplit.userId === billData.userPaid) {
+		    flash.pop({
+			title : '',
+			body : 'Please include one more person other than the user paid.',
+			type : 'alert-warning'
+		    });
+		    return;
+		}
+	    });
+	}
 
 	billData.billSplits = $scope.updatedBillSPlitList;
 	billData.by = SessionService.get('userEmail');
@@ -381,6 +397,7 @@ billControllers.controller('BillEditController', function($scope, $state, $filte
 	    } else {
 		billsplit.amount = -billsplit.amount;
 	    }
+
 	});
     };
 
