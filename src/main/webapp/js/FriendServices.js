@@ -33,7 +33,7 @@ friendServices.factory('FriendServices', function($resource, flash, SessionServi
 		return response.data;
 	    }, function(response) {
 		$scope.errorresource = response.data;
-		flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
+		flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
 	    });
 	    return friends;
 	},

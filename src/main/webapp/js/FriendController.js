@@ -31,7 +31,7 @@ friendControllers.controller('FriendController', function($scope, $state, cfpLoa
 		cfpLoadingBar.complete();
 	    }, function(response) {
 		$scope.errorresource = response.data;
-		flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
+		flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
 		cfpLoadingBar.complete();
 	    });
 	}, function() {
@@ -62,7 +62,7 @@ friendControllers.controller('FriendController', function($scope, $state, cfpLoa
 		cfpLoadingBar.complete();
 	    }, function(response) {
 		$scope.errorresource = response.data;
-		flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
+		flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
 		cfpLoadingBar.complete();
 	    });
 	}, function() {
@@ -82,7 +82,7 @@ friendControllers.controller('FriendController', function($scope, $state, cfpLoa
 	    cfpLoadingBar.complete();
 	}, function(response) {
 	    $scope.errorresource = response.data;
-	    flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
+	    flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
 	    cfpLoadingBar.complete();
 	});
     };

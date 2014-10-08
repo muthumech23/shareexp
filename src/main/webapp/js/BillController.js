@@ -43,7 +43,7 @@ billControllers.controller('BillUserController', function($scope, $state, $state
 	    $scope.errorresource = response.data;
 	    flash.pop({
 		title : '',
-		body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+		body : $scope.errorresource.message,
 		type : 'alert-danger'
 	    });
 	    cfpLoadingBar.complete();
@@ -249,7 +249,7 @@ billControllers.controller('BillAddController', function($scope, $state, cfpLoad
 	    $scope.errorresource = response.data;
 	    flash.pop({
 		title : '',
-		body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+		body : $scope.errorresource.message,
 		type : 'alert-danger'
 	    });
 	    cfpLoadingBar.complete();
@@ -298,7 +298,7 @@ billControllers.controller('BillEditController', function($scope, $state, $filte
 	    $scope.errorresource = response.data;
 	    flash.pop({
 		title : '',
-		body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+		body : $scope.errorresource.message,
 		type : 'alert-danger'
 	    });
 	    cfpLoadingBar.complete();
@@ -471,7 +471,7 @@ billControllers.controller('BillEditController', function($scope, $state, $filte
 	    $scope.errorresource = response.data;
 	    flash.pop({
 		title : '',
-		body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+		body : $scope.errorresource.message,
 		type : 'alert-danger'
 	    });
 	    cfpLoadingBar.complete();

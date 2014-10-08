@@ -71,7 +71,7 @@ loginControllers
 						$scope.errorresource = response.data;
 						flash.pop({
 						    title : '',
-						    body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+						    body : $scope.errorresource.message,
 						    type : 'alert-danger'
 						});
 						cfpLoadingBar.complete();
@@ -96,7 +96,7 @@ loginControllers
 			    $scope.errorresource = response.data;
 			    flash.pop({
 				title : '',
-				body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+				body : $scope.errorresource.message,
 				type : 'alert-danger'
 			    });
 			    cfpLoadingBar.complete();
@@ -119,7 +119,7 @@ loginControllers.controller('UpdateUserController', function($scope, SessionServ
 	$scope.errorresource = response.data;
 	flash.pop({
 	    title : '',
-	    body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+	    body : $scope.errorresource.message,
 	    type : 'alert-danger'
 	});
 	cfpLoadingBar.complete();
@@ -142,7 +142,7 @@ loginControllers.controller('UpdateUserController', function($scope, SessionServ
 	    $scope.errorresource = response.data;
 	    flash.pop({
 		title : '',
-		body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+		body : $scope.errorresource.message,
 		type : 'alert-danger'
 	    });
 	    cfpLoadingBar.complete();

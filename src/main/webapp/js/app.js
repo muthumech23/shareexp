@@ -218,7 +218,7 @@ shareExpApp
 					    $scope.errorresource = response.data;
 					    flash.pop({
 						title : '',
-						body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+						body : $scope.errorresource.message,
 						type : 'alert-danger'
 					    });
 					    cfpLoadingBar.complete();
@@ -248,7 +248,7 @@ shareExpApp
 			    $scope.errorresource = response.data;
 			    flash.pop({
 				title : '',
-				body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+				body : $scope.errorresource.message,
 				type : 'alert-danger'
 			    });
 			    cfpLoadingBar.complete();
@@ -261,7 +261,7 @@ shareExpApp
 			if (emaildId === null || emailId === '') {
 			    flash.pop({
 				title : '',
-				body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+				body : $scope.errorresource.message,
 				type : 'alert-danger'
 			    });
 			}
@@ -283,7 +283,7 @@ shareExpApp
 					    $scope.errorresource = response.data;
 					    flash.pop({
 						title : '',
-						body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+						body : $scope.errorresource.message,
 						type : 'alert-danger'
 					    });
 					    cfpLoadingBar.complete();
@@ -312,7 +312,7 @@ shareExpApp
 					    $scope.errorresource = response.data;
 					    flash.pop({
 						title : '',
-						body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+						body : $scope.errorresource.message,
 						type : 'alert-danger'
 					    });
 					    cfpLoadingBar.complete();
@@ -340,7 +340,7 @@ shareExpApp
 			    $scope.errorresource = response.data;
 			    flash.pop({
 				title : '',
-				body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+				body : $scope.errorresource.message,
 				type : 'alert-danger'
 			    });
 			    cfpLoadingBar.complete();
@@ -377,7 +377,7 @@ shareExpApp
 			    $scope.errorresource = response.data;
 			    flash.pop({
 				title : '',
-				body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+				body : $scope.errorresource.message,
 				type : 'alert-danger'
 			    });
 			    cfpLoadingBar.complete();

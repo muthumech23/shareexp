@@ -46,7 +46,7 @@ billServices.factory('BillingServices', function($resource, flash, SessionServic
 		return response.data;
 	    }, function(response) {
 		$scope.errorresource = response.data;
-		flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
+		flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
 	    });
 	    return billData;
 	},
@@ -70,7 +70,7 @@ billServices.factory('BillingServices', function($resource, flash, SessionServic
 		return response.data;
 	    }, function(response) {
 		$scope.errorresource = response.data;
-		flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
+		flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
 	    });
 	    return addBill;
 	},
@@ -84,7 +84,7 @@ billServices.factory('BillingServices', function($resource, flash, SessionServic
 		return response.data;
 	    }, function(response) {
 		$scope.errorresource = response.data;
-		flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
+		flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
 	    });
 	    return bills;
 	},
@@ -97,7 +97,7 @@ billServices.factory('BillingServices', function($resource, flash, SessionServic
 		return response.data;
 	    }, function(response) {
 		$scope.errorresource = response.data;
-		flash.pop({title: '', body: $scope.errorresource.code + ": " + $scope.errorresource.message, type: 'alert-danger'});
+		flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
 	    });
 	    return bills;
 	}

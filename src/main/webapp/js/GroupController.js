@@ -31,7 +31,7 @@ groupControllers.controller('GroupRecentController', function($scope, $statePara
 	$scope.errorresource = response.data;
 	flash.pop({
 	    title : '',
-	    body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+	    body : $scope.errorresource.message,
 	    type : 'alert-danger'
 	});
 	cfpLoadingBar.complete();
@@ -62,7 +62,7 @@ groupControllers.controller('GroupController', function($scope, $state, $statePa
 	    $scope.errorresource = response.data;
 	    flash.pop({
 		title : '',
-		body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+		body : $scope.errorresource.message,
 		type : 'alert-danger'
 	    });
 	    cfpLoadingBar.complete();
@@ -110,7 +110,7 @@ groupControllers.controller('GroupController', function($scope, $state, $statePa
 	    $scope.errorresource = response.data;
 	    flash.pop({
 		title : '',
-		body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+		body : $scope.errorresource.message,
 		type : 'alert-danger'
 	    });
 	    cfpLoadingBar.complete();
@@ -270,7 +270,7 @@ groupControllers.controller('GroupAddBillController', function($scope, $statePar
 	    $scope.errorresource = response.data;
 	    flash.pop({
 		title : '',
-		body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+		body : $scope.errorresource.message,
 		type : 'alert-danger'
 	    });
 	    cfpLoadingBar.complete();
@@ -314,7 +314,7 @@ groupControllers.controller('GroupEditBillController', function($scope, $state, 
 	    $scope.errorresource = response.data;
 	    flash.pop({
 		title : '',
-		body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+		body : $scope.errorresource.message,
 		type : 'alert-danger'
 	    });
 	    cfpLoadingBar.complete();
@@ -485,7 +485,7 @@ groupControllers.controller('GroupEditBillController', function($scope, $state, 
 	    $scope.errorresource = response.data;
 	    flash.pop({
 		title : '',
-		body : $scope.errorresource.code + ": " + $scope.errorresource.message,
+		body : $scope.errorresource.message,
 		type : 'alert-danger'
 	    });
 	    cfpLoadingBar.complete();
