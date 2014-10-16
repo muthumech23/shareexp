@@ -1,7 +1,15 @@
 'use strict'
 var billControllers = angular.module('BillControllers', []);
 
-billControllers.controller('BillListController', function($scope, homeBillData, $state) {
+billControllers.controller('BillListController', function($scope, homeBillData, getGroupList, $state, FriendServices, $modal, flash, SessionService, cfpLoadingBar, BillingServices) {
+    
+    $scope.oneAtATime = true;
+    
+    $scope.accordionStatus = {
+	    isFirstOpen: true,
+	    isFirstDisabled: false
+	  };
+    
     $scope.usersBillData = homeBillData;
 
     $scope.userBill = function(userId) {
@@ -10,14 +18,210 @@ billControllers.controller('BillListController', function($scope, homeBillData, 
 	    userId : userId
 	});
     };
+        
+    $scope.groupList = getGroupList;
+    
+    $scope.getGroupBills = function(groupId) {
+	$scope.selectGroup(groupId);
+	$state.go('billhome.groupbills', {
+	    groupId : groupId
+	});
+    };
 
+    $scope.editGroup = function(groupId) {
+	$scope.selectGroup(groupId);
+	$state.go('billhome.groupedit', {
+	    groupId : groupId
+	});
+    };
+    
+    $scope.AddFriend = function() {
+	$scope.friend = {};
+	var modalInstance = $modal.open({
+	    templateUrl : 'friendmodal.html',
+	    controller : ModalInstanceCtrl,
+	    resolve : {
+		friendData : function() {
+		    return $scope.friend;
+		}
+	    }
+	});
+
+	modalInstance.result.then(function(friend) {
+	    cfpLoadingBar.start();
+
+	    var user = SessionService.get('userId');
+
+	    var friendAdd = FriendServices.addFriends(friend, user);
+	    friendAdd.then(function(response) {
+		flash.pop({title: '', body: "Your friend added successfully and invite has been sent to the address. ", type: 'alert-success'});
+		
+		$state.go('billhome.list', {}, {
+		    reload : true
+		});
+		cfpLoadingBar.complete();
+	    }, function(response) {
+		$scope.errorresource = response.data;
+		flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
+		cfpLoadingBar.complete();
+	    });
+	}, function() {
+
+	});
+    };
+
+    $scope.EditFriend = function(friend) {
+
+	$scope.friend = friend;
+	var modalInstance = $modal.open({
+	    templateUrl : 'friendmodal.html',
+	    controller : ModalInstanceCtrl,
+	    resolve : {
+		friendData : function() {
+		    return $scope.friend;
+		}
+	    }
+	});
+
+	modalInstance.result.then(function(friend) {
+	    cfpLoadingBar.start();
+
+	    var friendAdd = FriendServices.editFriends(friend);
+	    friendAdd.then(function(response) {
+		flash.pop({title: '', body: "Your friend details hsa been Updated Successfully.", type: 'alert-success'});
+		
+		cfpLoadingBar.complete();
+	    }, function(response) {
+		$scope.errorresource = response.data;
+		flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
+		cfpLoadingBar.complete();
+	    });
+	}, function() {
+
+	});
+    };
+
+    $scope.removeFriend = function(friendId) {
+	cfpLoadingBar.start();
+
+	var removeFriend = FriendServices.deleteFriends(friendId);
+	removeFriend.then(function(response) {
+	    flash.pop({title: '', body: "Friend has been removed from your list Successfully", type: 'alert-success'});
+	    $state.go('billhome.list', {}, {
+		reload : true
+	    });
+	    cfpLoadingBar.complete();
+	}, function(response) {
+	    $scope.errorresource = response.data;
+	    flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
+	    cfpLoadingBar.complete();
+	});
+    };
+    
+    
+    $scope.reminderFn = function(userId, loggedUser, amount) {
+	
+	$scope.userDto = {'userId': userId, 'loggedUser': loggedUser, 'amount': amount  };
+	console.log($scope.userDto);
+	var reminder = BillingServices.reminder($scope.userDto);
+	reminder.then(function(response) {
+	    flash.pop({title: '', body: "Reminder sent successfully.", type: 'alert-success'});
+	   
+	}, function(response) {
+	    $scope.errorresource = response.data;
+	    flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
+	});
+    };
+    
+
+    $scope.settleUpFn = function(userId, loggedUser, amount) {
+	
+	$scope.settleDto = {'userId': userId, 'loggedUser': loggedUser, 'amount': amount , 'billPaid': amount };
+	
+	var modalInstance = $modal.open({
+	    templateUrl : 'settlemodal.html',
+	    controller : SettleInstanceCtrl,
+	    resolve : {
+		settleData : function() {
+		    return $scope.settleDto;
+		}
+	    }
+	});
+
+	modalInstance.result.then(function(settle) {
+	    cfpLoadingBar.start();
+
+		if(settle.amount < 0){
+		    settle.billPaid = -settle.billPaid;
+		}else if(settle.amount > 0){
+		    settle.billPaid = settle.billPaid;
+		}
+		 
+		$scope.userDto = {'userId': settle.userId, 'loggedUser': settle.loggedUser, 'amount': settle.billPaid  };
+		console.log($scope.userDto);
+		
+		var settle = BillingServices.settleService($scope.userDto);
+		settle.then(function(response) {
+		    flash.pop({title: '', body: "Amount paid updated successfully.", type: 'alert-success'});
+		    $state.go('billhome.list', {}, {
+			reload : true
+		    });
+		    cfpLoadingBar.complete();
+		   
+		}, function(response) {
+		    $scope.errorresource = response.data;
+		    flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
+		    cfpLoadingBar.complete();
+		});
+	}, function() {
+
+	});
+    };
+    
 });
+
+var ModalInstanceCtrl = function($scope, $modalInstance, friendData) {
+    
+    $scope.avoidSpecialChar = /^[a-zA-Z0-9\s]+$/;
+
+    $scope.friendData = friendData;
+
+    $scope.ok = function() {
+	$modalInstance.close($scope.friendData);
+    };
+
+    $scope.cancel = function() {
+	$modalInstance.dismiss('cancel');
+    };
+};
+
+var SettleInstanceCtrl = function($scope, $modalInstance, settleData) {
+    
+    $scope.settleData = settleData;
+
+    $scope.ok = function() {
+	$modalInstance.close($scope.settleData);
+    };
+
+    $scope.cancel = function() {
+	$modalInstance.dismiss('cancel');
+    };
+};
 
 billControllers.controller('BillUserController', function($scope, $state, $stateParams, BillingServices, UserServices, cfpLoadingBar, flash) {
 
-    $scope.editBill = function(billId) {
+    $scope.editBill = function(billId, userId) {
+	$scope.selectUser(userId);
 	$state.go('billhome.edit', {
 	    billId : billId
+	});
+
+    };
+    
+    $scope.addUserBill = function(userId) {
+	$scope.selectUser(userId);
+	$state.go('billhome.add', {
+	    userId : userId
 	});
 
     };
@@ -55,6 +259,9 @@ billControllers.controller('BillUserController', function($scope, $state, $state
 billControllers.controller('BillRecentController', function($scope, recentBills, $state, $stateParams) {
 
     $scope.userSelectedName = "All";
+    
+    $scope.selectGroup(1);
+    
     $scope.bills = recentBills;
 
     $scope.editBill = function(billId) {
@@ -65,7 +272,7 @@ billControllers.controller('BillRecentController', function($scope, recentBills,
 
 });
 
-billControllers.controller('BillAddController', function($scope, $state, cfpLoadingBar, flash, BillingServices, addBill, SessionService, $filter) {
+billControllers.controller('BillAddController', function($scope, $state, cfpLoadingBar, flash, BillingServices, addBill, SessionService, $filter, $stateParams) {
 
     $scope.open = function($event) {
 	$event.preventDefault();
@@ -81,8 +288,22 @@ billControllers.controller('BillAddController', function($scope, $state, cfpLoad
     $scope.addBillSplits = addBill.billSplits;
 
     $scope.updatedBillSPlitList = [];
-
+    
+    angular.forEach($scope.addBillSplits, function(billsplitInput) {
+	    if (billsplitInput.userId === SessionService.get('userId')) {
+		
+		$scope.updatedBillSPlitList.push(billsplitInput);
+	    }
+	    if (billsplitInput.userId === $stateParams.userId) {
+		$scope.selectUser($stateParams.userId);
+		$scope.updatedBillSPlitList.push(billsplitInput);
+	    }
+	    
+    });
+    console.log($scope.updatedBillSPlitList.length);
     $scope.bill.splitType = 'equally';
+    
+    $scope.bill.userPaid = SessionService.get('userId');
 
     $scope.billAmountChng = function() {
 	console.log('Inside Bill Amount Change');
@@ -183,7 +404,6 @@ billControllers.controller('BillAddController', function($scope, $state, cfpLoad
 	var checkbox = $event.target;
 	var action = (checkbox.checked ? 'add' : 'remove');
 	updateSelected(action, billsplit);
-	isOneSelected();
     };
 
     $scope.isSelected = function(billsplit) {
@@ -192,43 +412,39 @@ billControllers.controller('BillAddController', function($scope, $state, cfpLoad
 
     var isOneSelected = function() {
 
+	console.log($scope.updatedBillSPlitList.length);
 	if ($scope.updatedBillSPlitList.length === 0) {
 	    return true;
 	} else if ($scope.updatedBillSPlitList.length === 1) {
-	    var saveStatus = false;
+	    var selStatus = false; 
 	    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
 		if (billsplit.userId === $scope.bill.userPaid) {
-		    flash.pop({
-			title : '',
-			body : "Please include one more person other than the user paid.",
-			type : 'alert-warning'
-		    });
-
-		    saveStatus = true;
-		} else {
-		    saveStatus = false;
-		}
+		    
+		    selStatus = true;
+		} 
+		console.log(billsplit.userId);
 	    });
-	    return saveStatus;
+	    return selStatus;
 	} else {
 	    return false;
 	}
     };
+    
+    $scope.isOneSelectedFn = function(){
+	
+	if(isOneSelected()){
+	    
+	flash.pop({
+		title : '',
+		body : "Please include one more person other than the user paid.",
+		type : 'alert-warning'
+	    });
+	return true;
+	}
+	return false;
+    };
 
     $scope.saveBill = function(billData) {
-
-	if ($scope.updatedBillSPlitList.length === 1) {
-	    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
-		if (billsplit.userId === billData.userPaid) {
-		    flash.pop({
-			title : '',
-			body : 'Please include one more person other than the user paid.',
-			type : 'alert-warning'
-		    });
-		    return;
-		}
-	    });
-	}
 
 	billData.billSplits = $scope.updatedBillSPlitList;
 	billData.by = SessionService.get('userEmail');
@@ -405,7 +621,7 @@ billControllers.controller('BillEditController', function($scope, $state, $filte
 	var checkbox = $event.target;
 	var action = (checkbox.checked ? 'add' : 'remove');
 	updateSelected(action, billsplit);
-	isOneSelected();
+	
     };
 
     $scope.isSelected = function(billsplit) {
@@ -414,44 +630,40 @@ billControllers.controller('BillEditController', function($scope, $state, $filte
     };
 
     var isOneSelected = function() {
+
+	console.log($scope.updatedBillSPlitList.length);
 	if ($scope.updatedBillSPlitList.length === 0) {
 	    return true;
 	} else if ($scope.updatedBillSPlitList.length === 1) {
-	    var saveStatus = false;
+	    var selStatus = false; 
 	    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
 		if (billsplit.userId === $scope.bill.userPaid) {
-		    console.log('billsplit.userId 1' + billsplit.userId);
-		    flash.pop({
-			title : '',
-			body : 'Please include one more person other than the user paid.',
-			type : 'alert-warning'
-		    });
-		    saveStatus = true;
-
-		} else {
-		    saveStatus = false;
-		}
+		    
+		    selStatus = true;
+		} 
+		console.log(billsplit.userId);
 	    });
-	    return saveStatus;
+	    return selStatus;
 	} else {
 	    return false;
 	}
     };
-
-    $scope.saveBill = function(billData) {
-
-	if ($scope.updatedBillSPlitList.length === 1) {
-	    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
-		if (billsplit.userId === billData.userPaid) {
-		    flash.pop({
-			title : '',
-			body : 'Please include one more person other than the user paid.',
-			type : 'alert-warning'
-		    });
-		    return;
-		}
+    
+    $scope.isOneSelectedFn = function(){
+	
+	if(isOneSelected()){
+	    
+	flash.pop({
+		title : '',
+		body : "Please include one more person other than the user paid.",
+		type : 'alert-warning'
 	    });
+	return true;
 	}
+	return false;
+    };
+    
+    $scope.saveBill = function(billData) {
 
 	billData.billSplits = $scope.updatedBillSPlitList;
 	billData.by = SessionService.get('userEmail');

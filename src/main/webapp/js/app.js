@@ -1,6 +1,6 @@
 'use strict'
 var shareExpApp = angular.module("ShareExpApp", [ 'ui.router', 'ngSanitize', 'ngRoute', 'chieffancypants.loadingBar', 'ngAnimate', 'ngResource',
-	'ngCookies', 'LoginControllers', 'FriendControllers', 'BillControllers', 'GroupControllers', 'LoginServices', 'FriendServices',
+	'ngCookies', 'LoginControllers', 'BillControllers', 'GroupControllers', 'LoginServices', 'FriendServices',
 	'BillServices', 'GroupServices', 'ShareExpDirectives', 'ShareExpFilters', 'ui.bootstrap', 'checklist-model' ]);
 
 shareExpApp.config(function($stateProvider, $urlRouterProvider) {
@@ -48,6 +48,9 @@ shareExpApp.config(function($stateProvider, $urlRouterProvider) {
 	resolve : {
 	    homeBillData : function(BillingServices) {
 		return BillingServices.getUsersBill();
+	    },
+	    getGroupList : function(GroupServices) {
+		return GroupServices.getGroups();
 	    }
 	}
     }).state('billhome.list', {
@@ -64,7 +67,7 @@ shareExpApp.config(function($stateProvider, $urlRouterProvider) {
 	controller : 'BillUserController',
 	templateUrl : 'template/billhome.userlist.html'
     }).state('billhome.add', {
-	url : '/add',
+	url : '/add/:userId',
 	controller : 'BillAddController',
 	templateUrl : 'template/billhome.add.html',
 	resolve : {
@@ -81,15 +84,6 @@ shareExpApp.config(function($stateProvider, $urlRouterProvider) {
 		return BillingServices.addBillPage();
 	    }
 	}
-    }).state('billhome.grouplist', {
-	url : '/grouplist',
-	controller : 'GroupListController',
-	templateUrl : 'template/group.list.html',
-	resolve : {
-	    getGroupList : function(GroupServices) {
-		return GroupServices.getGroups();
-	    }
-	}
     }).state('billhome.groupbills', {
 	url : '/groupbills/:groupId',
 	controller : 'GroupRecentController',
@@ -101,12 +95,7 @@ shareExpApp.config(function($stateProvider, $urlRouterProvider) {
     }).state('billhome.grpaddbill', {
 	url : '/grpaddbill/:groupId',
 	controller : 'GroupAddBillController',
-	templateUrl : 'template/group.addbill.html',
-	resolve : {
-	    addBill : function(BillingServices) {
-		return BillingServices.addBillPage();
-	    }
-	}
+	templateUrl : 'template/group.addbill.html'
     }).state('billhome.groupedit', {
 	url : '/groupedit/:groupId',
 	controller : 'GroupController',
@@ -114,16 +103,7 @@ shareExpApp.config(function($stateProvider, $urlRouterProvider) {
     }).state('billhome.grpeditbill', {
 	url : '/grpeditbill/:billId',
 	controller : 'GroupEditBillController',
-	templateUrl : 'template/group.editbill.html',
-	resolve : {
-	    addBill : function(BillingServices) {
-		return BillingServices.addBillPage();
-	    }
-	}
-    }).state('billhome.friends', {
-	url : '/friends',
-	controller : 'FriendController',
-	templateUrl : 'template/billhome.friends.html'
+	templateUrl : 'template/group.editbill.html'
     }).state('billhome.account', {
 	url : '/account',
 	controller : 'UpdateUserController',
@@ -139,6 +119,8 @@ shareExpApp
 		function($scope, $state, cfpLoadingBar, CookieService, SessionService, AuthenticationService, flash, FlashService, UserServices,
 			$location, $route, $window) {
 
+		    $scope.avoidSpecialChar = /^[a-zA-Z0-9\s]+$/;
+		    
 		    $scope.flash = flash;
 
 		    $scope.selectTab = function(setTab) {
@@ -156,6 +138,15 @@ shareExpApp
 		    };
 		    $scope.isUserSelected = function(checkUser) {
 			return FlashService.getUserTab() === checkUser;
+		    };
+		    
+		    FlashService.setGroupTab(1);
+		    
+		    $scope.selectGroup = function(setgroup) {
+			FlashService.setGroupTab(setgroup);
+		    };
+		    $scope.isGroupSelected = function(checkgroup) {
+			return FlashService.getGroupTab() === checkgroup;
 		    };
 
 		    $scope.loggedIn = AuthenticationService.isLoggedIn();

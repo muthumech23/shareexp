@@ -104,14 +104,14 @@ public class UserServiceImpl implements UserService {
 
 			userSecure.setModifiedDate(dateFormat.format(sysDate));
 			userSecureRepository.save(userSecure);
-
+			try{
 			String emailbody = env.getProperty("mail.template.forgot.pwd");
 
 			log.debug("emailbody --> " + emailbody);
-			emailbody = emailbody.replaceAll("<<passwordreset>>", userSecure.getRandomString());
+			emailbody = emailbody.replaceAll("<<passwordreset>>", userSecure.getRandomString() + "");
 			emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/login");
 
-				try{	
+					
 					CommonUtil.sendEmail("Your password reset request", email, emailbody, env);
 				}catch(Exception exception){
 					log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
@@ -144,13 +144,13 @@ public class UserServiceImpl implements UserService {
 
 			userSecure.setModifiedDate(dateFormat.format(sysDate));
 			userSecureRepository.save(userSecure);
-
+			try{
 			String emailbody = env.getProperty("mail.template.activate.pwd");
 
 			log.debug("emailbody --> " + emailbody);
-			emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString());
+			emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString()+"");
 			emailbody = emailbody.replaceAll("<<siteUrl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/login");
-try{
+
 			CommonUtil.sendEmail("Your activation Code", email, emailbody, env);
 		}catch(Exception exception){
 			log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
@@ -191,11 +191,11 @@ try{
 					userSecure.setRandomString(CommonUtil.generateRandomString(6, CommonUtil.Mode.NUMERIC));
 					userSecure.setStatus("I");
 					userSecureRepository.save(userSecure);
-
+					try{
 					String emailbody = env.getProperty("mail.template.activate.body");
-					emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString());
+					emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString()+"");
 					emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/activation");
-try{
+
 					CommonUtil.sendEmail("Welcome to Share Expense", user.getEmail(), emailbody, env);
 				}catch(Exception exception){
 					log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
@@ -217,14 +217,14 @@ try{
 				userSecure.setStatus("I");
 
 				userSecureRepository.save(userSecure);
-
+				try{
 				String emailbody = env.getProperty("mail.template.activate.body");
 
 				log.debug("emailbody --> " + emailbody);
 
-				emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString());
+				emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString()+"");
 				emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/activation");
-try{
+
 				CommonUtil.sendEmail("Welcome to Share Expense", user.getEmail(), emailbody, env);
 			}catch(Exception exception){
 				log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
@@ -385,15 +385,15 @@ try{
 
 			friendExist.setModifiedDate(dateFormat.format(sysDate));
 			userRepository.save(friendExist);
-
+			try{
 			String emailbody = env.getProperty("mail.template.friend.add.body");
 
 			log.debug("emailbody --> " + emailbody);
 
-			emailbody = emailbody.replaceAll("<<username>>", loggedUser.getName());
-			emailbody = emailbody.replaceAll("<<useremail>>", loggedUser.getEmail());
+			emailbody = emailbody.replaceAll("<<username>>", loggedUser.getName()+"");
+			emailbody = emailbody.replaceAll("<<useremail>>", loggedUser.getEmail()+"");
 			emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home");
-try{
+
 			CommonUtil.sendEmail("You are invited to join Share Expense", friendExist.getEmail(), emailbody, env);
 		}catch(Exception exception){
 			log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);

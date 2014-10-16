@@ -15,7 +15,7 @@
                 <div class='row' ng-if="!loggedIn" >
                     <blockquote class="pull-right">
                         <p>It's easy to start sharing right away.</p>
-                        <small>Introduce yourself &nbsp;&nbsp;&nbsp;<a ui-sref="home.signup"><button class="btn btn-success btn-xs" popover-trigger="mouseenter" popover="Register" popover-placement="bottom">Sign Up</button></a></small>
+                        <small>Introduce yourself &nbsp;&nbsp;&nbsp;<a ui-sref="home.signup"><button class="btn btn-success btn-xs" tooltip-placement="bottom" tooltip-html-unsafe="Register">Sign Up</button></a></small>
                     </blockquote>
                 </div>
                 <div class='row' ng-if="loggedIn" >
@@ -40,3 +40,14 @@
         </div>
     </div>
 </div>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-55417878-1', 'auto');
+  ga('send', 'pageview');
+
+</script>

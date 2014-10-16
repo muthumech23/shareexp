@@ -26,6 +26,21 @@ billServices.factory('BillingServices', function($resource, flash, SessionServic
 	    method : 'GET'
 	}
     });
+    var addGrpBillRes = $resource('api/bill/addgrp/:Id', {}, {
+	addGroupBill : {
+	    method : 'GET'
+	}
+    });
+    var reminderBillRes = $resource('api/bill/reminder', {}, {
+	reminderBill : {
+	    method : 'POST'
+	}
+    });
+    var settleBillRes = $resource('api/bill/settleup', {}, {
+	settleBill : {
+	    method : 'POST'
+	}
+    });
     var billingRes = $resource('api/bill/:Id', {
 	billId : '@billid'
     }, {
@@ -54,6 +69,14 @@ billServices.factory('BillingServices', function($resource, flash, SessionServic
 	    var addBill = billingRes.save(billData).$promise;
 	    return addBill;
 	},
+	reminder : function(userDto) {
+	    var reminderStatus = reminderBillRes.reminderBill(userDto).$promise;
+	    return reminderStatus;
+	},
+	settleService : function(userDto) {
+	    var settleStatus = settleBillRes.settleBill(userDto).$promise;
+	    return settleStatus;
+	},
 	showBillResource : function(billId) {
 	    var showBill = billingRes.get({
 		Id : billId
@@ -72,6 +95,14 @@ billServices.factory('BillingServices', function($resource, flash, SessionServic
 		$scope.errorresource = response.data;
 		flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
 	    });
+	    return addBill;
+	},
+	addGroupBillPage : function(groupId) {
+
+	    var addBill = addGrpBillRes.addGroupBill({
+		Id : groupId
+	    }).$promise;
+
 	    return addBill;
 	},
 	getBills : function() {

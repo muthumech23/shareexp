@@ -2,6 +2,7 @@ package com.mycompany.shareexpense.service;
 
 import com.mycompany.shareexpense.model.Bill;
 import com.mycompany.shareexpense.model.BillSplit;
+import com.mycompany.shareexpense.model.UserDto;
 
 import java.util.List;
 
@@ -22,6 +23,10 @@ public interface BillService {
   public Bill updateBill(Bill bill) throws Exception;
 
   public List<BillSplit> usersBillDetails(String userId) throws Exception;
+  
+  public void userSettlement(UserDto userDto) throws Exception;
+  
+  public void userPayReminder(UserDto userDto) throws Exception;
 
   public List<Bill> recentTrans(String userId) throws Exception;
   
@@ -32,5 +37,7 @@ public interface BillService {
   public List<Bill> recentGroupTrans(String groupId) throws Exception;
 
   public Bill addBill(String userId) throws Exception;
+  
+  public Bill addGroupBill(String groupId) throws Exception;
 
 }

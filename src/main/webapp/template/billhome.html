@@ -1,29 +1,156 @@
 <div class="bs-docs-section">
-    <div class="row">
-        <div class="col-lg-4">
-            <div class="bs-component">
-                <ul class="nav nav-pills nav-stacked">
-                    <li ng-class="{'active':isUserSelected(1) }" class="disabled" ng-repeat="userInfo in usersBillData" ng-if="userInfo.userId === loggedUser">
-                        <a class="list-group-item">
-                        <Strong>{{userInfo.name}}</strong><br/><span class="text-muted small"><i class="glyphicon glyphicon-envelope "></i> {{userInfo.email}}</span>
-                        <span class="text-success pull-right small" ng-if="userInfo.amount < 0">Total balance <strong>{{userInfo.amount| currency}}</strong></span>
-                        <span class="text-danger pull-right small" ng-if="userInfo.amount > 0">Total balance <strong>{{userInfo.amount| currency}}</strong></span></a>
-                    </li>
-                </ul>
-                <ul class="nav nav-pills nav-stacked">
-                    <li ng-repeat="userInfo in usersBillData" ng-class="{'active': isUserSelected(userInfo.userId) }"><a class="list-group-item" ng-if="userInfo.userId !== loggedUser" ng-click="userBill(userInfo.userId);">
-                        <strong>{{userInfo.name}} </strong><br/>
-                        <span class="text-muted small"><i class="glyphicon glyphicon-envelope"></i>  {{userInfo.email}}</span>
-                        <span class="text-success pull-right small" ng-if="userInfo.amount < 0">owes you <strong>{{userInfo.amount| currency}}</strong></span>
-                        <span class="text-danger pull-right small" ng-if="userInfo.amount > 0">you owe <strong>{{userInfo.amount| currency}}</strong></span>
-                    </a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-lg-8">
-            <div class="bs-component">
-                <div ui-view> </div>
-            </div>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-lg-4">
+			<div class="bs-component">
+
+				<tabset justified="true"> <tab> <tab-heading ui-sref="billhome.list"> <i class="fa fa-money"></i> <strong>Bills</strong>
+				<a ng-if="usersBillData.length > 1" ui-sref="billhome.add" class="pull-right" tooltip-html-unsafe="Add Bill"><i class="fa fa-plus-circle"></i></a></tab-heading>
+				<ul class="nav nav-pills nav-stacked">
+					<li ng-class="{'active':isUserSelected(1) }" ng-repeat="userInfo in usersBillData" ng-if="userInfo.userId === loggedUser"><a
+						class="list-group-item" ui-sref="billhome.list"> <Strong>{{userInfo.name}}</strong><span class="text-success pull-right"
+							ng-if="userInfo.amount < 0"> <strong>{{userInfo.amount| currency}}</strong>
+						</span> <span class="text-danger pull-right" ng-if="userInfo.amount > 0"> <strong>({{userInfo.amount|
+									currency}})</strong></span><br /> <span class="text-muted small"><strong>All Bills</strong></span> <span class="text-muted pull-right small"> Total balance </span>
+					</a></li>
+				</ul>
+				<ul class="nav nav-pills nav-stacked">
+					<li ng-repeat="userInfo in usersBillData" ng-class="{'active': isUserSelected(userInfo.userId) }"><a class="list-group-item"
+						ng-if="userInfo.userId !== loggedUser" ng-click="userBill(userInfo.userId);"> <strong>{{userInfo.name}} </strong> <span
+							class="text-success pull-right" ng-if="userInfo.amount < 0"><strong>{{userInfo.amount| currency}}</strong></span> <span
+							class="text-danger pull-right" ng-if="userInfo.amount >= 0"><strong>({{userInfo.amount| currency}})</strong></span> <br />
+							<span class="small"><strong ng-if="userInfo.amount === 0">&nbsp;</strong>
+								<button ng-if="userInfo.amount < 0" class="text-primary small" tooltip-placement="left" tooltip-html-unsafe="Reminder"
+									ng-click="reminderFn(userInfo.userId, loggedUser, userInfo.amount)">
+									<i class="fa fa-bell"></i>
+								</button>
+								<button ng-if="userInfo.amount !== 0" class="text-primary small" tooltip-placement="right" tooltip-html-unsafe="Settle"
+									ng-click="settleUpFn(userInfo.userId, loggedUser, userInfo.amount)">Settle up</button></span>
+									<span class="text-muted pull-right small"
+							ng-if="userInfo.amount < 0">owes you</span> <span class="text-muted pull-right small" 
+							ng-if="userInfo.amount > 0">you owe</span>
+								
+					</a></li>
+				</ul>
+				</tab> <tab> <tab-heading ui-sref="billhome.list"> <i class="fa fa-group"></i> <strong>Groups</strong> <a
+					ui-sref="billhome.groupadd" class="pull-right" tooltip-html-unsafe="Add Group"><i class="fa fa-plus-circle"></i></a></tab-heading>
+				<ul class="nav nav-pills nav-stacked">
+					<li ng-repeat="group in groupList" ng-class="{'active': isGroupSelected(group.id) }"><a class="list-group-item"
+						ng-click="getGroupBills(group.id)"> <strong>{{group.groupName}} </strong><span class="text-muted pull-right small">{{group.userIds.length}}
+								persons</span> <br /> <span class="text-muted small"><i class="fa fa-envelope"></i> By {{group.email}} </span> <br />
+						<span class="small"><span class="text-muted">Created on {{group.createDate | date: 'mediumdate'}}</span>
+								<button class="text-primary small pull-right" tooltip-placement="right" tooltip-html-unsafe="Edit Group" ng-click="editGroup(group.id)">
+									<i class="fa fa-edit"></i>
+								</button></span>
+					</a></li>
+				</ul>
+				</tab> <tab> <tab-heading> <i class="fa fa-user"></i> <strong>Friends</strong> <a class="pull-right" ng-click="AddFriend()"
+					tooltip-html-unsafe="Add Friends"><i class="fa fa-plus-circle"></i></a></tab-heading>
+				<ul class="nav nav-pills nav-stacked">
+					<li class="list-group-item" ng-repeat="friend in usersBillData" ng-if="loggedUser !== friend.userId"><strong>{{friend.name}} </strong> <span
+						class="label label-success small pull-right" ng-if="friend.amount < 0"><strong>owes you {{friend.amount| currency}}</strong></span> <span
+						class="label label-danger small pull-right" ng-if="friend.amount > 0"><strong>you owe {{friend.amount| currency}}</strong></span><br /> <span
+						class="small"> <span class="text-muted"><i class="fa fa-envelope"></i> {{friend.email}}</span></span>
+						<button class="text-primary small pull-right" tooltip-placement="right" tooltip-html-unsafe="Delete" ng-click="removeFriend(friend.userId)"
+							ng-if="friend.amount === 0">
+							<i class="fa fa-trash-o"></i>
+						</button></li>
+				</ul>
+				</tab></tabset>
+			</div>
+		</div>
+		<div class="col-lg-8">
+			<div class="bs-component">
+				<div ui-view></div>
+			</div>
+		</div>
+	</div>
 </div>
+
+<script>
+    (function(i, s, o, g, r, a, m) {
+	i['GoogleAnalyticsObject'] = r;
+	i[r] = i[r] || function() {
+	    (i[r].q = i[r].q || []).push(arguments)
+	}, i[r].l = 1 * new Date();
+	a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+	a.async = 1;
+	a.src = g;
+	m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-55417878-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+<script type="text/ng-template" id="friendmodal.html">
+
+    <div class="modal-body">
+    <form class="form-horizontal" rc-attempted name="form" novalidate>
+    <div class="form-group">
+    <label class="control-label">Name</label>
+    <div class="input-group required-field-block">
+    <span class="input-group-addon input-sm"><i class="fa fa-user"></i></span>
+    <input type="text" placeholder="Name" name='uName' class="form-control input-sm" ng-model="friendData.name" required ng-pattern="avoidSpecialChar">
+    <div class="required-icon">
+    <div class="text">*</div>
+    </div>
+	</div>
+	<div ng-show="(form.uName.$dirty || rc.form.attempted) && form.uName.$invalid" class="input-help">
+						<ul><li ng-show="form.uName.$error.required">Name is required.</li> 
+						<li ng-show="form.uName.$error.pattern">This is not a valid Name. Please remove any special characters.</li></ul>
+					</div>
+    </div>
+    <div class="form-group">
+    <label class="control-label">Email</label>
+    <div class="input-group required-field-block">
+    <span class="input-group-addon input-sm"><i class="fa fa-envelope-o"></i></span>
+    <input type="email" placeholder="Email" name='uEmail' class="form-control input-sm" ng-model="friendData.email" required>
+    <div class="required-icon">
+    <div class="text">*</div>
+    </div>
+    </div>
+	<div ng-show="(form.uEmail.$dirty || rc.form.attempted) && form.uEmail.$invalid" class="input-help">
+						<ul><li ng-show="form.uEmail.$error.required">Email is required.</li> 
+						<li ng-show="form.uEmail.$error.email">This is not a valid email.</li></ul>
+					</div>
+    </div>
+    </form>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-warning btn-xs pull-right" data-dismiss="modal" ng-click="cancel()">Close</button>
+    <button type="button" class="btn btn-success btn-xs" ng-click="ok()" ng-disabled="!form.$valid">Save</button>
+    </div>
+
+</script>
+
+
+<script type="text/ng-template" id="settlemodal.html">
+
+    <div class="modal-body">
+    <form class="form-horizontal" rc-attempted name="form" novalidate>
+    <div class="form-group">
+    <label class="control-label">Amount</label>
+    <div class="input-group required-field-block">
+    <span class="input-group-addon input-sm"><i class="fa fa-money"></i></span>
+    <input type="number" placeholder="Amount" name='uBillAmount' class="form-control input-sm" ng-model="settleData.billPaid" required>
+	<input type="hidden" ng-model="settleData.amount" >
+	<input type="hidden" ng-model="settleData.userId" >
+	<input type="hidden" ng-model="settleData.loggedUser" >
+    <div class="required-icon">
+    <div class="text">*</div>
+    </div>
+	</div>
+	<div ng-show="(form.uBillAmount.$dirty || rc.form.attempted) && form.uBillAmount.$invalid" class="input-help">
+						<ul><li ng-show="form.uBillAmount.$error.required">Amount is required.</li> 
+						<li ng-show="form.uBillAmount.$error.number">This is not a valid amount.</li></ul>
+					</div>
+    </div>
+    
+    </form>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-warning btn-xs pull-right" data-dismiss="modal" ng-click="cancel()">Close</button>
+    <button type="button" class="btn btn-success btn-xs" ng-click="ok()" ng-disabled="!form.$valid">Save</button>
+    </div>
+
+</script>

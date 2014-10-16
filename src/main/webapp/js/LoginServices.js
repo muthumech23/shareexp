@@ -16,9 +16,16 @@ loginServices.factory("FlashService", function($rootScope) {
 	getUserTab : function() {
 	    return $rootScope.userTabSelected;
 	},
+	setGroupTab : function(group) {
+	    $rootScope.groupTabSelected = group;
+	},
+	getGroupTab : function() {
+	    return $rootScope.groupTabSelected;
+	},
 	clear : function() {
 	    $rootScope.mainTabSelected = "";
 	    $rootScope.userTabSelected = "";
+	    $rootScope.groupTabSelected = "";
 	}
     };
 });

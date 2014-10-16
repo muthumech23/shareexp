@@ -3,6 +3,7 @@ package com.mycompany.shareexpense.controller;
 
 import com.mycompany.shareexpense.model.Bill;
 import com.mycompany.shareexpense.model.BillSplit;
+import com.mycompany.shareexpense.model.UserDto;
 import com.mycompany.shareexpense.service.BillService;
 import com.mycompany.shareexpense.util.CustomException;
 import com.mycompany.shareexpense.util.ErrorConstants;
@@ -109,6 +110,57 @@ public class BillController extends AbstractController {
 		}
 
 		return new ResponseEntity<List<BillSplit>>(billSplitList, HttpStatus.OK);
+	}
+	
+	
+	/**
+	 * Users bill details.
+	 *
+	 * @param userId the user id
+	 * @return the list
+	 * @throws Exception the exception
+	 */
+	@RequestMapping(value = "/settleup",
+					consumes = MediaType.APPLICATION_JSON_VALUE,
+					method = RequestMethod.POST)
+	public ResponseEntity<Void> userSettlement(@RequestBody UserDto userDto) throws CustomException {
+
+		try {
+			billService.userSettlement(userDto);
+		} catch (CustomException ce) {
+			log.error("/bill/settleup", ce);
+			throw ce;
+		} catch (Exception e) {
+			log.error("/bill/settleup", e);
+			throw new CustomException(ErrorConstants.ERR_GENERAL_FAILURE, "Transaction requested has been failed. Please try again.");
+		}
+
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	/**
+	 * Users bill details.
+	 *
+	 * @param userId the user id
+	 * @return the list
+	 * @throws Exception the exception
+	 */
+	@RequestMapping(value = "/reminder",
+					consumes = MediaType.APPLICATION_JSON_VALUE,
+					method = RequestMethod.POST)
+	public ResponseEntity<Void> userPayReminder(@RequestBody UserDto userDto) throws CustomException {
+
+		try {
+			billService.userPayReminder(userDto);
+		} catch (CustomException ce) {
+			log.error("/bill/reminder", ce);
+			throw ce;
+		} catch (Exception e) {
+			log.error("/bill/reminder", e);
+			throw new CustomException(ErrorConstants.ERR_GENERAL_FAILURE, "Transaction requested has been failed. Please try again.");
+		}
+
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	/**
@@ -237,6 +289,31 @@ public class BillController extends AbstractController {
 		Bill addBill = null;
 		try {
 			addBill = billService.addBill(userId);
+		} catch (CustomException ce) {
+			log.error("/bill/add", ce);
+			throw ce;
+		} catch (Exception e) {
+			log.error("/bill/add", e);
+			throw new CustomException(ErrorConstants.ERR_GENERAL_FAILURE, "Transaction requested has been failed. Please try again.");
+		}
+		return new ResponseEntity<Bill>(addBill, HttpStatus.OK);
+	}
+	
+	/**
+	 * Adds the bill.
+	 *
+	 * @param userId the user id
+	 * @return the bill
+	 * @throws Exception the exception
+	 */
+	@RequestMapping(value = "/addgrp/{groupId}",
+					produces = MediaType.APPLICATION_JSON_VALUE,
+					method = RequestMethod.GET)
+	public ResponseEntity<Bill> addGroupBill(@PathVariable("groupId") String groupId) throws CustomException {
+
+		Bill addBill = null;
+		try {
+			addBill = billService.addGroupBill(groupId);
 		} catch (CustomException ce) {
 			log.error("/bill/add", ce);
 			throw ce;

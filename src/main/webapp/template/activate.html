@@ -6,36 +6,53 @@
 		</div>
 		<div class="panel-body">
 			<form class="form-horizontal" name="form" rc-attempt novalidate>
-				<div class="form-group" ng-class="{'has-error': form.email.$invalid && (form.email.$dirty || rc.form.attempted)}">
+				<div class="form-group">
 					<label class="control-label">Email</label>
 					<div class="input-group required-field-block">
-						<span class="input-group-addon input-sm"><i class="glyphicon glyphicon-envelope"></i></span> <input type="email" placeholder="Email"
-							name='email' class="form-control input-sm" ng-model="userSecure.userId" required>
+						<span class="input-group-addon input-sm"><i class="fa fa-envelope-o"></i></span> <input type="email" placeholder="Email"
+							name='uEmail' class="form-control input-sm" ng-model="userSecure.userId" required>
 						<div class="required-icon">
 							<div class="text">*</div>
 						</div>
+						<div ng-show="(form.uEmail.$dirty || rc.form.attempted) && form.uEmail.$invalid" class="input-help">
+						<ul><li ng-show="form.uEmail.$error.required">Email is required.</li> 
+						<li ng-show="form.uEmail.$error.email">This is not a valid email.</li></ul>
 					</div>
+					</div>
+					
 				</div>
-				<div class="form-group" ng-class="{'has-error': form.password.$invalid && (form.password.$dirty || rc.form.attempted)}">
+				<div class="form-group">
 					<label class="control-label">Password</label>
 					<div class="input-group required-field-block">
-						<span class="input-group-addon input-sm"><i class="glyphicon glyphicon-lock"></i></span> <input type="password" placeholder="Password"
-							name='password' class="form-control input-sm" ng-model="userSecure.password" ng-minlength="6" required>
+						<span class="input-group-addon input-sm"><i class="fa fa-lock"></i></span> <input type="password" placeholder="Password"
+							name='uPassword' class="form-control input-sm" ng-model="userSecure.password" ng-minlength="6" required>
 						<div class="required-icon">
 							<div class="text">*</div>
 						</div>
+						<div ng-show="(form.uPassword.$dirty || rc.form.attempted) && form.uPassword.$invalid" class="input-help">
+						<ul><li ng-show="form.uPassword.$error.required">Password is required.</li> 
+						<li ng-show="form.uPassword.$error.minlength">This is not a valid password.</li></ul>
 					</div>
+					</div>
+					
 				</div>
 				<div class="form-group">
 					<label class="control-label">Activation Code</label><a class="pull-right text-warning" ng-click="regenerateactivationCode(userSecure.userId)">(Generate
 						Activation Code?)</a>
-				</div>
-				<div class="input-group required-field-block" ng-class="{'has-error': form.activation.$invalid && (form.activation.$dirty || rc.form.attempted)}">
-					<span class="input-group-addon input-sm"><i class="glyphicon glyphicon-user"></i></span> <input type="text" placeholder="activation"
-						name='activation' class="form-control input-sm" ng-model="userSecure.randomString" required>
+				
+				<div class="input-group required-field-block">
+					<span class="input-group-addon input-sm"><i class="fa fa-user"></i></span> <input type="number" placeholder="activation"
+						name='uActivation' class="form-control input-sm" ng-model="userSecure.randomString" required>
 					<div class="required-icon">
 						<div class="text">*</div>
 					</div>
+					<div ng-show="(form.uActivation.$dirty || rc.form.attempted) && form.uActivation.$invalid" class="input-help">
+						<ul><li ng-show="form.uActivation.$error.required">Activation Code is required.</li> 
+						<li ng-show="form.uActivation.$error.number">This is not a valid activation code. Please enter only numbers.</li>
+						</ul>
+					</div>
+				</div>
+				
 				</div>
 			</form>
 		</div>
@@ -45,3 +62,13 @@
 		</div>
 	</div>
 </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-55417878-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
