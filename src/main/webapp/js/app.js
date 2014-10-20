@@ -154,11 +154,13 @@ shareExpApp
 		    $scope.loggedUserName = SessionService.get('userName');
 		    $scope.loggedEmail = SessionService.get('userEmail');
 
-		    $scope.userLogin = function(user) {
+		    $scope.userLoginFn = function(userLogin) {
 			cfpLoadingBar.start();
-			var sanitizeCredentials = AuthenticationService.sanitizeCredentials(user);
+			
+			var hashpassword = CryptoJS.SHA256(userLogin.password);
+			userLogin.password = hashpassword.toString();
 
-			var userVerify = AuthenticationService.login().login(sanitizeCredentials).$promise;
+			var userVerify = AuthenticationService.login().login(userLogin).$promise;
 
 			userVerify
 				.then(
@@ -206,6 +208,10 @@ shareExpApp
 						$state.go('billhome.list');
 					    }
 					}, function(response) {
+					    console.log('Inside failure');
+					    $scope.userLogin = {};
+					    $scope.userLogin.email = "";
+					    $scope.userLogin.password = "";
 					    $scope.errorresource = response.data;
 					    flash.pop({
 						title : '',
@@ -218,7 +224,10 @@ shareExpApp
 
 		    $scope.activateUser = function(userSecure) {
 			cfpLoadingBar.start();
-
+			
+			var hashpassword = CryptoJS.SHA256(userSecure.password);
+			userSecure.password = hashpassword.toString();
+			
 			var userVerify = AuthenticationService.activation().activate(userSecure).$promise;
 
 			userVerify.then(function(response) {
@@ -312,6 +321,10 @@ shareExpApp
 
 		    $scope.changePwd = function(user) {
 			cfpLoadingBar.start();
+			
+			var hashpassword = CryptoJS.SHA256(user.password);
+			user.password = hashpassword.toString();
+			
 			var userAdd = UserServices.update(user).$promise;
 			userAdd.then(function(response) {
 			    $scope.user = response;

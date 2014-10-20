@@ -30,6 +30,7 @@
 <script src="assets/bootstrap.js"></script>
 <script src="assets/TweenMax.min.js"></script>
 <script src="assets/toastr.js"></script>
+<script src="assets/sha256.js"></script>
 
 <script src="assets/angular.js"></script>
 <script src="assets/angular-resource.min.js"></script>
@@ -98,7 +99,7 @@
 						<div class="form-group">
 							<div class="input-group">
 								<span class="input-group-addon input-sm"><i class="fa fa-lock"></i></span> <input type="password" placeholder="Password"
-									name='uPassword' class="form-control input-sm" ng-model="userLogin.password" ng-minlength="6" required ng-model-options="{ updateOn: 'mousedown blur' }"/>
+									name='uPassword' class="form-control input-sm" ng-model="userLogin.password" ng-minlength="6" required/>
 
 	<div ng-show="(form.uPassword.$dirty || rc.form.attempted) && form.uPassword.$invalid" class="input-help">
 								<ul><li ng-show="form.uPassword.$error.required">Password is required.</li> 
@@ -109,7 +110,7 @@
 							<br /> <a class="pull-right text-warning" ui-sref="home.forgot">forgot password?</a>&nbsp;&nbsp;
 						</div>
 						<div class="form-group">
-							<button class="btn btn-warning btn-sm" ng-disabled="!form.$valid" ng-click="userLogin(userLogin)">Sign In</button>
+							<button class="btn btn-warning btn-sm" ng-disabled="!form.$valid" ng-click="userLoginFn(userLogin)">Sign In</button>
 							<br />&nbsp;
 						</div>
 					</form>

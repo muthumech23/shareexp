@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -40,11 +41,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User authenticateLogin(	String email,
-									String password) throws CustomException {
+									String inputPassword) throws CustomException {
 
-		String passwordSecure = null;
+		boolean pwdStatus = false;
+		
 		User user = null;
 		try {
+			
 			UserSecure userSecure = userSecureRepository.findByUserId(email);
 
 			if (userSecure == null) {
@@ -52,16 +55,17 @@ public class UserServiceImpl implements UserService {
 			}
 
 			if ("R".equalsIgnoreCase(userSecure.getStatus())) {
-				passwordSecure = userSecure.getRandomString();
+				pwdStatus = inputPassword.equalsIgnoreCase(CommonUtil.getSHA256Hash(userSecure.getRandomString()));
 			} else if ("I".equalsIgnoreCase(userSecure.getStatus())) {
-				passwordSecure = userSecure.getPassword();
-				password = Arrays.toString(CommonUtil.getEncryptedPassword(password, email.getBytes()));
+				pwdStatus = CommonUtil.checkPassword(inputPassword, userSecure.getPassword());
+				
 			} else {
-				passwordSecure = userSecure.getPassword();
-				password = Arrays.toString(CommonUtil.getEncryptedPassword(password, email.getBytes()));
+				pwdStatus =  CommonUtil.checkPassword(inputPassword, userSecure.getPassword());
+				
 			}
 
-			if (password.equalsIgnoreCase(passwordSecure)) {
+			
+			if (pwdStatus) {
 
 				user = userRepository.findByEmail(email);
 
@@ -185,7 +189,7 @@ public class UserServiceImpl implements UserService {
 
 					userSecure = new UserSecure();
 					userSecure.setUserId(user.getEmail());
-					userSecure.setPassword(Arrays.toString(CommonUtil.getEncryptedPassword(user.getPassword(), userExists.getEmail().getBytes())));
+					userSecure.setPassword(CommonUtil.getEncryptedPassword(user.getPassword()));
 					userSecure.setCreateDate(dateFormat.format(sysDate));
 					userSecure.setModifiedDate(dateFormat.format(sysDate));
 					userSecure.setRandomString(CommonUtil.generateRandomString(6, CommonUtil.Mode.NUMERIC));
@@ -210,7 +214,7 @@ public class UserServiceImpl implements UserService {
 
 				userSecure = new UserSecure();
 				userSecure.setUserId(user.getEmail());
-				userSecure.setPassword(Arrays.toString(CommonUtil.getEncryptedPassword(user.getPassword(), userResponse.getEmail().getBytes())));
+				userSecure.setPassword(CommonUtil.getEncryptedPassword(user.getPassword()));
 				userSecure.setCreateDate(dateFormat.format(sysDate));
 				userSecure.setModifiedDate(dateFormat.format(sysDate));
 				userSecure.setRandomString(CommonUtil.generateRandomString(6, CommonUtil.Mode.NUMERIC));
@@ -243,8 +247,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User activateAccount(UserSecure userInput) throws CustomException {
 
-
-		String passwordSecure = null;
 		User user = null;
 		try {
 			UserSecure userSecure = userSecureRepository.findByUserId(userInput.getUserId());
@@ -253,10 +255,7 @@ public class UserServiceImpl implements UserService {
 				throw new CustomException(ErrorConstants.ERR_ACTIVATION_FAILED, "The email address provided is not correct.");
 			}
 
-
-			passwordSecure = Arrays.toString(CommonUtil.getEncryptedPassword(userInput.getPassword(), userInput.getUserId().getBytes()));
-
-			if (passwordSecure.equalsIgnoreCase(userSecure.getPassword())) {
+			if ( CommonUtil.checkPassword(userInput.getPassword(), userSecure.getPassword())) {
 
 				if (userSecure.getRandomString().equalsIgnoreCase(userInput.getRandomString())) {
 
@@ -313,7 +312,7 @@ public class UserServiceImpl implements UserService {
 
 			Date sysDate = new Date();
 
-			userSecure.setPassword(Arrays.toString(CommonUtil.getEncryptedPassword(userInput.getPassword(), userInput.getEmail().getBytes())));
+			userSecure.setPassword(CommonUtil.getEncryptedPassword(userInput.getPassword()));
 
 			userSecure.setModifiedDate(dateFormat.format(sysDate));
 			userSecureRepository.save(userSecure);

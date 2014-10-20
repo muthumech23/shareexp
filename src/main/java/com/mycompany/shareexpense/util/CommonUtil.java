@@ -1,6 +1,7 @@
 
 package com.mycompany.shareexpense.util;
 
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
@@ -24,6 +25,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import org.apache.log4j.Logger;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.core.env.Environment;
 
 /**
@@ -55,6 +57,20 @@ public class CommonUtil {
 		}
 		return list;
 	}
+	
+	public static String getEncryptedPassword(String inputPassword){
+		
+		StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+		String encryptedPassword = passwordEncryptor.encryptPassword(inputPassword);
+		
+		return encryptedPassword;
+	}
+	
+public static boolean checkPassword(String inputPassword, String encryptedPassword){
+		
+		StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+		return passwordEncryptor.checkPassword(inputPassword, encryptedPassword);
+	}
 
 	public static boolean authenticate(	String attemptedPassword,
 										byte[] encryptedPassword,
@@ -68,6 +84,31 @@ public class CommonUtil {
 		// is equal to the stored hash
 		return Arrays.equals(encryptedPassword, encryptedAttemptedPassword);
 	}
+	
+	public static String getSHA256Hash(String inputPassed)throws Exception
+    {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update(inputPassed.getBytes());
+ 
+        byte byteData[] = md.digest();
+ 
+        //convert the byte to hex format method 1
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < byteData.length; i++) {
+         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+ 
+        //convert the byte to hex format method 2
+        StringBuffer hexString = new StringBuffer();
+    	for (int i=0;i<byteData.length;i++) {
+    		String hex=Integer.toHexString(0xff & byteData[i]);
+   	     	if(hex.length()==1) hexString.append('0');
+   	     	hexString.append(hex);
+    	}
+    	inputPassed = hexString.toString();
+    	
+    	return inputPassed;
+    }
 
 	public static byte[] getEncryptedPassword(	String password,
 												byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
