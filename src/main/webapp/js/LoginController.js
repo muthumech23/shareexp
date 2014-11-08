@@ -45,7 +45,8 @@ loginControllers
 		function($scope, $state, cfpLoadingBar, UserServices, flash) {
 
 		    $scope.title = 'Share Expenses - Login';
-
+		    
+			
 		    $scope.registerUser = function(user) {
 
 			if (user.password !== $scope.confirmpassword) {
@@ -57,6 +58,10 @@ loginControllers
 			    return;
 			} else {
 			    cfpLoadingBar.start();
+			    
+			    var hashpassword = CryptoJS.SHA256(user.password);
+			    user.password = hashpassword.toString();
+			    
 			    var userAdd = UserServices.save(user).$promise;
 			    userAdd
 				    .then(
@@ -85,6 +90,10 @@ loginControllers
 
 		    $scope.saveUser = function(user) {
 			cfpLoadingBar.start();
+			
+			var hashpassword = CryptoJS.SHA256(user.password);
+			user.password = hashpassword.toString();
+			    
 			var userAdd = UserServices.save(user).$promise;
 			userAdd.then(function(response) {
 			    flash.pop({
@@ -130,6 +139,10 @@ loginControllers.controller('UpdateUserController', function($scope, SessionServ
     $scope.saveUser = function(user) {
 
 	cfpLoadingBar.start();
+	
+	var hashpassword = CryptoJS.SHA256(user.password);
+	user.password = hashpassword.toString();
+	    
 	var userAdd = UserServices.save(user).$promise;
 
 	userAdd.then(function(response) {
