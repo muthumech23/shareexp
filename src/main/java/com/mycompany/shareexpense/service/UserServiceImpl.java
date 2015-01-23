@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 			UserSecure userSecure = userSecureRepository.findByUserId(email);
 
 			if (userSecure == null) {
-				throw new CustomException(ErrorConstants.ERR_LOGIN_FAILED, "The email address provided for login is not correct.");
+				throw new CustomException(ErrorConstants.ERR_LOGIN_FAILED, "The user is not available or email entered is not correct. Please register to start using ShareExpense.");
 			}
 
 			if ("R".equalsIgnoreCase(userSecure.getStatus())) {
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
 				user = userRepository.findByEmail(email);
 
 				if (user == null) {
-					throw new CustomException(ErrorConstants.ERR_LOGIN_FAILED, "The email address provided is not correct.");
+					throw new CustomException(ErrorConstants.ERR_LOGIN_FAILED, "The user is not available or email entered is not correct. Please register to start using ShareExpense.");
 				}
 
 				user.setStatus(userSecure.getStatus());
@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
 			UserSecure userSecure = userSecureRepository.findByUserId(email);
 
 			if (userSecure == null) {
-				throw new CustomException(ErrorConstants.ERR_FORGOT_PWD_FAILED, "The email address provided is not correct.");
+				throw new CustomException(ErrorConstants.ERR_FORGOT_PWD_FAILED, "The user is not available or email entered is not correct. Please register to start using ShareExpense.");
 			}
 
 			userSecure.setRandomString(CommonUtil.generateRandomString(6, CommonUtil.Mode.ALPHANUMERIC));
@@ -141,7 +141,7 @@ public class UserServiceImpl implements UserService {
 			UserSecure userSecure = userSecureRepository.findByUserId(email);
 
 			if (userSecure == null) {
-				throw new CustomException(ErrorConstants.ERR_ACTIVATION_FAILED, "The email address provided is not correct.");
+				throw new CustomException(ErrorConstants.ERR_ACTIVATION_FAILED, "The user is not available or email entered is not correct. Please register to start using ShareExpense.");
 			}
 
 			userSecure.setRandomString(CommonUtil.generateRandomString(6, CommonUtil.Mode.NUMERIC));
@@ -252,7 +252,7 @@ public class UserServiceImpl implements UserService {
 			UserSecure userSecure = userSecureRepository.findByUserId(userInput.getUserId());
 
 			if (userSecure == null) {
-				throw new CustomException(ErrorConstants.ERR_ACTIVATION_FAILED, "The email address provided is not correct.");
+				throw new CustomException(ErrorConstants.ERR_ACTIVATION_FAILED, "The user is not available or email entered is not correct. Please register to start using ShareExpense.");
 			}
 
 			if ( CommonUtil.checkPassword(userInput.getPassword(), userSecure.getPassword())) {
@@ -273,7 +273,7 @@ public class UserServiceImpl implements UserService {
 
 
 				if (user == null) {
-					throw new CustomException(ErrorConstants.ERR_ACTIVATION_FAILED, "The email address provided is not correct.");
+					throw new CustomException(ErrorConstants.ERR_ACTIVATION_FAILED, "The user is not available or email entered is not correct. Please register to start using ShareExpense.");
 				}
 
 				user.setStatus(userSecure.getStatus());
@@ -302,7 +302,7 @@ public class UserServiceImpl implements UserService {
 			UserSecure userSecure = userSecureRepository.findByUserId(userInput.getEmail());
 
 			if (userSecure == null) {
-				throw new CustomException(ErrorConstants.ERR_UPDATE_ACCOUNT_FAILED, "The email address provided is not correct.");
+				throw new CustomException(ErrorConstants.ERR_UPDATE_ACCOUNT_FAILED, "The user is not available or email entered is not correct. Please register to start using ShareExpense.");
 			}
 
 			if ("R".equalsIgnoreCase(userSecure.getStatus())) {

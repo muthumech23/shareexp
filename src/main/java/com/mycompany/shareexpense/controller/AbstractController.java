@@ -30,7 +30,7 @@ public class AbstractController {
 	 */
 	@ExceptionHandler(CustomException.class)
 	@ResponseBody
-	@ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ErrorResource handleServiceException(CustomException customException,
 												HttpServletResponse httpServletResponse) {
 

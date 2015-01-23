@@ -3,35 +3,42 @@
 		<div class="col-lg-4">
 			<div class="bs-component">
 
-				<tabset justified="true"> <tab> <tab-heading ui-sref="billhome.list"> <i class="fa fa-money"></i> <strong>Bills</strong>
+				<tabset justified="true"> <tab> <tab-heading> <i class="fa fa-money"></i> <strong><a ui-sref="billhome.list"> Bills</a></strong>
 				<a ng-if="usersBillData.length > 1" ui-sref="billhome.add" class="pull-right" tooltip-html-unsafe="Add Bill"><i class="fa fa-plus-circle"></i></a></tab-heading>
 				<ul class="nav nav-pills nav-stacked">
 					<li ng-class="{'active':isUserSelected(1) }" ng-repeat="userInfo in usersBillData" ng-if="userInfo.userId === loggedUser"><a
-						class="list-group-item" ui-sref="billhome.list"> <Strong>{{userInfo.name}}</strong><span class="text-success pull-right"
-							ng-if="userInfo.amount < 0"> <strong>{{userInfo.amount| currency}}</strong>
-						</span> <span class="text-danger pull-right" ng-if="userInfo.amount > 0"> <strong>({{userInfo.amount|
-									currency}})</strong></span><br /> <span class="text-muted small"><strong>All Bills</strong></span> <span class="text-muted pull-right small"> Total balance </span>
+						class="list-group-item" ui-sref="billhome.list"> <Strong>{{userInfo.name}}</strong>
+						
+						<span class="label label-success pull-right" ng-repeat='mapEntry in userInfo.amtCurrs' ng-if="mapEntry.amountStatus === 'D'"><strong>{{mapEntry.currency}}{{mapEntry.amount|number:2}}</strong></span>
+						<span class="pull-right" ng-if="userInfo.amtCurrs.length > 1">&nbsp;</span>
+						<span class="label label-danger pull-right" ng-repeat='mapEntry in userInfo.amtCurrs' ng-if="mapEntry.amountStatus === 'C'"><strong>{{mapEntry.currency}}{{mapEntry.amount|number:2}}</strong></span>
+						<span ng-if='userInfo.amtCurrs.length === 0' class="text-success pull-right"><strong>0.00</strong></span>
+						
+						<br /> <span class="text-muted small"><strong>All Bills</strong></span> <span class="text-muted pull-right small"> Total balance </span>
 					</a></li>
 				</ul>
 				<ul class="nav nav-pills nav-stacked">
-					<li ng-repeat="userInfo in usersBillData" ng-class="{'active': isUserSelected(userInfo.userId) }"><a class="list-group-item"
-						ng-if="userInfo.userId !== loggedUser" ng-click="userBill(userInfo.userId);"> <strong>{{userInfo.name}} </strong> <span
-							class="text-success pull-right" ng-if="userInfo.amount < 0"><strong>{{userInfo.amount| currency}}</strong></span> <span
-							class="text-danger pull-right" ng-if="userInfo.amount >= 0"><strong>({{userInfo.amount| currency}})</strong></span> <br />
-							<span class="small"><strong ng-if="userInfo.amount === 0">&nbsp;</strong>
-								<button ng-if="userInfo.amount < 0" class="text-primary small" tooltip-placement="left" tooltip-html-unsafe="Reminder"
-									ng-click="reminderFn(userInfo.userId, loggedUser, userInfo.amount)">
+					<li ng-repeat="userInfo in usersBillData" ng-class="{'active': isUserSelected(userInfo.userId) }">
+					<a class="list-group-item"
+						ng-if="userInfo.userId !== loggedUser" ng-click="userBill(userInfo.userId);"> <strong>{{userInfo.name}} </strong> 
+						
+						<span class="pull-right label label-success" ng-repeat='mapEntry1 in userInfo.amtCurrs' ng-if="mapEntry1.amountStatus === 'D'"><strong>{{mapEntry1.currency}}{{mapEntry1.amount|number:2}}</strong></span>
+						<span class="pull-right" ng-if="userInfo.amtCurrs.length > 1">&nbsp;</span> 
+						<span class="pull-right label label-danger" ng-repeat='mapEntry1 in userInfo.amtCurrs' ng-if="mapEntry1.amountStatus === 'C'"><strong>{{mapEntry1.currency}}{{mapEntry1.amount|number:2}}</strong></span>
+						<span class="pull-right label label-success" ng-if='userInfo.amtCurrs.length === 0'><strong>0.00</strong></span>
+						
+						<br/>
+						<span class="text-muted small" ng-if="userInfo.amtCurrs.length > 0">
+							<button class="text-primary small" tooltip-placement="left" tooltip-html-unsafe="Reminder"
+									ng-click="reminderFn(userInfo.userId, loggedUser, userInfo.amtCurrs)">
 									<i class="fa fa-bell"></i>
-								</button>
-								<button ng-if="userInfo.amount !== 0" class="text-primary small" tooltip-placement="right" tooltip-html-unsafe="Settle"
-									ng-click="settleUpFn(userInfo.userId, loggedUser, userInfo.amount)">Settle up</button></span>
-									<span class="text-muted pull-right small"
-							ng-if="userInfo.amount < 0">owes you</span> <span class="text-muted pull-right small" 
-							ng-if="userInfo.amount > 0">you owe</span>
-								
+							</button>
+							<button class="text-primary small" tooltip-placement="right" tooltip-html-unsafe="Settle"
+									ng-click="settleUpFn(userInfo.userId, loggedUser, userInfo.amtCurrs)">Settle up</button>
+						</span>
 					</a></li>
 				</ul>
-				</tab> <tab> <tab-heading ui-sref="billhome.list"> <i class="fa fa-group"></i> <strong>Groups</strong> <a
+				</tab> <tab> <tab-heading> <i class="fa fa-group"></i> <strong><a ui-sref="billhome.list">Groups</a></strong> <a
 					ui-sref="billhome.groupadd" class="pull-right" tooltip-html-unsafe="Add Group"><i class="fa fa-plus-circle"></i></a></tab-heading>
 				<ul class="nav nav-pills nav-stacked">
 					<li ng-repeat="group in groupList" ng-class="{'active': isGroupSelected(group.id) }"><a class="list-group-item"
@@ -43,15 +50,19 @@
 								</button></span>
 					</a></li>
 				</ul>
-				</tab> <tab> <tab-heading> <i class="fa fa-user"></i> <strong>Friends</strong> <a class="pull-right" ng-click="AddFriend()"
+				</tab> <tab> <tab-heading> <i class="fa fa-user"></i> <strong><a ui-sref="billhome.list">Friends</a></strong> <a class="pull-right" ng-click="AddFriend()"
 					tooltip-html-unsafe="Add Friends"><i class="fa fa-plus-circle"></i></a></tab-heading>
 				<ul class="nav nav-pills nav-stacked">
-					<li class="list-group-item" ng-repeat="friend in usersBillData" ng-if="loggedUser !== friend.userId"><strong>{{friend.name}} </strong> <span
-						class="label label-success small pull-right" ng-if="friend.amount < 0"><strong>owes you {{friend.amount| currency}}</strong></span> <span
-						class="label label-danger small pull-right" ng-if="friend.amount > 0"><strong>you owe {{friend.amount| currency}}</strong></span><br /> <span
-						class="small"> <span class="text-muted"><i class="fa fa-envelope"></i> {{friend.email}}</span></span>
+					<li class="list-group-item" ng-repeat="friend in usersBillData" ng-if="loggedUser !== friend.userId"><strong>{{friend.name}} </strong> 
+					
+						<span ng-if='friend.amtCurrs.length === 0' class="label label-success pull-right"><strong>0.00</strong></span>
+						<span class="pull-right label label-success" ng-repeat='mapEntry2 in friend.amtCurrs' ng-if="mapEntry2.amountStatus === 'D'"><strong>{{mapEntry2.currency}}{{mapEntry2.amount|number:2}}</strong></span> 
+						<span class="pull-right" ng-if="friend.amtCurrs.length > 1">&nbsp;</span>
+						<span class="pull-right label label-danger" ng-repeat='mapEntry2 in friend.amtCurrs' ng-if="mapEntry2.amountStatus === 'C'"><strong>{{mapEntry2.currency}}{{mapEntry2.amount|number:2}}</strong></span>
+						
+							</br/><span class="small"> <span class="text-muted"><i class="fa fa-envelope"></i> {{friend.email}}</span></span>
 						<button class="text-primary small pull-right" tooltip-placement="right" tooltip-html-unsafe="Delete" ng-click="removeFriend(friend.userId)"
-							ng-if="friend.amount === 0">
+							ng-if="userInfo.keyValues.length === 0">
 							<i class="fa fa-trash-o"></i>
 						</button></li>
 				</ul>
@@ -118,6 +129,7 @@
     </div>
     <div class="modal-footer">
     <button type="button" class="btn btn-warning btn-xs pull-right" data-dismiss="modal" ng-click="cancel()">Close</button>
+	<span class="pull-right">&nbsp;</span>
     <button type="button" class="btn btn-success btn-xs" ng-click="ok()" ng-disabled="!form.$valid">Save</button>
     </div>
 
@@ -129,17 +141,16 @@
     <div class="modal-body">
     <form class="form-horizontal" rc-attempted name="form" novalidate>
     <div class="form-group">
-    <label class="control-label">Amount</label>
-    <div class="input-group required-field-block">
-    <span class="input-group-addon input-sm"><i class="fa fa-money"></i></span>
-    <input type="number" placeholder="Amount" name='uBillAmount' class="form-control input-sm" ng-model="settleData.billPaid" required>
-	<input type="hidden" ng-model="settleData.amount" >
+    <label class="control-label">Settle Up Amount</label>
+	</br/>
+	<div class="input-group" ng-repeat="amtCurr in settleData.amtCurrs">
+    	<span class="input-group-addon input-sm text-danger"><input type="checkbox" name="selected" ng-click="updateSettleSelection($event, amtCurr)">&nbsp;&nbsp;&nbsp;{{amtCurr.currency}}</span>
+    	<input type="number" placeholder="Amount" name='uBillAmount' class="form-control input-sm" ng-model="amtCurr.amount" required>
+		<input type="hidden" ng-model="amtCurr.amountStatus">
+  	</div>
 	<input type="hidden" ng-model="settleData.userId" >
+	<input type="hidden" ng-model="settleData.amtCurrUpdated" >
 	<input type="hidden" ng-model="settleData.loggedUser" >
-    <div class="required-icon">
-    <div class="text">*</div>
-    </div>
-	</div>
 	<div ng-show="(form.uBillAmount.$dirty || rc.form.attempted) && form.uBillAmount.$invalid" class="input-help">
 						<ul><li ng-show="form.uBillAmount.$error.required">Amount is required.</li> 
 						<li ng-show="form.uBillAmount.$error.number">This is not a valid amount.</li></ul>
@@ -150,6 +161,7 @@
     </div>
     <div class="modal-footer">
     <button type="button" class="btn btn-warning btn-xs pull-right" data-dismiss="modal" ng-click="cancel()">Close</button>
+	<span class="pull-right" >&nbsp;</span>
     <button type="button" class="btn btn-success btn-xs" ng-click="ok()" ng-disabled="!form.$valid">Save</button>
     </div>
 

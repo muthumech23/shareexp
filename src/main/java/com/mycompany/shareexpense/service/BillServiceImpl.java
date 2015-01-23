@@ -1,26 +1,32 @@
 
 package com.mycompany.shareexpense.service;
 
+import com.mycompany.shareexpense.model.AmtCurr;
 import com.mycompany.shareexpense.model.Bill;
 import com.mycompany.shareexpense.model.BillSplit;
+import com.mycompany.shareexpense.model.KeyValue;
 import com.mycompany.shareexpense.model.ShareGroup;
 import com.mycompany.shareexpense.model.User;
 import com.mycompany.shareexpense.model.UserDto;
+import com.mycompany.shareexpense.model.UsersBalance;
 import com.mycompany.shareexpense.repository.BillRepository;
 import com.mycompany.shareexpense.repository.BillSortAndPageRepository;
 import com.mycompany.shareexpense.repository.GroupRepository;
 import com.mycompany.shareexpense.repository.UserRepository;
 import com.mycompany.shareexpense.util.CommonUtil;
+import com.mycompany.shareexpense.util.Constants;
 import com.mycompany.shareexpense.util.ErrorConstants;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
 import org.apache.log4j.Logger;
+import org.aspectj.apache.bcel.classfile.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
@@ -69,7 +75,7 @@ public class BillServiceImpl implements BillService {
 			try {
 			for (BillSplit billSplit : bill.getBillSplits()) {
 
-				if (billSplit.getAmount().compareTo(BigDecimal.ZERO) > 0) {
+				if (billSplit.getAmountStatus().equalsIgnoreCase(Constants.CREDIT)) {
 
 					userPaid = billSplit.getEmail();
 					subject = env.getProperty("mail.template.bill.owner.subject");
@@ -90,7 +96,7 @@ public class BillServiceImpl implements BillService {
 
 			for (BillSplit billSplit : bill.getBillSplits()) {
 
-				if (billSplit.getAmount().compareTo(BigDecimal.ZERO) < 0) {
+				if (billSplit.getAmountStatus().equalsIgnoreCase(Constants.DEBIT)) {
 
 					subject = env.getProperty("mail.template.bill.recipants.subject");
 					subject = subject.replaceAll("<<userpaid>>", userPaid + "");
@@ -130,9 +136,10 @@ public class BillServiceImpl implements BillService {
 	}
 
 	@Override
-	public List<BillSplit> usersBillDetails(String userId) throws Exception {
+	public List<UsersBalance> usersBillDetails(String userId) throws Exception {
 
 		User user = userRepository.findOne(userId);
+		
 		List<User> users = null;
 		if (user.getFriends() != null) {
 			users = CommonUtil.toList(userRepository.findAll(user.getFriends()));
@@ -142,42 +149,151 @@ public class BillServiceImpl implements BillService {
 
 		List<Bill> bills = billRepository.findByUserPaidOrBillSplitsUserId(userId, userId);
 
-		List<BillSplit> billSpits = new ArrayList<>();
+		List<UsersBalance> usersBalances = new ArrayList<>();
 
-		BillSplit loggedUser = new BillSplit();
+		UsersBalance loggedUser = new UsersBalance();
 		loggedUser.setUserId(user.getId());
 		loggedUser.setName(user.getName());
 		loggedUser.setEmail(user.getEmail());
 
-		billSpits.add(0, loggedUser);
+		usersBalances.add(0, loggedUser);
 
-		BigDecimal loggedUserAmt = BigDecimal.ZERO;
-
+		BigDecimal loggedUserUsdAmt = BigDecimal.ZERO;
+		
+		BigDecimal loggedUserRupeeAmt = BigDecimal.ZERO;
+		double tempValue = -1.0;
+		
 		for (User userBill : users) {
-			BillSplit billSplit = new BillSplit();
+			UsersBalance billSplit = new UsersBalance();
 			String Id = userBill.getId();
 
-			BigDecimal bigDecimal = BigDecimal.ZERO;
+			BigDecimal usdBigDecimal = BigDecimal.ZERO;
+			BigDecimal rupeeBigDecimal = BigDecimal.ZERO;
 			for (Bill bill : bills) {
-				for (BillSplit billsplit : bill.getBillSplits()) {
-					if (billsplit.getUserId().equalsIgnoreCase(Id)) {
-						if (userId.equalsIgnoreCase(bill.getUserPaid()) || billsplit.getUserId().equalsIgnoreCase(bill.getUserPaid())) {
-							bigDecimal = bigDecimal.add(billsplit.getAmount());
+				
+				String currency = bill.getCurrency();
+				
+				if(Constants.CURRENCY_USD.equalsIgnoreCase(currency)){
+					for (BillSplit billsplit : bill.getBillSplits()) {
+						if (billsplit.getUserId().equalsIgnoreCase(Id)) {
+							if (userId.equalsIgnoreCase(bill.getUserPaid()) || billsplit.getUserId().equalsIgnoreCase(bill.getUserPaid())) {
+								
+								
+								if(billsplit.getAmountStatus().equalsIgnoreCase(Constants.CREDIT)){
+									usdBigDecimal = usdBigDecimal.add(billsplit.getAmount());
+								}
+								
+								if(billsplit.getAmountStatus().equalsIgnoreCase(Constants.DEBIT)){
+									usdBigDecimal = usdBigDecimal.subtract(billsplit.getAmount());
+								}
+								
+								
+							}
 						}
 					}
+					
+				}else if(Constants.CURRENCY_RUPEE.equalsIgnoreCase(currency)){
+					
+
+					for (BillSplit billsplit : bill.getBillSplits()) {
+						if (billsplit.getUserId().equalsIgnoreCase(Id)) {
+							if (userId.equalsIgnoreCase(bill.getUserPaid()) || billsplit.getUserId().equalsIgnoreCase(bill.getUserPaid())) {
+								
+								if(billsplit.getAmountStatus().equalsIgnoreCase(Constants.CREDIT)){
+									rupeeBigDecimal = rupeeBigDecimal.add(billsplit.getAmount());
+								}
+								
+								if(billsplit.getAmountStatus().equalsIgnoreCase(Constants.DEBIT)){
+									rupeeBigDecimal = rupeeBigDecimal.subtract(billsplit.getAmount());
+								}
+							}
+						}
+					}
+					
 				}
+				
+			}
+			System.out.println(usdBigDecimal);
+			System.out.println(rupeeBigDecimal);
+			
+			
+			loggedUserUsdAmt = loggedUserUsdAmt.add(usdBigDecimal);
+			loggedUserRupeeAmt = loggedUserRupeeAmt.add(rupeeBigDecimal);
+			
+			List<AmtCurr> amtCurrency = new ArrayList<AmtCurr>();
+			
+			if(!BigDecimal.ZERO.equals(usdBigDecimal)){
+				AmtCurr usdKeyValue = new AmtCurr();
+				usdKeyValue.setCurrency(Constants.CURRENCY_USD);
+				
+				if(usdBigDecimal.compareTo(BigDecimal.ZERO) > 0){
+					usdKeyValue.setAmountStatus(Constants.CREDIT);
+					usdKeyValue.setAmount(usdBigDecimal);
+				}else{
+					usdBigDecimal = usdBigDecimal.multiply(BigDecimal.valueOf(tempValue));
+					usdKeyValue.setAmount(usdBigDecimal);	
+					usdKeyValue.setAmountStatus(Constants.DEBIT);
+				}
+				
+				amtCurrency.add(usdKeyValue);
+			}
+
+			if(!BigDecimal.ZERO.equals(rupeeBigDecimal)){
+				AmtCurr rupeeKeyValue = new AmtCurr();
+				rupeeKeyValue.setCurrency(Constants.CURRENCY_RUPEE);
+				rupeeKeyValue.setAmount(rupeeBigDecimal);
+				if(rupeeBigDecimal.compareTo(BigDecimal.ZERO) > 0){
+					rupeeKeyValue.setAmountStatus(Constants.CREDIT);
+					rupeeKeyValue.setAmount(rupeeBigDecimal);
+				}else{
+					rupeeBigDecimal = rupeeBigDecimal.multiply(BigDecimal.valueOf(tempValue));
+					rupeeKeyValue.setAmount(rupeeBigDecimal);	
+					rupeeKeyValue.setAmountStatus(Constants.DEBIT);
+				}
+				amtCurrency.add(rupeeKeyValue);
 			}
 
 			billSplit.setUserId(Id);
 			billSplit.setName(userBill.getName());
 			billSplit.setEmail(userBill.getEmail());
-			billSplit.setAmount(bigDecimal);
-			loggedUserAmt = loggedUserAmt.add(bigDecimal);
-			billSpits.add(billSplit);
+			billSplit.setAmtCurrs(amtCurrency);
+			
+			usersBalances.add(billSplit);
+		}
+		List<AmtCurr> loggedUserCurrency = new ArrayList<AmtCurr>();
+		if(!BigDecimal.ZERO.equals(loggedUserUsdAmt)){
+			AmtCurr usdKeyValue = new AmtCurr();
+			usdKeyValue.setCurrency(Constants.CURRENCY_USD);
+			usdKeyValue.setAmount(loggedUserUsdAmt);
+			if(loggedUserUsdAmt.compareTo(BigDecimal.ZERO) > 0){
+				usdKeyValue.setAmountStatus(Constants.CREDIT);
+				usdKeyValue.setAmount(loggedUserUsdAmt);
+			}else{
+				loggedUserUsdAmt = loggedUserUsdAmt.multiply(BigDecimal.valueOf(tempValue));
+				usdKeyValue.setAmount(loggedUserUsdAmt);	
+				usdKeyValue.setAmountStatus(Constants.DEBIT);
+			}
+			loggedUserCurrency.add(usdKeyValue);
+		}
+		if(!BigDecimal.ZERO.equals(loggedUserRupeeAmt)){
+			AmtCurr rupeeKeyValue = new AmtCurr();
+			rupeeKeyValue.setCurrency(Constants.CURRENCY_RUPEE);
+			rupeeKeyValue.setAmount(loggedUserRupeeAmt);
+			if(loggedUserRupeeAmt.compareTo(BigDecimal.ZERO) > 0){
+				rupeeKeyValue.setAmountStatus(Constants.CREDIT);
+				rupeeKeyValue.setAmount(loggedUserRupeeAmt);
+			}else{
+				loggedUserRupeeAmt = loggedUserRupeeAmt.multiply(BigDecimal.valueOf(tempValue));
+				rupeeKeyValue.setAmount(loggedUserRupeeAmt);	
+				rupeeKeyValue.setAmountStatus(Constants.DEBIT);
+			}
+			loggedUserCurrency.add(rupeeKeyValue);
 		}
 
-		billSpits.get(0).setAmount(loggedUserAmt);
-		return billSpits;
+		System.out.println(loggedUserUsdAmt);
+		System.out.println(loggedUserRupeeAmt);
+		usersBalances.get(0).setAmtCurrs(loggedUserCurrency);
+		return usersBalances;
 	}
 
 	@Override
@@ -281,48 +397,72 @@ public class BillServiceImpl implements BillService {
 
 		Bill billInput = new Bill();
 
-		billInput.setAmount(userDto.getAmount());
-
 		billInput.setBy(loggedUser.getId());
 		billInput.setCategory("PAYBACK");
 
 		billInput.setDescription("Paying back pending amount");
 
 		billInput.setSplitType("equally");
+		
+		for(AmtCurr amtCurr: userDto.getAmtCurrs()){
+			
+			billInput.setAmount(amtCurr.getAmount());
+						
+			billInput.setCurrency(amtCurr.getCurrency());
 
-
-
-		if (userDto.getAmount().compareTo(BigDecimal.ZERO) < 0) {
 			billInput.setUserPaid(user.getId());
-		} else {
-			billInput.setUserPaid(loggedUser.getId());
+				billInput.setUserPaid(loggedUser.getId());
+
+			List<BillSplit> billSplits = new ArrayList<>();
+			if (amtCurr.getAmountStatus().equalsIgnoreCase(Constants.CREDIT)) {
+				
+				billInput.setUserPaid(loggedUser.getId());
+				
+				BillSplit billSplit = new BillSplit();
+				billSplit.setAmount(amtCurr.getAmount());
+				billSplit.setEmail(user.getEmail());
+				billSplit.setName(user.getName());
+				billSplit.setUserId(user.getId());
+				billSplit.setAmountStatus(Constants.DEBIT);
+				
+
+				BillSplit billSplit1 = new BillSplit();
+				billSplit1.setAmount(amtCurr.getAmount());
+				billSplit1.setEmail(loggedUser.getEmail());
+				billSplit1.setName(loggedUser.getName());
+				billSplit1.setUserId(loggedUser.getId());
+				billSplit1.setAmountStatus(Constants.CREDIT);
+				
+				billSplits.add(billSplit);
+				billSplits.add(billSplit1);
+
+			}
+			if (amtCurr.getAmountStatus().equalsIgnoreCase(Constants.DEBIT)) {
+
+				billInput.setUserPaid(user.getId());
+				
+				BillSplit billSplit = new BillSplit();
+				billSplit.setAmount(amtCurr.getAmount());
+				billSplit.setEmail(user.getEmail());
+				billSplit.setName(user.getName());
+				billSplit.setUserId(user.getId());
+				billSplit.setAmountStatus(Constants.CREDIT);
+				
+
+				BillSplit billSplit1 = new BillSplit();
+				billSplit1.setAmount(amtCurr.getAmount());
+				billSplit1.setEmail(loggedUser.getEmail());
+				billSplit1.setName(loggedUser.getName());
+				billSplit1.setUserId(loggedUser.getId());
+				billSplit1.setAmountStatus(Constants.DEBIT);
+				
+				billSplits.add(billSplit);
+				billSplits.add(billSplit1);
+			}
+			billInput.setBillSplits(billSplits);
+			saveBill(billInput);
+			
 		}
-
-		List<BillSplit> billSplits = new ArrayList<>();
-		if (userDto.getAmount().compareTo(BigDecimal.ZERO) < 0) {
-
-			BillSplit billSplit = new BillSplit();
-			billSplit.setAmount(BigDecimal.ZERO);
-			billSplit.setEmail(user.getEmail());
-			billSplit.setName(user.getName());
-			billSplit.setUserId(user.getId());
-
-			billSplits.add(billSplit);
-
-		}
-		if (userDto.getAmount().compareTo(BigDecimal.ZERO) > 0) {
-
-			BillSplit billSplit = new BillSplit();
-			billSplit.setAmount(userDto.getAmount());
-			billSplit.setEmail(loggedUser.getEmail());
-			billSplit.setName(loggedUser.getName());
-			billSplit.setUserId(loggedUser.getId());
-
-			billSplits.add(billSplit);
-		}
-		billInput.setBillSplits(billSplits);
-		saveBill(billInput);
-
 	}
 
 	@Override
@@ -334,17 +474,20 @@ public class BillServiceImpl implements BillService {
 		String subject = null;
 		String emailbody = null;
 		try {
-		if (userDto.getAmount().compareTo(BigDecimal.ZERO) < 0) {
+			
+			for(AmtCurr amtCurr: userDto.getAmtCurrs()){
+				if(amtCurr.getAmountStatus().equalsIgnoreCase(Constants.DEBIT)){
+					emailbody = env.getProperty("mail.template.payee.reminder.body");
+					emailbody = emailbody.replaceAll("<<amount>>", amtCurr.getCurrency()+ " "+amtCurr.getAmount() + "");
+					emailbody = emailbody.replaceAll("<<username>>", loggedUser.getName() + "");
+					emailbody = emailbody.replaceAll("<<useremail>>", loggedUser.getEmail() + "");
+					emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home");
 
-			emailbody = env.getProperty("mail.template.payee.reminder.body");
-			emailbody = emailbody.replaceAll("<<amount>>", userDto.getAmount() + "");
-			emailbody = emailbody.replaceAll("<<username>>", loggedUser.getName() + "");
-			emailbody = emailbody.replaceAll("<<useremail>>", loggedUser.getEmail() + "");
-			emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home");
+					CommonUtil.sendEmail(subject, user.getEmail(), emailbody, env);				
+	
+				}
+			}
 
-		}
-		
-			CommonUtil.sendEmail(subject, user.getEmail(), emailbody, env);
 		} catch (Exception exception) {
 			log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
 		}

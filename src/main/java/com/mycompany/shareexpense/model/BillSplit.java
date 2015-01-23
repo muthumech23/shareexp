@@ -13,14 +13,30 @@ public class BillSplit {
 	private String		splitText;
 
 	private BigDecimal	amount;
+	
+	private String	amountStatus;
 
 	private String		name;
 
 	@Transient
 	private String		email;
+	
+	@Transient
+	private String		currency;
 
 	private String		userId;
 	
+	public String getCurrency() {
+	
+		return currency;
+	}
+
+	
+	public void setCurrency(String currency) {
+	
+		this.currency = currency;
+	}
+
 	public String getSplitText() {
 
 		return splitText;
@@ -70,5 +86,17 @@ public class BillSplit {
 
 		this.name = name;
 	}
+	
+
+	public String getAmountStatus() {
+	
+		return amountStatus;
+	}
+
+	public void setAmountStatus(String amountStatus) {
+	
+		this.amountStatus = amountStatus;
+	}
+
 
 }

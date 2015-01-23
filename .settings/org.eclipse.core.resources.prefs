@@ -1,4 +1,9 @@
 eclipse.preferences.version=1
 encoding//src/main/java=UTF-8
 encoding//src/main/resources=UTF-8
+encoding//src/main/webapp/template/billhome.add.html=UTF-8
+encoding//src/main/webapp/template/billhome.edit.html=UTF-8
+encoding//src/main/webapp/template/billhome.html=UTF-8
+encoding//src/main/webapp/template/group.addbill.html=UTF-8
+encoding//src/main/webapp/template/group.editbill.html=UTF-8
 encoding/<project>=UTF-8

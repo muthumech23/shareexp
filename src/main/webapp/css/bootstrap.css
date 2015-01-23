@@ -2362,8 +2362,6 @@ output {
     background-image: none;
     border: 1px solid #dce4ec;
     border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
@@ -2750,8 +2748,6 @@ select[multiple].input-lg {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
 }
 .btn:focus,
 .btn:active:focus,
@@ -2769,8 +2765,6 @@ select[multiple].input-lg {
 .btn.active {
     outline: 0;
     background-image: none;
-    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
 .btn.disabled,
 .btn[disabled],
@@ -3884,9 +3878,6 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     z-index: 1030;
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
-    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
     border: 1px solid #a9a9a9;
 }
 
@@ -4481,7 +4472,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .label {
     display: inline;
     padding: .2em .6em .3em;
-    font-size: 75%;
+    font-size: 85%;
     font-weight: bold;
     line-height: 1;
     color: #ffffff;
@@ -4557,8 +4548,7 @@ a.label:focus {
     white-space: nowrap;
     text-align: center;
     border-radius: 2px;
-    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+    
 }
 .badge:empty {
     display: none;
@@ -4873,8 +4863,7 @@ a.thumbnail.active {
 .list-group {
     margin-bottom: 20px;
     padding-left: 0;
-    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+    
 }
 .list-group-item {
     position: relative;
@@ -5052,8 +5041,6 @@ a.list-group-item-danger.active:focus {
     background-color: #ffffff;
     border: 1px solid transparent;
     border-radius: 4px;
-    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
 }
 .panel-body {
     padding: 10px;
@@ -5387,8 +5374,6 @@ a.list-group-item-danger.active:focus {
     background-color: #ecf0f1;
     border: 1px solid transparent;
     border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 .well blockquote {
     border-color: #ddd;
@@ -5469,8 +5454,6 @@ button.close {
     border: 1px solid #999999;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 6px;
-    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
     background-clip: padding-box;
     outline: 0;
 }
@@ -5535,8 +5518,7 @@ button.close {
         margin: 30px auto;
     }
     .modal-content {
-        -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+     
     }
     .modal-sm {
         width: 300px;
@@ -5659,8 +5641,6 @@ button.close {
     border: 1px solid #cccccc;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 6px;
-    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     white-space: normal;
 }
 .popover.top {

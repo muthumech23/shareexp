@@ -4,6 +4,7 @@ package com.mycompany.shareexpense.model;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,10 +19,14 @@ public class Bill extends AbstractModal {
 
 	private String		description;
 
+	private String	amountStatus;
+	
 	@Indexed
 	private Date		date;
 
-	private String		Category;
+	private String		category;
+	
+	private String		currency;
 
 	@Indexed
 	private String		userPaid;
@@ -29,7 +34,18 @@ public class Bill extends AbstractModal {
 	@Indexed
 	private String		groupId;
         
-        private String		splitType;
+    private String		splitType;
+    
+    public String getCurrency() {
+	
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+	
+		this.currency = currency;
+	}
+
 
 	public String getSplitType() {
 	
@@ -106,12 +122,24 @@ public class Bill extends AbstractModal {
 
 	public String getCategory() {
 
-		return Category;
+		return category;
 	}
 
-	public void setCategory(String Category) {
+	public void setCategory(String category) {
 
-		this.Category = Category;
+		this.category = category;
+	}
+	
+
+	public String getAmountStatus() {
+	
+		return amountStatus;
+	}
+
+	
+	public void setAmountStatus(String amountStatus) {
+	
+		this.amountStatus = amountStatus;
 	}
 
 }

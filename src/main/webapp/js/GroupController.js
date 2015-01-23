@@ -209,8 +209,10 @@ groupControllers.controller('GroupAddBillController', function($scope, $statePar
 	angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
 	    if ($scope.bill.userPaid === billsplit.userId) {
 		billsplit.amount = billAmount / splitcount;
+		billsplit.amountStatus = "C";
 	    } else {
-		billsplit.amount = -(billAmount / splitcount);
+		billsplit.amount = billAmount / splitcount;
+		billsplit.amountStatus = "D";
 	    }
 
 	});
@@ -223,8 +225,10 @@ groupControllers.controller('GroupAddBillController', function($scope, $statePar
 	angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
 	    if ($scope.bill.userPaid === billsplit.userId) {
 		billsplit.amount = billAmount / splitcount;
+		billsplit.amountStatus = "C";
 	    } else {
-		billsplit.amount = -(billAmount / splitcount);
+		billsplit.amount = billAmount / splitcount;
+		billsplit.amountStatus = "D";
 	    }
 	});
     };
@@ -236,8 +240,10 @@ groupControllers.controller('GroupAddBillController', function($scope, $statePar
 	angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
 	    if ($scope.bill.userPaid === billsplit.userId) {
 		billsplit.amount = billAmount / splitcount;
+		billsplit.amountStatus = "C";
 	    } else {
-		billsplit.amount = -(billAmount / splitcount);
+		billsplit.amount = billAmount / splitcount;
+		billsplit.amountStatus = "D";
 	    }
 	});
     };
@@ -427,8 +433,10 @@ groupControllers.controller('GroupEditBillController', function($scope, $state, 
 	angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
 	    if ($scope.bill.userPaid === billsplit.userId) {
 		billsplit.amount = splittedAmt;
+		billsplit.amountStatus = "C";
 	    } else {
-		billsplit.amount = -splittedAmt;
+		billsplit.amount = splittedAmt;
+		billsplit.amountStatus = "D";
 	    }
 	});
     };
@@ -456,8 +464,9 @@ groupControllers.controller('GroupEditBillController', function($scope, $state, 
 	    }
 
 	    if ($scope.bill.userPaid === billsplit.userId) {
+		billsplit.amountStatus = "C";
 	    } else {
-		billsplit.amount = -billsplit.amount;
+		billsplit.amountStatus = "D";
 	    }
 	});
     };
@@ -479,8 +488,9 @@ groupControllers.controller('GroupEditBillController', function($scope, $state, 
 	    }
 
 	    if ($scope.bill.userPaid === billsplit.userId) {
+		billsplit.amountStatus = "C";
 	    } else {
-		billsplit.amount = -billsplit.amount;
+		billsplit.amountStatus = "D";
 	    }
 	});
     };

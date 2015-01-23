@@ -119,9 +119,9 @@ billControllers.controller('BillListController', function($scope, homeBillData, 
     };
     
     
-    $scope.reminderFn = function(userId, loggedUser, amount) {
+    $scope.reminderFn = function(userId, loggedUser, amtCurrs) {
 	
-	$scope.userDto = {'userId': userId, 'loggedUser': loggedUser, 'amount': amount  };
+	$scope.userDto = {'userId': userId, 'loggedUser': loggedUser, 'amtCurrs': amtCurrs };
 	console.log($scope.userDto);
 	var reminder = BillingServices.reminder($scope.userDto);
 	reminder.then(function(response) {
@@ -133,10 +133,9 @@ billControllers.controller('BillListController', function($scope, homeBillData, 
 	});
     };
     
-
-    $scope.settleUpFn = function(userId, loggedUser, amount) {
+    $scope.settleUpFn = function(userId, loggedUser, amtCurrs) {
 	
-	$scope.settleDto = {'userId': userId, 'loggedUser': loggedUser, 'amount': amount , 'billPaid': amount };
+	$scope.settleDto = {'userId': userId, 'loggedUser': loggedUser, 'amtCurrs': amtCurrs };
 	
 	var modalInstance = $modal.open({
 	    templateUrl : 'settlemodal.html',
@@ -151,13 +150,7 @@ billControllers.controller('BillListController', function($scope, homeBillData, 
 	modalInstance.result.then(function(settle) {
 	    cfpLoadingBar.start();
 
-		if(settle.amount < 0){
-		    settle.billPaid = -settle.billPaid;
-		}else if(settle.amount > 0){
-		    settle.billPaid = settle.billPaid;
-		}
-		 
-		$scope.userDto = {'userId': settle.userId, 'loggedUser': settle.loggedUser, 'amount': settle.billPaid  };
+		$scope.userDto = {'userId': settle.userId, 'loggedUser': settle.loggedUser,  'amtCurrs': settle.amtCurrUpdated};
 		console.log($scope.userDto);
 		
 		var settle = BillingServices.settleService($scope.userDto);
@@ -197,9 +190,28 @@ var ModalInstanceCtrl = function($scope, $modalInstance, friendData) {
 
 var SettleInstanceCtrl = function($scope, $modalInstance, settleData) {
     
+
+    $scope.settleAmtCurr = [];
+	
+    $scope.updateSettleSelection = function($event, amtCurr) {
+	var checkbox = $event.target;
+	var action = (checkbox.checked ? 'add' : 'remove');
+	updateSettleSelected(action, amtCurr);
+    };
+
+    var updateSettleSelected = function(action, amtCurr) {
+	if (action === 'add' && $scope.settleAmtCurr.indexOf(amtCurr) === -1) {
+	    $scope.settleAmtCurr.push(amtCurr);
+	}
+	if (action === 'remove' && $scope.settleAmtCurr.indexOf(amtCurr) !== -1) {
+	    $scope.settleAmtCurr.splice($scope.settleAmtCurr.indexOf(amtCurr), 1);
+	}
+    };
+    
     $scope.settleData = settleData;
 
     $scope.ok = function() {
+	$scope.settleData.amtCurrUpdated = $scope.settleAmtCurr;
 	$modalInstance.close($scope.settleData);
     };
 
@@ -342,8 +354,10 @@ billControllers.controller('BillAddController', function($scope, $state, cfpLoad
 	angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
 	    if ($scope.bill.userPaid === billsplit.userId) {
 		billsplit.amount = splittedAmt;
+		billsplit.amountStatus = "C";
 	    } else {
-		billsplit.amount = -splittedAmt;
+		billsplit.amount = splittedAmt;
+		billsplit.amountStatus = "D";
 	    }
 	});
     };
@@ -371,8 +385,9 @@ billControllers.controller('BillAddController', function($scope, $state, cfpLoad
 	    }
 
 	    if ($scope.bill.userPaid === billsplit.userId) {
+		billsplit.amountStatus = "C";
 	    } else {
-		billsplit.amount = -billsplit.amount;
+		billsplit.amountStatus = "D";
 	    }
 	});
     };
@@ -394,8 +409,9 @@ billControllers.controller('BillAddController', function($scope, $state, cfpLoad
 	    }
 
 	    if ($scope.bill.userPaid === billsplit.userId) {
+		billsplit.amountStatus = "C";
 	    } else {
-		billsplit.amount = -billsplit.amount;
+		billsplit.amountStatus = "D";
 	    }
 	});
     };
@@ -558,8 +574,10 @@ billControllers.controller('BillEditController', function($scope, $state, $filte
 	angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
 	    if ($scope.bill.userPaid === billsplit.userId) {
 		billsplit.amount = splittedAmt;
+		billsplit.amountStatus = "C";
 	    } else {
-		billsplit.amount = -splittedAmt;
+		billsplit.amount = splittedAmt;
+		billsplit.amountStatus = "D";
 	    }
 	});
     };
@@ -587,8 +605,9 @@ billControllers.controller('BillEditController', function($scope, $state, $filte
 	    }
 
 	    if ($scope.bill.userPaid === billsplit.userId) {
+		billsplit.amountStatus = "C";
 	    } else {
-		billsplit.amount = -billsplit.amount;
+		billsplit.amountStatus = "D";
 	    }
 	});
     };
@@ -610,8 +629,9 @@ billControllers.controller('BillEditController', function($scope, $state, $filte
 	    }
 
 	    if ($scope.bill.userPaid === billsplit.userId) {
+		billsplit.amountStatus = "C";
 	    } else {
-		billsplit.amount = -billsplit.amount;
+		billsplit.amountStatus = "D";
 	    }
 
 	});

@@ -1,6 +1,7 @@
 package com.mycompany.shareexpense.model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 
 /**
@@ -13,9 +14,43 @@ public class UserDto extends AbstractModal {
     /**
      * DOCUMENT ME!
      */
-    private String userId;
+	
+	private List<AmtCurr> amtCurrs ;
+	
+    
+	public List<AmtCurr> getAmtCurrs() {
+	
+		return amtCurrs;
+	}
 
-    /**
+
+
+	
+	public void setAmtCurrs(List<AmtCurr> amtCurrs) {
+	
+		this.amtCurrs = amtCurrs;
+	}
+
+
+	private String userId;
+    
+    private String currency;
+
+    
+	public String getCurrency() {
+	
+		return currency;
+	}
+
+
+	
+	public void setCurrency(String currency) {
+	
+		this.currency = currency;
+	}
+
+
+	/**
      * DOCUMENT ME!
      */
     private String loggedUser;
@@ -24,8 +59,26 @@ public class UserDto extends AbstractModal {
      * DOCUMENT ME!
      */
     private BigDecimal amount;
+    
+    private String amountStatus;
 
-    /**
+    
+	public String getAmountStatus() {
+	
+		return amountStatus;
+	}
+
+
+
+	
+	public void setAmountStatus(String amountStatus) {
+	
+		this.amountStatus = amountStatus;
+	}
+
+
+
+	/**
      * DOCUMENT ME!
      *
      * @return DOCUMENT ME!

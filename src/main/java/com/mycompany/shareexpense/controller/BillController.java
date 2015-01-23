@@ -4,6 +4,7 @@ package com.mycompany.shareexpense.controller;
 import com.mycompany.shareexpense.model.Bill;
 import com.mycompany.shareexpense.model.BillSplit;
 import com.mycompany.shareexpense.model.UserDto;
+import com.mycompany.shareexpense.model.UsersBalance;
 import com.mycompany.shareexpense.service.BillService;
 import com.mycompany.shareexpense.util.CustomException;
 import com.mycompany.shareexpense.util.ErrorConstants;
@@ -96,9 +97,9 @@ public class BillController extends AbstractController {
 	@RequestMapping(value = "/total/{userId}",
 					produces = MediaType.APPLICATION_JSON_VALUE,
 					method = RequestMethod.GET)
-	public ResponseEntity<List<BillSplit>> usersBillDetails(@PathVariable("userId") String userId) throws CustomException {
+	public ResponseEntity<List<UsersBalance>> usersBillDetails(@PathVariable("userId") String userId) throws CustomException {
 
-		List<BillSplit> billSplitList = null;
+		List<UsersBalance> billSplitList = null;
 		try {
 			billSplitList = billService.usersBillDetails(userId);
 		} catch (CustomException ce) {
@@ -109,7 +110,7 @@ public class BillController extends AbstractController {
 			throw new CustomException(ErrorConstants.ERR_GENERAL_FAILURE, "Transaction requested has been failed. Please try again.");
 		}
 
-		return new ResponseEntity<List<BillSplit>>(billSplitList, HttpStatus.OK);
+		return new ResponseEntity<List<UsersBalance>>(billSplitList, HttpStatus.OK);
 	}
 	
 	

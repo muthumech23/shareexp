@@ -10,10 +10,10 @@
                 <tr ng-repeat="bill in bills" class="text-muted">
                     <td class="col-lg-2 small"> {{bill.date| date: 'MMM dd, y'}}</td>
                     <td class="col-lg-3 small">{{bill.description}}</td>
-                    <td class="col-lg-1 ">{{bill.amount |currency}}</td>
+                    <td class="col-lg-1 ">{{bill.currency}}{{bill.amount|number:2}}</td>
                     <td  class="col-lg-6"><span ng-repeat="billdata in bill.billSplits">
-                            <span class="label label-default" ng-if="billdata.userId !== bill.userPaid">{{billdata.name}} {{billdata.amount |currency}}</span>
-                            <span class="label label-success" ng-if="billdata.userId === bill.userPaid">{{billdata.name}} ({{billdata.amount |currency}})</span>
+                            <span class="label label-default" ng-if="billdata.userId !== bill.userPaid">{{billdata.name}} {{bill.currency}}{{billdata.amount|number:2}}</span>
+                            <span class="label label-success" ng-if="billdata.userId === bill.userPaid">{{billdata.name}} {{bill.currency}}{{billdata.amount|number:2}}</span>
                     </td>
                     
                     <td class="text-primary pull-right small"><button ng-click="editBill(bill.id)" tooltip-placement="right" tooltip-html-unsafe="Edit"><i class="fa fa-edit"></i></button></td>

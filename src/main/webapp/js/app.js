@@ -161,12 +161,11 @@ shareExpApp
 			userLogin.password = hashpassword.toString();
 
 			var userVerify = AuthenticationService.login().login(userLogin).$promise;
-
+			
 			userVerify
 				.then(
 					function(response) {
 					    $scope.user = response;
-					    $scope.userLogin = {};
 					    if ($scope.user.status === 'I') {
 						flash
 							.set({
@@ -209,9 +208,6 @@ shareExpApp
 					    }
 					}, function(response) {
 					    console.log('Inside failure');
-					    $scope.userLogin = {};
-					    $scope.userLogin.email = "";
-					    $scope.userLogin.password = "";
 					    $scope.errorresource = response.data;
 					    flash.pop({
 						title : '',
@@ -219,7 +215,9 @@ shareExpApp
 						type : 'alert-danger'
 					    });
 					    cfpLoadingBar.complete();
+					    userLogin.password = "";
 					});
+			
 		    };
 
 		    $scope.activateUser = function(userSecure) {
@@ -393,7 +391,9 @@ shareExpApp.run(function($rootScope, $state, $location, AuthenticationService, f
 
     var routesThatRequireAuth = [ '/', '', '/home', '/privacy', '/terms', '/about', '/home/signup', '/home/forgot', '/home/chgpwd', "/home/login",
 	    '/home/activation' ];
-
+    
+    var routesThatNoLoginForm = [ '/home/signup', '/home/forgot', '/home/activation' ];
+    
     $rootScope.$on('$locationChangeStart', function(event) {
 
 	if (!_(routesThatRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn()) {
@@ -404,6 +404,14 @@ shareExpApp.run(function($rootScope, $state, $location, AuthenticationService, f
 		type : 'alert-warning'
 	    });
 	    return;
+	}
+	
+	if(!_(routesThatNoLoginForm).contains($location.path())){
+	    console.log('Inside IF'+$location.path());
+	    $rootScope.noLogin = true;    
+	}else{
+	    console.log('Inside Else'+$location.path());
+	    $rootScope.noLogin = false;
 	}
 	
 	if (("/home/activation") === $location.path() && AuthenticationService.isLoggedIn()) {
