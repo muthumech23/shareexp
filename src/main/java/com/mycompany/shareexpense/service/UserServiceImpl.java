@@ -13,12 +13,10 @@ import com.mycompany.shareexpense.util.ErrorConstants;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -113,7 +111,7 @@ public class UserServiceImpl implements UserService {
 
 			log.debug("emailbody --> " + emailbody);
 			emailbody = emailbody.replaceAll("<<passwordreset>>", userSecure.getRandomString() + "");
-			emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/login");
+			emailbody = emailbody.replaceAll("<<siteurl>>", env.getProperty("application.baseurl") + "login");
 
 					
 					CommonUtil.sendEmail("Your password reset request", email, emailbody, env);
@@ -153,7 +151,7 @@ public class UserServiceImpl implements UserService {
 
 			log.debug("emailbody --> " + emailbody);
 			emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString()+"");
-			emailbody = emailbody.replaceAll("<<siteUrl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/login");
+			emailbody = emailbody.replaceAll("<<siteUrl>>", env.getProperty("application.baseurl") + "login");
 
 			CommonUtil.sendEmail("Your activation Code", email, emailbody, env);
 		}catch(Exception exception){
@@ -198,7 +196,7 @@ public class UserServiceImpl implements UserService {
 					try{
 					String emailbody = env.getProperty("mail.template.activate.body");
 					emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString()+"");
-					emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/activation");
+					emailbody = emailbody.replaceAll("<<siteurl>>", env.getProperty("application.baseurl") + "activation");
 
 					CommonUtil.sendEmail("Welcome to Share Expense", user.getEmail(), emailbody, env);
 				}catch(Exception exception){
@@ -227,7 +225,7 @@ public class UserServiceImpl implements UserService {
 				log.debug("emailbody --> " + emailbody);
 
 				emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString()+"");
-				emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home/activation");
+				emailbody = emailbody.replaceAll("<<siteurl>>", env.getProperty("application.baseurl") + "activation");
 
 				CommonUtil.sendEmail("Welcome to Share Expense", user.getEmail(), emailbody, env);
 			}catch(Exception exception){
@@ -391,7 +389,7 @@ public class UserServiceImpl implements UserService {
 
 			emailbody = emailbody.replaceAll("<<username>>", loggedUser.getName()+"");
 			emailbody = emailbody.replaceAll("<<useremail>>", loggedUser.getEmail()+"");
-			emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home");
+			emailbody = emailbody.replaceAll("<<siteurl>>", env.getProperty("application.baseurl"));
 
 			CommonUtil.sendEmail("You are invited to join Share Expense", friendExist.getEmail(), emailbody, env);
 		}catch(Exception exception){

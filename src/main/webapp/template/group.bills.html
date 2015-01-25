@@ -15,6 +15,7 @@
                     <td  class="col-lg-6"><span ng-repeat="billdata in bill.billSplits">
                             <span class="label label-default " ng-if="billdata.userId !== bill.userPaid">{{billdata.name}} {{bill.currency}}{{billdata.amount|number:2}}</span>
                             <span class="label label-success " ng-if="billdata.userId === bill.userPaid">{{billdata.name}} {{bill.currency}}{{billdate.amount|number:2}}</span>
+                            </span>
                     </td>
                     <td class="text-primary pull-right small"><button tooltip-placement="right" tooltip-html-unsafe="Edit Bill" ng-click="editGroupBill(bill.id)"><i class="fa fa-edit"></i></button></td>
                 </tr>

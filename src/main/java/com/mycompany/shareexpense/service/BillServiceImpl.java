@@ -4,7 +4,6 @@ package com.mycompany.shareexpense.service;
 import com.mycompany.shareexpense.model.AmtCurr;
 import com.mycompany.shareexpense.model.Bill;
 import com.mycompany.shareexpense.model.BillSplit;
-import com.mycompany.shareexpense.model.KeyValue;
 import com.mycompany.shareexpense.model.ShareGroup;
 import com.mycompany.shareexpense.model.User;
 import com.mycompany.shareexpense.model.UserDto;
@@ -19,20 +18,15 @@ import com.mycompany.shareexpense.util.ErrorConstants;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.apache.log4j.Logger;
-import org.aspectj.apache.bcel.classfile.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
@@ -71,50 +65,48 @@ public class BillServiceImpl implements BillService {
 
 			String subject = null;
 			String emailbody = null;
-			String userPaid = null;
-			try {
-			for (BillSplit billSplit : bill.getBillSplits()) {
-
-				if (billSplit.getAmountStatus().equalsIgnoreCase(Constants.CREDIT)) {
-
-					userPaid = billSplit.getEmail();
-					subject = env.getProperty("mail.template.bill.owner.subject");
-					emailbody = env.getProperty("mail.template.bill.owner.body");
-					emailbody = emailbody.replaceAll("<<billamount>>", bill.getAmount() + "");
-					emailbody = emailbody.replaceAll("<<billdesc>>", bill.getDescription() + "");
-					emailbody = emailbody.replaceAll("<<username>>", bill.getBy() + "");
-					emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home");
-					break;
-				}
-			}
 			
-				CommonUtil.sendEmail(subject, userPaid, emailbody, env);
+			User user = userRepository.findOne(bill.getUserPaid());
+			
+			try {
+
+				subject = env.getProperty("mail.template.bill.owner.subject");
+
+				emailbody = env.getProperty("mail.template.bill.owner.body");
+				emailbody = emailbody.replaceAll("<<billamount>>", bill.getCurrency()+bill.getAmount() + "");
+				emailbody = emailbody.replaceAll("<<billdesc>>", bill.getDescription() + "");
+				emailbody = emailbody.replaceAll("<<username>>", bill.getBy() + "");
+				emailbody = emailbody.replaceAll("<<siteurl>>", env.getProperty("application.baseurl"));
+		
+
+				CommonUtil.sendEmail(subject, user.getEmail(), emailbody, env);
+					
 			} catch (Exception exception) {
 				log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
 			}
 			try {
 
-			for (BillSplit billSplit : bill.getBillSplits()) {
+				for (BillSplit billSplit : bill.getBillSplits()) {
 
-				if (billSplit.getAmountStatus().equalsIgnoreCase(Constants.DEBIT)) {
+					if (billSplit.getAmountStatus().equalsIgnoreCase(Constants.DEBIT)) {
 
-					subject = env.getProperty("mail.template.bill.recipants.subject");
-					subject = subject.replaceAll("<<userpaid>>", userPaid + "");
+						subject = env.getProperty("mail.template.bill.recipants.subject");
+						subject = subject.replaceAll("<<userpaid>>", user.getName() + "");
 
-					emailbody = env.getProperty("mail.template.bill.recipants.body");
-					emailbody = emailbody.replaceAll("<<billamount>>", bill.getAmount() + "");
-					emailbody = emailbody.replaceAll("<<billdesc>>", bill.getDescription() + "");
-					emailbody = emailbody.replaceAll("<<toaddress>>", billSplit.getEmail() + "");
-					emailbody = emailbody.replaceAll("<<splitamount>>", billSplit.getAmount() + "");
-					emailbody = emailbody.replaceAll("<<username>>", bill.getBy() + "");
-					emailbody = emailbody.replaceAll("<<useremail>>", userPaid + "");
-					emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home");
+						emailbody = env.getProperty("mail.template.bill.recipants.body");
+						emailbody = emailbody.replaceAll("<<billamount>>", bill.getCurrency() + bill.getAmount() + "");
+						emailbody = emailbody.replaceAll("<<billdesc>>", bill.getDescription() + "");
+						emailbody = emailbody.replaceAll("<<toaddress>>", billSplit.getEmail() + "");
+						emailbody = emailbody.replaceAll("<<splitamount>>", bill.getCurrency() + billSplit.getAmount() + "");
+						emailbody = emailbody.replaceAll("<<username>>", bill.getBy() + "");
+						emailbody = emailbody.replaceAll("<<useremail>>", user.getName() + "(" + user.getEmail() + ")");
+						emailbody = emailbody.replaceAll("<<siteurl>>", env.getProperty("application.baseurl"));
 
-				}
+					}
 				
 					CommonUtil.sendEmail(subject, billSplit.getEmail(), emailbody, env);
 				
-			}
+				}
 			} catch (Exception exception) {
 				log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
 			}
@@ -213,9 +205,6 @@ public class BillServiceImpl implements BillService {
 				}
 				
 			}
-			System.out.println(usdBigDecimal);
-			System.out.println(rupeeBigDecimal);
-			
 			
 			loggedUserUsdAmt = loggedUserUsdAmt.add(usdBigDecimal);
 			loggedUserRupeeAmt = loggedUserRupeeAmt.add(rupeeBigDecimal);
@@ -289,9 +278,6 @@ public class BillServiceImpl implements BillService {
 			}
 			loggedUserCurrency.add(rupeeKeyValue);
 		}
-
-		System.out.println(loggedUserUsdAmt);
-		System.out.println(loggedUserRupeeAmt);
 		usersBalances.get(0).setAmtCurrs(loggedUserCurrency);
 		return usersBalances;
 	}
@@ -399,7 +385,8 @@ public class BillServiceImpl implements BillService {
 
 		billInput.setBy(loggedUser.getId());
 		billInput.setCategory("PAYBACK");
-
+		billInput.setDate(new Date());
+		
 		billInput.setDescription("Paying back pending amount");
 
 		billInput.setSplitType("equally");
@@ -481,7 +468,7 @@ public class BillServiceImpl implements BillService {
 					emailbody = emailbody.replaceAll("<<amount>>", amtCurr.getCurrency()+ " "+amtCurr.getAmount() + "");
 					emailbody = emailbody.replaceAll("<<username>>", loggedUser.getName() + "");
 					emailbody = emailbody.replaceAll("<<useremail>>", loggedUser.getEmail() + "");
-					emailbody = emailbody.replaceAll("<<siteurl>>", "http://shareexpense-shareexp.rhcloud.com/shareexpense/#/home");
+					emailbody = emailbody.replaceAll("<<siteurl>>", env.getProperty("application.baseurl"));
 
 					CommonUtil.sendEmail(subject, user.getEmail(), emailbody, env);				
 	

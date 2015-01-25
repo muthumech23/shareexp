@@ -1,7 +1,6 @@
 package com.mycompany.shareexpense.service;
 
 import com.mycompany.shareexpense.model.Bill;
-import com.mycompany.shareexpense.model.BillSplit;
 import com.mycompany.shareexpense.model.UserDto;
 import com.mycompany.shareexpense.model.UsersBalance;
 

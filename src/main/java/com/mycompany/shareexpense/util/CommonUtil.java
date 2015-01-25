@@ -208,8 +208,6 @@ public static boolean checkPassword(String inputPassword, String encryptedPasswo
 			// Send message
 			Transport.send(message);
 
-			System.out.println("Sent message successfully....");
-
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
