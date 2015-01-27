@@ -7,28 +7,35 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 @Aspect
+@Component
 public class LoggingAspect {
 
-	private final Logger	log	= Logger.getLogger(this.getClass());
+	private final Logger log = Logger.getLogger(this.getClass());
 
-	@Around("execution(* com.mycompany.shareexpense.*.*(..))")
-	public Object logTimeMethod(ProceedingJoinPoint joinPoint) throws Throwable {
-
-		StopWatch stopWatch = new StopWatch();
+	
+	@Pointcut("execution(* com.mycompany.shareexpense..*.*(..))")  
+    public void servicePointcut(){}  
+      
+    @Around("servicePointcut()")  
+    public Object myadvice(ProceedingJoinPoint joinPoint) throws Throwable   
+    {  
+    	StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 
 		Object retVal = joinPoint.proceed();
 		stopWatch.stop();
 
+		String packageName = joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName();
+		
+		log.debug("Executing ==>"+packageName);
+		
 		StringBuffer logMessage = new StringBuffer();
-		logMessage.append(joinPoint.getTarget().getClass().getName());
-		logMessage.append(".");
-		logMessage.append(joinPoint.getSignature().getName());
-		logMessage.append("(");
-
+		logMessage.append("\tInput Params: ");
 		// append args
 		Object[] args = joinPoint.getArgs();
 		for (int i = 0; i < args.length; i++) {
@@ -37,31 +44,29 @@ public class LoggingAspect {
 		if (args.length > 0) {
 			logMessage.deleteCharAt(logMessage.length() - 1);
 		}
-		logMessage.append(")");
-		logMessage.append(" execution time: ");
-		logMessage.append(stopWatch.getTotalTimeMillis());
-		logMessage.append(" ms");
 		log.debug(logMessage.toString());
+		log.info("Execution Completed [" + packageName + ": Time taken= " + stopWatch.getTotalTimeMillis() + " ms ]");
+		
+		return retVal; 
+    }  
+	
 
-		return retVal;
-	}
-
-	@AfterReturning(pointcut = "execution(* com.mycompany.shareexpense.*.*(..))",
+	@AfterReturning(pointcut = "execution(* com.mycompany.shareexpense..*.*(..))",
 					returning = "retVal")
 	public void afterReturningAdvice(Object retVal) {
 
-		log.debug("Returning:" + retVal.toString());
+		log.debug("\tReturn Params: " + retVal.toString());
 	}
 
 	/**
 	 * This is the method which I would like to execute
 	 * if there is an exception raised by any method.
 	 */
-	@AfterThrowing(	pointcut = "execution(* com.mycompany.shareexpense.*.*(..))",
+	@AfterThrowing(	pointcut = "execution(* com.mycompany.shareexpense..*.*(..))",
 					throwing = "ex")
 	public void AfterThrowingAdvice(Throwable ex) {
 
-		log.error("There has been an exception: " + ex.toString(), ex);
+		log.error("********************** DANGER *************************** \nThere has been an exception: " + ex.toString(), ex);
 	}
 
 }

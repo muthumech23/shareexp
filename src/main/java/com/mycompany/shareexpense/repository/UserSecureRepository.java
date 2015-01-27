@@ -13,8 +13,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserSecureRepository extends CrudRepository<UserSecure, String>{
     
-    public UserSecure findByUserIdAndPassword(String userId, String password);
+    public UserSecure findByUserIdAndPasswordIgnoreCase(String userId, String password);
     
-    public UserSecure findByUserId(String userId);
+    public UserSecure findByUserIdIgnoreCase(String userId);
     
 }

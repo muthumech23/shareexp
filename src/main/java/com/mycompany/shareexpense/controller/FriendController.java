@@ -73,7 +73,6 @@ public class FriendController extends AbstractController {
 		List<User> friendList = null;
 
 		try {
-
 			friendList = userService.findByFriend(userId);
 
 		} catch (CustomException ce) {

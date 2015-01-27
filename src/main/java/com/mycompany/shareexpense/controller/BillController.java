@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BillController extends AbstractController {
 
 	/** The log. */
-	private final Logger	log	= Logger.getLogger(BillController.class);
+	private final Logger log	= Logger.getLogger(BillController.class);
 
 	/** The bill service. */
 	@Autowired
@@ -47,7 +47,6 @@ public class BillController extends AbstractController {
 		Bill returnBill = null;
 		try {
 			returnBill = billService.saveBill(bill);
-
 		} catch (CustomException ce) {
 			log.error("/bill/create", ce);
 			throw ce;
@@ -73,9 +72,7 @@ public class BillController extends AbstractController {
 
 		Bill returnBill = null;
 		try {
-
 			returnBill = billService.showBill(Id);
-
 		} catch (CustomException ce) {
 			log.error("/bill/show", ce);
 			throw ce;
@@ -179,7 +176,6 @@ public class BillController extends AbstractController {
 
 		List<Bill> recentTransList = null;
 		try {
-
 			recentTransList = billService.recentTrans(userId);
 		} catch (CustomException ce) {
 			log.error("/bill/recent", ce);

@@ -1,68 +1,123 @@
-
 package com.mycompany.shareexpense.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
 /**
+ * 
+DOCUMENT ME!
+ *
  * @author AH0661755
  */
 @Document(collection = "usersecures")
 public class UserSecure extends AbstractModal {
-
-	@Indexed(unique = true)
-	private String	userId;
-
-	private String	password;
-
-	private String	status;
-
-	private String	randomString;
-
-	
-	
-	public String getRandomString() {
-	
-		return randomString;
-	}
+    /**
+     * DOCUMENT ME!
+     */
+    @Indexed(unique = true)
+    private String userId;
 
 
-	
-	public void setRandomString(String randomString) {
-	
-		this.randomString = randomString;
-	}
+    /**
+     * DOCUMENT ME!
+     */
+    private String password;
 
 
-	public String getStatus() {
-	
-		return status;
-	}
+    /**
+     * DOCUMENT ME!
+     */
+    private String status;
 
-	
-	public void setStatus(String status) {
-	
-		this.status = status;
-	}
 
-	public String getUserId() {
+    /**
+     * DOCUMENT ME!
+     */
+    private String randomString;
 
-		return userId;
-	}
+    @Override
+    public String toString() {
+    	return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getRandomString() {
+        return randomString;
+    }
 
-	public void setUserId(String userId) {
 
-		this.userId = userId;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param randomString DOCUMENT ME!
+     */
+    public void setRandomString(String randomString) {
+        this.randomString = randomString;
+    }
 
-	public String getPassword() {
 
-		return password;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getStatus() {
+        return status;
+    }
 
-	public void setPassword(String password) {
 
-		this.password = password;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param status DOCUMENT ME!
+     */
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getUserId() {
+        return userId;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param userId DOCUMENT ME!
+     */
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getPassword() {
+        return password;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param password DOCUMENT ME!
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

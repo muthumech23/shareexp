@@ -73,7 +73,7 @@ public class BillServiceImpl implements BillService {
 				subject = env.getProperty("mail.template.bill.owner.subject");
 
 				emailbody = env.getProperty("mail.template.bill.owner.body");
-				emailbody = emailbody.replaceAll("<<billamount>>", bill.getCurrency()+bill.getAmount() + "");
+				emailbody = emailbody.replaceAll("<<billamount>>", bill.getAmount()+"");
 				emailbody = emailbody.replaceAll("<<billdesc>>", bill.getDescription() + "");
 				emailbody = emailbody.replaceAll("<<username>>", bill.getBy() + "");
 				emailbody = emailbody.replaceAll("<<siteurl>>", env.getProperty("application.baseurl"));
@@ -94,10 +94,10 @@ public class BillServiceImpl implements BillService {
 						subject = subject.replaceAll("<<userpaid>>", user.getName() + "");
 
 						emailbody = env.getProperty("mail.template.bill.recipants.body");
-						emailbody = emailbody.replaceAll("<<billamount>>", bill.getCurrency() + bill.getAmount() + "");
+						emailbody = emailbody.replaceAll("<<billamount>>", bill.getAmount()+"");
 						emailbody = emailbody.replaceAll("<<billdesc>>", bill.getDescription() + "");
 						emailbody = emailbody.replaceAll("<<toaddress>>", billSplit.getEmail() + "");
-						emailbody = emailbody.replaceAll("<<splitamount>>", bill.getCurrency() + billSplit.getAmount() + "");
+						emailbody = emailbody.replaceAll("<<splitamount>>", billSplit.getAmount()+"");
 						emailbody = emailbody.replaceAll("<<username>>", bill.getBy() + "");
 						emailbody = emailbody.replaceAll("<<useremail>>", user.getName() + "(" + user.getEmail() + ")");
 						emailbody = emailbody.replaceAll("<<siteurl>>", env.getProperty("application.baseurl"));
@@ -320,7 +320,6 @@ public class BillServiceImpl implements BillService {
 
 		List<Bill> bills = billRepository.findByGroupId(groupId);
 
-		log.info("Bill Details ---> " + bills.size());
 
 		return bills;
 
@@ -465,7 +464,7 @@ public class BillServiceImpl implements BillService {
 			for(AmtCurr amtCurr: userDto.getAmtCurrs()){
 				if(amtCurr.getAmountStatus().equalsIgnoreCase(Constants.DEBIT)){
 					emailbody = env.getProperty("mail.template.payee.reminder.body");
-					emailbody = emailbody.replaceAll("<<amount>>", amtCurr.getCurrency()+ " "+amtCurr.getAmount() + "");
+					emailbody = emailbody.replaceAll("<<amount>>", amtCurr.getAmount() + "");
 					emailbody = emailbody.replaceAll("<<username>>", loggedUser.getName() + "");
 					emailbody = emailbody.replaceAll("<<useremail>>", loggedUser.getEmail() + "");
 					emailbody = emailbody.replaceAll("<<siteurl>>", env.getProperty("application.baseurl"));

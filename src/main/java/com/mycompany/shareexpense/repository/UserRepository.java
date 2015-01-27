@@ -18,7 +18,7 @@ public interface UserRepository extends CrudRepository<User, String> {
 
     public List<User> findByFriends (String friendId);
 
-    public User findByEmail (String email);
+    public User findByEmailIgnoreCase (String email);
 
 }
 

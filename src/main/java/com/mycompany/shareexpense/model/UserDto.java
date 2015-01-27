@@ -3,82 +3,110 @@ package com.mycompany.shareexpense.model;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 
 /**
- * 
-DOCUMENT ME!
+ * DOCUMENT ME!
  *
  * @author AH0661755
  */
 public class UserDto extends AbstractModal {
+    /** DOCUMENT ME! */
+    private List<AmtCurr> amtCurrs;
+
+
     /**
      * DOCUMENT ME!
      */
-	
-	private List<AmtCurr> amtCurrs ;
-	
-    
-	public List<AmtCurr> getAmtCurrs() {
-	
-		return amtCurrs;
-	}
+    private String userId;
 
 
-
-	
-	public void setAmtCurrs(List<AmtCurr> amtCurrs) {
-	
-		this.amtCurrs = amtCurrs;
-	}
-
-
-	private String userId;
-    
+    /**
+     * DOCUMENT ME!
+     */
     private String currency;
 
-    
-	public String getCurrency() {
-	
-		return currency;
-	}
 
-
-	
-	public void setCurrency(String currency) {
-	
-		this.currency = currency;
-	}
-
-
-	/**
-     * DOCUMENT ME!
-     */
+    /** DOCUMENT ME! */
     private String loggedUser;
+
+
+    /** DOCUMENT ME! */
+    private BigDecimal amount;
+
 
     /**
      * DOCUMENT ME!
      */
-    private BigDecimal amount;
-    
     private String amountStatus;
 
-    
-	public String getAmountStatus() {
-	
-		return amountStatus;
-	}
+    @Override
+    public String toString() {
+    	return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public List<AmtCurr> getAmtCurrs() {
+        return amtCurrs;
+    }
 
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @param amtCurrs DOCUMENT ME!
+     */
+    public void setAmtCurrs(List<AmtCurr> amtCurrs) {
+        this.amtCurrs = amtCurrs;
+    }
 
-	
-	public void setAmountStatus(String amountStatus) {
-	
-		this.amountStatus = amountStatus;
-	}
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getCurrency() {
+        return currency;
+    }
 
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @param currency DOCUMENT ME!
+     */
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
 
-	/**
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getAmountStatus() {
+        return amountStatus;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param amountStatus DOCUMENT ME!
+     */
+    public void setAmountStatus(String amountStatus) {
+        this.amountStatus = amountStatus;
+    }
+
+
+    /**
      * DOCUMENT ME!
      *
      * @return DOCUMENT ME!

@@ -1,7 +1,6 @@
 
 package com.mycompany.shareexpense.service;
 
-import com.mycompany.shareexpense.controller.UserController;
 import com.mycompany.shareexpense.model.User;
 import com.mycompany.shareexpense.model.UserSecure;
 import com.mycompany.shareexpense.repository.UserRepository;
@@ -24,7 +23,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-	private final Logger log = Logger.getLogger(UserController.class);
+	private final Logger log = Logger.getLogger(UserServiceImpl.class);
 
 	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
@@ -46,7 +45,7 @@ public class UserServiceImpl implements UserService {
 		User user = null;
 		try {
 			
-			UserSecure userSecure = userSecureRepository.findByUserId(email);
+			UserSecure userSecure = userSecureRepository.findByUserIdIgnoreCase(email);
 
 			if (userSecure == null) {
 				throw new CustomException(ErrorConstants.ERR_LOGIN_FAILED, "The user is not available or email entered is not correct. Please register to start using ShareExpense.");
@@ -65,7 +64,7 @@ public class UserServiceImpl implements UserService {
 			
 			if (pwdStatus) {
 
-				user = userRepository.findByEmail(email);
+				user = userRepository.findByEmailIgnoreCase(email);
 
 				if (user == null) {
 					throw new CustomException(ErrorConstants.ERR_LOGIN_FAILED, "The user is not available or email entered is not correct. Please register to start using ShareExpense.");
@@ -77,7 +76,6 @@ public class UserServiceImpl implements UserService {
 				throw new CustomException(ErrorConstants.ERR_LOGIN_FAILED, "The password provided is incorrect.");
 			}
 
-			log.info("Secure ID ---> " + userSecure.getUserId());
 		} catch (CustomException ce) {
 			log.error("userServiceImpl", ce);
 			throw ce;
@@ -95,7 +93,7 @@ public class UserServiceImpl implements UserService {
 
 		Date sysDate = new Date();
 		try {
-			UserSecure userSecure = userSecureRepository.findByUserId(email);
+			UserSecure userSecure = userSecureRepository.findByUserIdIgnoreCase(email);
 
 			if (userSecure == null) {
 				throw new CustomException(ErrorConstants.ERR_FORGOT_PWD_FAILED, "The user is not available or email entered is not correct. Please register to start using ShareExpense.");
@@ -109,7 +107,6 @@ public class UserServiceImpl implements UserService {
 			try{
 			String emailbody = env.getProperty("mail.template.forgot.pwd");
 
-			log.debug("emailbody --> " + emailbody);
 			emailbody = emailbody.replaceAll("<<passwordreset>>", userSecure.getRandomString() + "");
 			emailbody = emailbody.replaceAll("<<siteurl>>", env.getProperty("application.baseurl") + "login");
 
@@ -136,7 +133,7 @@ public class UserServiceImpl implements UserService {
 
 		Date sysDate = new Date();
 		try {
-			UserSecure userSecure = userSecureRepository.findByUserId(email);
+			UserSecure userSecure = userSecureRepository.findByUserIdIgnoreCase(email);
 
 			if (userSecure == null) {
 				throw new CustomException(ErrorConstants.ERR_ACTIVATION_FAILED, "The user is not available or email entered is not correct. Please register to start using ShareExpense.");
@@ -149,7 +146,6 @@ public class UserServiceImpl implements UserService {
 			try{
 			String emailbody = env.getProperty("mail.template.activate.pwd");
 
-			log.debug("emailbody --> " + emailbody);
 			emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString()+"");
 			emailbody = emailbody.replaceAll("<<siteUrl>>", env.getProperty("application.baseurl") + "login");
 
@@ -176,12 +172,11 @@ public class UserServiceImpl implements UserService {
 
 		Date sysDate = new Date();
 		try {
-			log.debug(user.getEmail());
-			User userExists = userRepository.findByEmail(user.getEmail());
+			User userExists = userRepository.findByEmailIgnoreCase(user.getEmail());
 
 			if (userExists != null) {
 
-				userSecure = userSecureRepository.findByUserId(user.getEmail());
+				userSecure = userSecureRepository.findByUserIdIgnoreCase(user.getEmail());
 
 				if (userSecure == null) {
 
@@ -222,7 +217,6 @@ public class UserServiceImpl implements UserService {
 				try{
 				String emailbody = env.getProperty("mail.template.activate.body");
 
-				log.debug("emailbody --> " + emailbody);
 
 				emailbody = emailbody.replaceAll("<<activationcode>>", userSecure.getRandomString()+"");
 				emailbody = emailbody.replaceAll("<<siteurl>>", env.getProperty("application.baseurl") + "activation");
@@ -247,7 +241,7 @@ public class UserServiceImpl implements UserService {
 
 		User user = null;
 		try {
-			UserSecure userSecure = userSecureRepository.findByUserId(userInput.getUserId());
+			UserSecure userSecure = userSecureRepository.findByUserIdIgnoreCase(userInput.getUserId());
 
 			if (userSecure == null) {
 				throw new CustomException(ErrorConstants.ERR_ACTIVATION_FAILED, "The user is not available or email entered is not correct. Please register to start using ShareExpense.");
@@ -267,7 +261,7 @@ public class UserServiceImpl implements UserService {
 					throw new CustomException(ErrorConstants.ERR_ACTIVATION_FAILED, "The activation code provided is incorrect.");
 				}
 
-				user = userRepository.findByEmail(userInput.getUserId());
+				user = userRepository.findByEmailIgnoreCase(userInput.getUserId());
 
 
 				if (user == null) {
@@ -297,7 +291,7 @@ public class UserServiceImpl implements UserService {
 
 		User user = null;
 		try {
-			UserSecure userSecure = userSecureRepository.findByUserId(userInput.getEmail());
+			UserSecure userSecure = userSecureRepository.findByUserIdIgnoreCase(userInput.getEmail());
 
 			if (userSecure == null) {
 				throw new CustomException(ErrorConstants.ERR_UPDATE_ACCOUNT_FAILED, "The user is not available or email entered is not correct. Please register to start using ShareExpense.");
@@ -315,7 +309,7 @@ public class UserServiceImpl implements UserService {
 			userSecure.setModifiedDate(dateFormat.format(sysDate));
 			userSecureRepository.save(userSecure);
 
-			user = userRepository.findByEmail(userInput.getEmail());
+			user = userRepository.findByEmailIgnoreCase(userInput.getEmail());
 		} catch (CustomException ce) {
 			log.error("userServiceImpl", ce);
 			throw ce;
@@ -349,7 +343,7 @@ public class UserServiceImpl implements UserService {
 		List<String> friends = null;
 		User friendExist = null;
 		try {
-			friendExist = userRepository.findByEmail(user.getEmail());
+			friendExist = userRepository.findByEmailIgnoreCase(user.getEmail());
 			if (friendExist == null) {
 				user.setModifiedDate(dateFormat.format(sysDate));
 				user.setCreateDate(dateFormat.format(sysDate));
@@ -385,7 +379,6 @@ public class UserServiceImpl implements UserService {
 			try{
 			String emailbody = env.getProperty("mail.template.friend.add.body");
 
-			log.debug("emailbody --> " + emailbody);
 
 			emailbody = emailbody.replaceAll("<<username>>", loggedUser.getName()+"");
 			emailbody = emailbody.replaceAll("<<useremail>>", loggedUser.getEmail()+"");

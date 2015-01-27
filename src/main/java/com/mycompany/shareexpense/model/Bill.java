@@ -1,145 +1,297 @@
-
 package com.mycompany.shareexpense.model;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.core.style.ToStringStyler;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.mycompany.shareexpense.util.CommonUtil;
+
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
+
+
 /**
+ * 
+DOCUMENT ME!
+ *
  * @author AH0661755
  */
 @Document(collection = "bills")
 public class Bill extends AbstractModal {
+    /**
+     * DOCUMENT ME!
+     */
+    @Indexed
+    private BigDecimal amount;
 
-	@Indexed
-	private BigDecimal	amount;
 
-	private String		description;
+    /**
+     * DOCUMENT ME!
+     */
+    private String description;
 
-	private String	amountStatus;
-	
-	@Indexed
-	private Date		date;
 
-	private String		category;
-	
-	private String		currency;
+    /**
+     * DOCUMENT ME!
+     */
+    private String amountStatus;
 
-	@Indexed
-	private String		userPaid;
 
-	@Indexed
-	private String		groupId;
-        
-    private String		splitType;
+    /**
+     * DOCUMENT ME!
+     */
+    @Indexed
+    private Date date;
+
+
+    /**
+     * DOCUMENT ME!
+     */
+    private String category;
+
+
+    /**
+     * DOCUMENT ME!
+     */
+    private String currency;
+
+
+    /**
+     * DOCUMENT ME!
+     */
+    @Indexed
+    private String userPaid;
+
+
+    /**
+     * DOCUMENT ME!
+     */
+    @Indexed
+    private String groupId;
+
+
+    /**
+     * DOCUMENT ME!
+     */
+    private String splitType;
+
+
+    /**
+     * DOCUMENT ME!
+     */
+    private List<BillSplit> billSplits;
     
+    @Override
+    public String toString() {
+    	
+    	return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
+
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
     public String getCurrency() {
-	
-		return currency;
-	}
-
-	public void setCurrency(String currency) {
-	
-		this.currency = currency;
-	}
+        return currency;
+    }
 
 
-	public String getSplitType() {
-	
-		return splitType;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param currency DOCUMENT ME!
+     */
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
 
-	
-	public void setSplitType(String splitType) {
-	
-		this.splitType = splitType;
-	}
 
-	public List<BillSplit> getBillSplits() {
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getSplitType() {
+        return splitType;
+    }
 
-		return billSplits;
-	}
 
-	public void setBillSplits(List<BillSplit> billSplits) {
+    /**
+     * DOCUMENT ME!
+     *
+     * @param splitType DOCUMENT ME!
+     */
+    public void setSplitType(String splitType) {
+        this.splitType = splitType;
+    }
 
-		this.billSplits = billSplits;
-	}
 
-	private List<BillSplit>	billSplits;
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public List<BillSplit> getBillSplits() {
+        return billSplits;
+    }
 
-	public BigDecimal getAmount() {
 
-		return amount;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param billSplits DOCUMENT ME!
+     */
+    public void setBillSplits(List<BillSplit> billSplits) {
+        this.billSplits = billSplits;
+    }
 
-	public void setAmount(BigDecimal amount) {
 
-		this.amount = amount;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public BigDecimal getAmount() {
+        return amount;
+    }
 
-	public String getGroupId() {
 
-		return groupId;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param amount DOCUMENT ME!
+     */
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
 
-	public String getUserPaid() {
 
-		return userPaid;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getGroupId() {
+        return groupId;
+    }
 
-	public void setUserPaid(String userPaid) {
 
-		this.userPaid = userPaid;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getUserPaid() {
+        return userPaid;
+    }
 
-	public void setGroupId(String groupId) {
 
-		this.groupId = groupId;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param userPaid DOCUMENT ME!
+     */
+    public void setUserPaid(String userPaid) {
+        this.userPaid = userPaid;
+    }
 
-	public String getDescription() {
 
-		return description;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param groupId DOCUMENT ME!
+     */
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 
-	public void setDescription(String description) {
 
-		this.description = description;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getDescription() {
+        return description;
+    }
 
-	public Date getDate() {
 
-		return date;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param description DOCUMENT ME!
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setDate(Date date) {
 
-		this.date = date;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public Date getDate() {
+        return date;
+    }
 
-	public String getCategory() {
 
-		return category;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param date DOCUMENT ME!
+     */
+    public void setDate(Date date) {
+    	this.date = CommonUtil.cvtToGmt(date);
+    }
 
-	public void setCategory(String category) {
 
-		this.category = category;
-	}
-	
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getCategory() {
+        return category;
+    }
 
-	public String getAmountStatus() {
-	
-		return amountStatus;
-	}
 
-	
-	public void setAmountStatus(String amountStatus) {
-	
-		this.amountStatus = amountStatus;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param category DOCUMENT ME!
+     */
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getAmountStatus() {
+        return amountStatus;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param amountStatus DOCUMENT ME!
+     */
+    public void setAmountStatus(String amountStatus) {
+        this.amountStatus = amountStatus;
+    }
 }
