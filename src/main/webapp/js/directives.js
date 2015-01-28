@@ -1,6 +1,3 @@
-'use strict'
-
-
 var shareExpDirectives = angular.module('ShareExpDirectives', []);
 
 shareExpDirectives.directive('animate', function() {
@@ -35,4 +32,22 @@ shareExpDirectives.directive('tooltip', function() {
                     .tooltip({placement: "bottom"});
         }
     }
-})
+});
+
+shareExpDirectives.directive('datepickerse', function() {
+    return {
+        restrict: 'A',
+        require : 'ngModel',
+        link : function (scope, element, attrs, ngModelCtrl) {
+            $(function(){
+                element.datepicker({
+                    dateFormat:'MM dd, yy',
+                    onSelect:function (date) {
+                        ngModelCtrl.$setViewValue(date);
+                        scope.$apply();
+                    }
+                });
+            });
+        }
+    }
+});

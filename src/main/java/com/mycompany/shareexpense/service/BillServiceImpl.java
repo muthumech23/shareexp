@@ -60,7 +60,7 @@ public class BillServiceImpl implements BillService {
 
 		Bill billResponse = billRepository.save(bill);
 
-		if (billResponse != null) {
+		if (billResponse != null && bill.isEmailRequired()) {
 
 
 			String subject = null;
@@ -384,7 +384,8 @@ public class BillServiceImpl implements BillService {
 
 		billInput.setBy(loggedUser.getId());
 		billInput.setCategory("PAYBACK");
-		billInput.setDate(new Date());
+		billInput.setDate(CommonUtil.getCurrentDateTime());
+		billInput.setEmailRequired(true);
 		
 		billInput.setDescription("Paying back pending amount");
 

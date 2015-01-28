@@ -1,29 +1,31 @@
-
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h3 class="panel-title">Group Bills <span class="badge small">{{groupBillsData.length}}</span>
-        <button ng-click="addGroupBill(groupId)" tooltip-html-unsafe="Add Group Bill" class="pull-right">
-                            <span class="text-primary" >Add Group Bill</span></button></h3>
+            <button ng-click="addGroupBill(groupId)" tooltip-html-unsafe="Add Group Bill" class="pull-right">
+                <span class="text-primary">Add Group Bill</span></button>
+        </h3>
     </div>
     <div class="panel-body">
         <table class="table table-striped table-hover " id="table">
             <tbody>
-                <tr ng-repeat="bill in groupBillsData" class="text-muted">
-                     <td class="col-lg-2 small"> {{bill.date| date: 'MMM dd, y'}}</td>
-                    <td class="col-lg-3 small">{{bill.description}}</td>
-                    <td class="col-lg-1">{{bill.currency}}{{bill.amount|number:2}}</td>
-                    <td  class="col-lg-6"><span ng-repeat="billdata in bill.billSplits">
+            <tr ng-repeat="bill in groupBillsData" class="text-muted">
+                <td class="col-lg-2 small"> {{bill.date| date: 'MMM dd, y'}}</td>
+                <td class="col-lg-3 small">{{bill.description}}</td>
+                <td class="col-lg-1">{{bill.currency}}{{bill.amount|number:2}}</td>
+                <td class="col-lg-6"><span ng-repeat="billdata in bill.billSplits">
                             <span class="label label-default " ng-if="billdata.userId !== bill.userPaid">{{billdata.name}} {{bill.currency}}{{billdata.amount|number:2}}</span>
                             <span class="label label-success " ng-if="billdata.userId === bill.userPaid">{{billdata.name}} {{bill.currency}}{{billdate.amount|number:2}}</span>
                             </span>
-                    </td>
-                    <td class="text-primary pull-right small"><button tooltip-placement="right" tooltip-html-unsafe="Edit Bill" ng-click="editGroupBill(bill.id)"><i class="fa fa-edit"></i></button></td>
-                </tr>
+                </td>
+                <td class="text-primary pull-right small">
+                    <button tooltip-placement="right" tooltip-html-unsafe="Edit Bill" ng-click="editGroupBill(bill.id)"><i class="fa fa-edit"></i>
+                    </button>
+                </td>
+            </tr>
             </tbody>
-        </table> 
+        </table>
     </div>
 </div>
-
 
 
 <script>
@@ -34,5 +36,6 @@
 
   ga('create', 'UA-55417878-1', 'auto');
   ga('send', 'pageview');
+
 
 </script>

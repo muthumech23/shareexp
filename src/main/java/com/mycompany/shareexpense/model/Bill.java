@@ -48,7 +48,7 @@ public class Bill extends AbstractModal {
      * DOCUMENT ME!
      */
     @Indexed
-    private Date date;
+    private String date;
 
 
     /**
@@ -82,6 +82,10 @@ public class Bill extends AbstractModal {
      */
     private String splitType;
 
+    /**
+     * DOCUMENT ME!
+     */
+    private boolean emailRequired;
 
     /**
      * DOCUMENT ME!
@@ -96,7 +100,7 @@ public class Bill extends AbstractModal {
 
 
 
-    /**
+	/**
      * DOCUMENT ME!
      *
      * @return DOCUMENT ME!
@@ -106,7 +110,23 @@ public class Bill extends AbstractModal {
     }
 
 
-    /**
+    
+	public boolean isEmailRequired() {
+	
+		return emailRequired;
+	}
+
+
+
+	
+	public void setEmailRequired(boolean emailRequired) {
+	
+		this.emailRequired = emailRequired;
+	}
+
+
+
+	/**
      * DOCUMENT ME!
      *
      * @param currency DOCUMENT ME!
@@ -241,7 +261,7 @@ public class Bill extends AbstractModal {
      *
      * @return DOCUMENT ME!
      */
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -251,8 +271,8 @@ public class Bill extends AbstractModal {
      *
      * @param date DOCUMENT ME!
      */
-    public void setDate(Date date) {
-    	this.date = CommonUtil.cvtToGmt(date);
+    public void setDate(String date) {
+    	this.date = date;
     }
 
 

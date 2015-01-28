@@ -5,6 +5,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -248,6 +250,15 @@ public static boolean checkPassword(String inputPassword, String encryptedPasswo
 		}
 		return buffer.toString();
 	}
+	
+	public static String getCurrentDateTime () {
+		 
+			   DateFormat dateFormat = new SimpleDateFormat("MMMMM dd, yyyy");
+			   //get current date time with Date()
+			   Date date = new Date();
+			   return dateFormat.format(date);
+		  
+		  }
 	
 	public static Date cvtToGmt( Date date ){
 	    TimeZone tz = TimeZone.getDefault();

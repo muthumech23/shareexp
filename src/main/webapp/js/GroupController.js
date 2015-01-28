@@ -24,7 +24,7 @@ groupControllers.controller('GroupRecentController', function($scope, $statePara
 	    groupId : grpId
 	});
     };
-    
+
     $scope.editGroupBill = function(billId) {
 	$state.go('billhome.grpeditbill', {
 	    billId : billId
@@ -55,8 +55,8 @@ groupControllers.controller('GroupController', function($scope, $state, $statePa
 	    });
 	    cfpLoadingBar.complete();
 	});
-    }else{
-	 $scope.updatedFriendList.push(SessionService.get('userId'));
+    } else {
+	$scope.updatedFriendList.push(SessionService.get('userId'));
     }
     var updateSelected = function(action, userId) {
 	if (action === 'add' && $scope.updatedFriendList.indexOf(userId) === -1) {
@@ -110,21 +110,21 @@ groupControllers.controller('GroupController', function($scope, $state, $statePa
     };
 });
 
-groupControllers.controller('GroupAddBillController', function($scope, $stateParams, $state, cfpLoadingBar, SessionService, flash, GroupServices, BillingServices) {
+groupControllers.controller('GroupAddBillController', function($scope, $stateParams, $state, cfpLoadingBar, SessionService, flash, GroupServices,
+	BillingServices) {
     $scope.addBillData;
 
     $scope.bill = {};
 
-
     $scope.updatedBillSPlitList = [];
-    
+
     cfpLoadingBar.start();
     if (!($stateParams.groupId === null || $stateParams.groupId === "" || $stateParams.groupId === undefined)) {
 	var addBill = BillingServices.addGroupBillPage($stateParams.groupId);
 	addBill.then(function(response) {
 	    console.log(response);
 	    $scope.addBillData = response;
-	    
+
 	    $scope.addBillSplits = $scope.addBillData.billSplits;
 
 	    angular.forEach($scope.addBillSplits, function(billsplitInput) {
@@ -133,20 +133,24 @@ groupControllers.controller('GroupAddBillController', function($scope, $statePar
 		    $scope.updatedBillSPlitList.push(billsplitInput);
 		}
 	    });
-	    
+
 	    cfpLoadingBar.complete();
-	    }, function(response) {
-		$scope.errorresource = response.data;
-		flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
-		cfpLoadingBar.complete();
+	}, function(response) {
+	    $scope.errorresource = response.data;
+	    flash.pop({
+		title : '',
+		body : $scope.errorresource.message,
+		type : 'alert-danger'
 	    });
+	    cfpLoadingBar.complete();
+	});
 	$scope.selectGroup($stateParams.groupId);
-    }else{
+    } else {
 
 	var addBill = BillingServices.addBillPage();
 	addBill.then(function(response) {
 	    $scope.addBillData = response;
-	    
+
 	    $scope.addBillSplits = $scope.addBillData.billSplits;
 	    angular.forEach($scope.addBillSplits, function(billsplitInput) {
 		if (billsplitInput.userId === SessionService.get('userId')) {
@@ -155,18 +159,20 @@ groupControllers.controller('GroupAddBillController', function($scope, $statePar
 		}
 	    });
 	    cfpLoadingBar.complete();
-	    }, function(response) {
-		$scope.errorresource = response.data;
-		flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
-		cfpLoadingBar.complete();
+	}, function(response) {
+	    $scope.errorresource = response.data;
+	    flash.pop({
+		title : '',
+		body : $scope.errorresource.message,
+		type : 'alert-danger'
 	    });
+	    cfpLoadingBar.complete();
+	});
 	$scope.selectGroup(1);
     }
-    
-
 
     $scope.bill.splitType = 'equally';
-    
+
     $scope.bill.groupId = $stateParams.groupId;
 
     $scope.bill.userPaid = SessionService.get('userId');
@@ -174,12 +180,7 @@ groupControllers.controller('GroupAddBillController', function($scope, $statePar
     $scope.billAmountChng = function() {
 	updateSplitAmount();
     };
-    $scope.open = function($event) {
-	$event.preventDefault();
-	$event.stopPropagation();
-
-	$scope.opened = true;
-    };
+    
     var updateSplitAmount = function() {
 	if ($scope.bill.splitType === 'equally') {
 	    updateSplitEqually();
@@ -252,7 +253,7 @@ groupControllers.controller('GroupAddBillController', function($scope, $statePar
 	var checkbox = $event.target;
 	var action = (checkbox.checked ? 'add' : 'remove');
 	updateSelected(action, billsplit);
-	
+
     };
 
     $scope.isSelected = function(billsplit) {
@@ -265,12 +266,12 @@ groupControllers.controller('GroupAddBillController', function($scope, $statePar
 	if ($scope.updatedBillSPlitList.length === 0) {
 	    return true;
 	} else if ($scope.updatedBillSPlitList.length === 1) {
-	    var selStatus = false; 
+	    var selStatus = false;
 	    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
 		if (billsplit.userId === $scope.bill.userPaid) {
-		    
+
 		    selStatus = true;
-		} 
+		}
 		console.log(billsplit.userId);
 	    });
 	    return selStatus;
@@ -278,24 +279,23 @@ groupControllers.controller('GroupAddBillController', function($scope, $statePar
 	    return false;
 	}
     };
-    
-    $scope.isOneSelectedFn = function(){
-	
-	if(isOneSelected()){
-	    
-	flash.pop({
+
+    $scope.isOneSelectedFn = function() {
+
+	if (isOneSelected()) {
+
+	    flash.pop({
 		title : '',
 		body : "Please include one more person other than the user paid.",
 		type : 'alert-warning'
 	    });
-	return true;
+	    return true;
 	}
 	return false;
     };
 
     $scope.saveBill = function(billData) {
-	
-	
+
 	billData.billSplits = $scope.updatedBillSPlitList;
 
 	cfpLoadingBar.start();
@@ -328,7 +328,6 @@ groupControllers.controller('GroupAddBillController', function($scope, $statePar
 groupControllers.controller('GroupEditBillController', function($scope, $state, $stateParams, cfpLoadingBar, flash, BillingServices) {
 
     $scope.updatedBillSPlitList = [];
-    
 
     if (!($stateParams.billId === null || $stateParams.billId === "" || $stateParams.billId === undefined)) {
 	var bill = BillingServices.showBillResource($stateParams.billId);
@@ -339,37 +338,45 @@ groupControllers.controller('GroupEditBillController', function($scope, $state, 
 	    $scope.bill.date = billingDate;
 
 	    $scope.updatedBillSPlitList = $scope.bill.billSplits;
-	    
-	    if (!( $scope.bill.groupId === null || $scope.bill.groupId === "" || $scope.bill.groupId === undefined)) {
-		
+
+	    if (!($scope.bill.groupId === null || $scope.bill.groupId === "" || $scope.bill.groupId === undefined)) {
+
 		var addBill = BillingServices.addGroupBillPage($scope.bill.groupId);
 		addBill.then(function(response) {
 		    $scope.addBillData = response;
 
 		    $scope.addBillSplits = $scope.addBillData.billSplits;
-		    
-		    }, function(response) {
-			$scope.errorresource = response.data;
-			flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
+
+		}, function(response) {
+		    $scope.errorresource = response.data;
+		    flash.pop({
+			title : '',
+			body : $scope.errorresource.message,
+			type : 'alert-danger'
 		    });
-		
+		});
+
 		$scope.selectGroup($scope.bill.groupId);
-	    }else{
-		
+	    } else {
+
 		var addBill = BillingServices.addBillPage();
 		addBill.then(function(response) {
 		    $scope.addBillData = response;
 
 		    $scope.addBillSplits = $scope.addBillData.billSplits;
-		    
-		    }, function(response) {
-			$scope.errorresource = response.data;
-			flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
+
+		}, function(response) {
+		    $scope.errorresource = response.data;
+		    flash.pop({
+			title : '',
+			body : $scope.errorresource.message,
+			type : 'alert-danger'
 		    });
-		
+		});
+
 		$scope.selectGroup(1);
 	    }
-	    
+
 	    angular.forEach($scope.updatedBillSPlitList, function(AddBillsplit) {
 		console.log("Add Bill:" + AddBillsplit);
 		angular.forEach($scope.addBillSplits, function(split) {
@@ -392,12 +399,7 @@ groupControllers.controller('GroupEditBillController', function($scope, $state, 
 	    cfpLoadingBar.complete();
 	});
     }
-    $scope.open = function($event) {
-	$event.preventDefault();
-	$event.stopPropagation();
-
-	$scope.opened = true;
-    };
+    
     $scope.billAmountChng = function() {
 	updateSplitAmount();
     };
@@ -499,7 +501,7 @@ groupControllers.controller('GroupEditBillController', function($scope, $state, 
 	var checkbox = $event.target;
 	var action = (checkbox.checked ? 'add' : 'remove');
 	updateSelected(action, billsplit);
-	
+
     };
 
     $scope.isSelected = function(billsplit) {
@@ -511,12 +513,12 @@ groupControllers.controller('GroupEditBillController', function($scope, $state, 
 	if ($scope.updatedBillSPlitList.length === 0) {
 	    return true;
 	} else if ($scope.updatedBillSPlitList.length === 1) {
-	    var selStatus = false; 
+	    var selStatus = false;
 	    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
 		if (billsplit.userId === $scope.bill.userPaid) {
-		    
+
 		    selStatus = true;
-		} 
+		}
 		console.log(billsplit.userId);
 	    });
 	    return selStatus;
@@ -524,24 +526,23 @@ groupControllers.controller('GroupEditBillController', function($scope, $state, 
 	    return false;
 	}
     };
-    
-    $scope.isOneSelectedFn = function(){
-	
-	if(isOneSelected()){
-	    
-	flash.pop({
+
+    $scope.isOneSelectedFn = function() {
+
+	if (isOneSelected()) {
+
+	    flash.pop({
 		title : '',
 		body : "Please include one more person other than the user paid.",
 		type : 'alert-warning'
 	    });
-	return true;
+	    return true;
 	}
 	return false;
     };
 
     $scope.saveBill = function(billData) {
 
-	
 	billData.billSplits = $scope.updatedBillSPlitList;
 
 	cfpLoadingBar.start();

@@ -7,96 +7,133 @@
             <div class="form-group">
                 <div class="form-group col-lg-6">
                     <label class="control-label">Bill Date</label>
-                        <input type="date" class="form-control input-sm" name="uBilldate" placeholder="Bill Date" ng-model="bill.date" ng-required="true" />
+                    <input type="text" datepickerse ng-model="bill.date" class="form-control input-sm"
+                           placeholder="Bill Date" name="uBilldate"/>
+
                     <div ng-show="(form.uBilldate.$dirty || rc.form.attempted) && form.uBilldate.$invalid" class="input-help">
-					<ul><li ng-show="form.uBilldate.$error.required">Bill date is required.</li> 
-					<li ng-show="form.uBilldate.$error.date">This is not a valid date.</li></ul>
-				</div>
+                        <ul>
+                            <li ng-show="form.uBilldate.$error.required">Bill date is required.</li>
+                            <li ng-show="form.uBilldate.$error.date">This is not a valid date.</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="form-group col-lg-6">
-                    <label class="control-label">Description</label>
-                    <input type="text" ng-model="bill.description" class="form-control input-sm" placeholder="Description" name="uDescription" ng-pattern="avoidSpecialChar">
+                    <label class="control-label">Description</label> <input type="text" ng-model="bill.description" class="form-control input-sm"
+                                                                            placeholder="Description" name="uDescription"
+                                                                            ng-pattern="avoidSpecialChar">
+
                     <div ng-show="(form.uDescription.$dirty || rc.form.attempted) && form.uDescription.$invalid" class="input-help">
-					<ul><li ng-show="form.uDescription.$error.pattern">This is not a valid description. Please remove any special characters.</li></ul>
-				</div>
+                        <ul>
+                            <li ng-show="form.uDescription.$error.pattern">This is not a valid description. Please remove any special characters.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="form-group col-lg-6">
-                    <label class="control-label">Category</label>
-                    <input type="text" ng-model="bill.category" class="form-control input-sm" placeholder="Category" name="uCategory" ng-pattern="avoidSpecialChar">
-                    <div ng-show="(form.uCategory.$dirty || rc.form.attempted) && form.uCategory.$invalid" class="input-help" >
-					<ul><li ng-show="form.uCategory.$error.pattern">This is not a valid category. Please remove any special characters.</li></ul>
-				</div>
+                    <label class="control-label">Category</label> <input type="text" ng-model="bill.category" class="form-control input-sm"
+                                                                         placeholder="Category"
+                                                                         name="uCategory" ng-pattern="avoidSpecialChar">
+
+                    <div ng-show="(form.uCategory.$dirty || rc.form.attempted) && form.uCategory.$invalid" class="input-help">
+                        <ul>
+                            <li ng-show="form.uCategory.$error.pattern">This is not a valid category. Please remove any special characters.</li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="form-group col-lg-6">
                     <label class="control-label">Amount</label>
+
                     <div class="input-group">
-    					<span class="input-group-addon input-sm"><select name="sCurrency" ng-model="bill.currency">
-      						<option value="$">USD</option>
-      						<option value="₹">RS</option>
-    					</select></span>
-    					<input type="number" ng-model="bill.amount" class="form-control input-sm" name="uBillamt" placeholder="Bill Amount" ng-change="billAmountChng()" required>
-  					</div>
-                	<div ng-show="(form.uBillamt.$dirty || rc.form.attempted) && form.uBillamt.$invalid" class="input-help">
-					<ul><li ng-show="form.uBillamt.$error.required">Bill amount is required.</li> 
-					<li ng-show="form.uBillamt.$error.number">This is not a valid number.</li></ul>
-				</div>
+						<span class="input-group-addon input-sm"><select name="sCurrency" ng-model="bill.currency">
+                            <option value="$">USD</option>
+                            <option value="₹">RS</option>
+                        </select></span> <input type="number" ng-model="bill.amount" class="form-control input-sm" name="uBillamt"
+                                                placeholder="Bill Amount"
+                                                ng-change="billAmountChng()" required>
+                    </div>
+                    <div ng-show="(form.uBillamt.$dirty || rc.form.attempted) && form.uBillamt.$invalid" class="input-help">
+                        <ul>
+                            <li ng-show="form.uBillamt.$error.required">Bill amount is required.</li>
+                            <li ng-show="form.uBillamt.$error.number">This is not a valid number.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="form-group col-lg-12">
                 <label class="control-label">Who Paid?</label>
+
                 <div class="form-inline">
-                    <label class="col-lg-4 radio-inline" ng-repeat="billsplit in addBillSplits">
-                        <input type="radio" ng-model="bill.userPaid" value="{{billsplit.userId}} " ng-change="billAmountChng()" required>
+                    <label class="col-lg-4 radio-inline" ng-repeat="billsplit in addBillSplits"> <input type="radio" ng-model="bill.userPaid"
+                                                                                                        value="{{billsplit.userId}} "
+                                                                                                        ng-change="billAmountChng()" required>
                         {{billsplit.name}}
                     </label>
                 </div>
             </div>
             <div class="form-group col-lg-12">
                 <label class="control-label">Split</label>
-                                <div class="form-inline">
-                    <label class="col-lg-4 radio-inline">
-                        <input type="radio" ng-model="bill.splitType" value="equally" ng-change="billAmountChng()" required>
+
+                <div class="form-inline">
+                    <label class="col-lg-4 radio-inline"> <input type="radio" ng-model="bill.splitType" value="equally" ng-change="billAmountChng()"
+                                                                 required>
                         By Equally
-                    </label>
-                    <label class="col-lg-4 radio-inline">
-                        <input type="radio" ng-model="bill.splitType" value="exact" ng-change="billAmountChng()" required>
-                        By Exact
-                    </label>
-                    <label class="col-lg-4 radio-inline">
-                        <input type="radio" ng-model="bill.splitType" value="share" ng-change="billAmountChng()" required>
-                        By Share <span class="text-muted small">(e.g = 1, 2, 3 ...)</span>
-                    </label>
+                    </label> <label class="col-lg-4 radio-inline"> <input type="radio" ng-model="bill.splitType" value="exact"
+                                                                          ng-change="billAmountChng()" required>
+                    By Exact
+                </label> <label class="col-lg-4 radio-inline"> <input type="radio" ng-model="bill.splitType" value="share"
+                                                                      ng-change="billAmountChng()" required>
+                    By Share <span class="text-muted small">(e.g = 1, 2, 3 ...)</span>
+                </label>
                 </div>
 
             </div>
             <div class="form-group col-lg-12">
                 <label class="control-label">To Whom?</label>
+
                 <div class="form-inline">
-                    <label class="col-lg-6 checkbox-inline" ng-repeat="billsplit in addBillSplits">
-                        <input type="checkbox" name="selected" 
-                               ng-checked="isSelected(billsplit)"
-                               ng-click="updateSelection($event, billsplit)">
-                        {{billsplit.name}} <span class="text-danger small" ng-if="billsplit.amountStatus === 'D'">{{billsplit.amount| number:2}}</span><span class="text-success small" ng-if="billsplit.amountStatus === 'C'">{{billsplit.amount| number:2}}</span>
-                        <input type="number" ng-model="billsplit.splitText" class="input-xsm" ng-if="bill.splitType !== 'equally'" ng-change="billAmountChng()">
-                        <input type="hidden" ng-model="billsplit.amountStatus">
+                    <label class="col-lg-6 checkbox-inline" ng-repeat="billsplit in addBillSplits"> <input type="checkbox" name="selected"
+                                                                                                           ng-checked="isSelected(billsplit)"
+                                                                                                           ng-click="updateSelection($event, billsplit)">
+                        {{billsplit.name}} <span class="text-danger small"
+                                                 ng-if="billsplit.amountStatus === 'D'">{{billsplit.amount| number:2}}</span><span
+                                class="text-success small"
+                                ng-if="billsplit.amountStatus === 'C'">{{billsplit.amount| number:2}}</span> <input type="number"
+                                                                                                                    ng-model="billsplit.splitText"
+                                                                                                                    class="input-xsm"
+                                                                                                                    ng-if="bill.splitType !== 'equally'"
+                                                                                                                    ng-change="billAmountChng()">
+                        <input type="hidden"
+                               ng-model="billsplit.amountStatus">
                     </label>
                 </div>
             </div>
         </form>
     </div>
-    <div class="panel-footer text-right"><button class="btn btn-success btn-sm" ng-disabled="form.$invalid" ng-click="!isOneSelectedFn() && saveBill(bill)">Save</button><span>   </span><a ui-sref="billhome.list" ><button class="btn btn-warning btn-sm right">Cancel</button></a></div>
+    <div class="panel-footer text-right">
+		<span style="float: left;"><input type="checkbox" ng-model="bill.isEmailRequired" value="{{bill.isEmailRequired}} " required> do you
+			prefer to send email for bill?</span>
+        <button class="btn btn-success btn-sm" ng-disabled="form.$invalid" ng-click="!isOneSelectedFn() && saveBill(bill)">Save</button>
+        <span> </span><a ui-sref="billhome.list">
+        <button class="btn btn-warning btn-sm right">Cancel</button>
+    </a>
+    </div>
 </div>
 
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    (function(i, s, o, g, r, a, m) {
+	i['GoogleAnalyticsObject'] = r;
+	i[r] = i[r] || function() {
+	    (i[r].q = i[r].q || []).push(arguments)
+	}, i[r].l = 1 * new Date();
+	a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+	a.async = 1;
+	a.src = g;
+	m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-  ga('create', 'UA-55417878-1', 'auto');
-  ga('send', 'pageview');
+    ga('create', 'UA-55417878-1', 'auto');
+    ga('send', 'pageview');
 
 </script>

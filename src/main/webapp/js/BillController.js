@@ -1,15 +1,16 @@
 'use strict'
 var billControllers = angular.module('BillControllers', []);
 
-billControllers.controller('BillListController', function($scope, homeBillData, getGroupList, $state, FriendServices, $modal, flash, SessionService, cfpLoadingBar, BillingServices) {
-    
+billControllers.controller('BillListController', function($scope, homeBillData, getGroupList, $state, FriendServices, $modal, flash, SessionService,
+	cfpLoadingBar, BillingServices) {
+
     $scope.oneAtATime = true;
-    
+
     $scope.accordionStatus = {
-	    isFirstOpen: true,
-	    isFirstDisabled: false
-	  };
-    
+	isFirstOpen : true,
+	isFirstDisabled : false
+    };
+
     $scope.usersBillData = homeBillData;
 
     $scope.userBill = function(userId) {
@@ -18,9 +19,9 @@ billControllers.controller('BillListController', function($scope, homeBillData, 
 	    userId : userId
 	});
     };
-        
+
     $scope.groupList = getGroupList;
-    
+
     $scope.getGroupBills = function(groupId) {
 	$scope.selectGroup(groupId);
 	$state.go('billhome.groupbills', {
@@ -34,7 +35,7 @@ billControllers.controller('BillListController', function($scope, homeBillData, 
 	    groupId : groupId
 	});
     };
-    
+
     $scope.AddFriend = function() {
 	$scope.friend = {};
 	var modalInstance = $modal.open({
@@ -54,15 +55,23 @@ billControllers.controller('BillListController', function($scope, homeBillData, 
 
 	    var friendAdd = FriendServices.addFriends(friend, user);
 	    friendAdd.then(function(response) {
-		flash.pop({title: '', body: "Your friend added successfully and invite has been sent to the address. ", type: 'alert-success'});
-		
+		flash.pop({
+		    title : '',
+		    body : "Your friend added successfully and invite has been sent to the address. ",
+		    type : 'alert-success'
+		});
+
 		$state.go('billhome.list', {}, {
 		    reload : true
 		});
 		cfpLoadingBar.complete();
 	    }, function(response) {
 		$scope.errorresource = response.data;
-		flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
+		flash.pop({
+		    title : '',
+		    body : $scope.errorresource.message,
+		    type : 'alert-danger'
+		});
 		cfpLoadingBar.complete();
 	    });
 	}, function() {
@@ -88,12 +97,20 @@ billControllers.controller('BillListController', function($scope, homeBillData, 
 
 	    var friendAdd = FriendServices.editFriends(friend);
 	    friendAdd.then(function(response) {
-		flash.pop({title: '', body: "Your friend details hsa been Updated Successfully.", type: 'alert-success'});
-		
+		flash.pop({
+		    title : '',
+		    body : "Your friend details hsa been Updated Successfully.",
+		    type : 'alert-success'
+		});
+
 		cfpLoadingBar.complete();
 	    }, function(response) {
 		$scope.errorresource = response.data;
-		flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
+		flash.pop({
+		    title : '',
+		    body : $scope.errorresource.message,
+		    type : 'alert-danger'
+		});
 		cfpLoadingBar.complete();
 	    });
 	}, function() {
@@ -106,37 +123,60 @@ billControllers.controller('BillListController', function($scope, homeBillData, 
 
 	var removeFriend = FriendServices.deleteFriends(friendId);
 	removeFriend.then(function(response) {
-	    flash.pop({title: '', body: "Friend has been removed from your list Successfully", type: 'alert-success'});
+	    flash.pop({
+		title : '',
+		body : "Friend has been removed from your list Successfully",
+		type : 'alert-success'
+	    });
 	    $state.go('billhome.list', {}, {
 		reload : true
 	    });
 	    cfpLoadingBar.complete();
 	}, function(response) {
 	    $scope.errorresource = response.data;
-	    flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
+	    flash.pop({
+		title : '',
+		body : $scope.errorresource.message,
+		type : 'alert-danger'
+	    });
 	    cfpLoadingBar.complete();
 	});
     };
-    
-    
+
     $scope.reminderFn = function(userId, loggedUser, amtCurrs) {
-	
-	$scope.userDto = {'userId': userId, 'loggedUser': loggedUser, 'amtCurrs': amtCurrs };
+
+	$scope.userDto = {
+	    'userId' : userId,
+	    'loggedUser' : loggedUser,
+	    'amtCurrs' : amtCurrs
+	};
 	console.log($scope.userDto);
 	var reminder = BillingServices.reminder($scope.userDto);
 	reminder.then(function(response) {
-	    flash.pop({title: '', body: "Reminder sent successfully.", type: 'alert-success'});
-	   
+	    flash.pop({
+		title : '',
+		body : "Reminder sent successfully.",
+		type : 'alert-success'
+	    });
+
 	}, function(response) {
 	    $scope.errorresource = response.data;
-	    flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
+	    flash.pop({
+		title : '',
+		body : $scope.errorresource.message,
+		type : 'alert-danger'
+	    });
 	});
     };
-    
+
     $scope.settleUpFn = function(userId, loggedUser, amtCurrs) {
-	
-	$scope.settleDto = {'userId': userId, 'loggedUser': loggedUser, 'amtCurrs': amtCurrs };
-	
+
+	$scope.settleDto = {
+	    'userId' : userId,
+	    'loggedUser' : loggedUser,
+	    'amtCurrs' : amtCurrs
+	};
+
 	var modalInstance = $modal.open({
 	    templateUrl : 'settlemodal.html',
 	    controller : SettleInstanceCtrl,
@@ -150,31 +190,43 @@ billControllers.controller('BillListController', function($scope, homeBillData, 
 	modalInstance.result.then(function(settle) {
 	    cfpLoadingBar.start();
 
-		$scope.userDto = {'userId': settle.userId, 'loggedUser': settle.loggedUser,  'amtCurrs': settle.amtCurrUpdated};
-		console.log($scope.userDto);
-		
-		var settle = BillingServices.settleService($scope.userDto);
-		settle.then(function(response) {
-		    flash.pop({title: '', body: "Amount paid updated successfully.", type: 'alert-success'});
-		    $state.go('billhome.list', {}, {
-			reload : true
-		    });
-		    cfpLoadingBar.complete();
-		   
-		}, function(response) {
-		    $scope.errorresource = response.data;
-		    flash.pop({title: '', body: $scope.errorresource.message, type: 'alert-danger'});
-		    cfpLoadingBar.complete();
+	    $scope.userDto = {
+		'userId' : settle.userId,
+		'loggedUser' : settle.loggedUser,
+		'amtCurrs' : settle.amtCurrUpdated
+	    };
+	    console.log($scope.userDto);
+
+	    var settle = BillingServices.settleService($scope.userDto);
+	    settle.then(function(response) {
+		flash.pop({
+		    title : '',
+		    body : "Amount paid updated successfully.",
+		    type : 'alert-success'
 		});
+		$state.go('billhome.list', {}, {
+		    reload : true
+		});
+		cfpLoadingBar.complete();
+
+	    }, function(response) {
+		$scope.errorresource = response.data;
+		flash.pop({
+		    title : '',
+		    body : $scope.errorresource.message,
+		    type : 'alert-danger'
+		});
+		cfpLoadingBar.complete();
+	    });
 	}, function() {
 
 	});
     };
-    
+
 });
 
 var ModalInstanceCtrl = function($scope, $modalInstance, friendData) {
-    
+
     $scope.avoidSpecialChar = /^[a-zA-Z0-9\s]+$/;
 
     $scope.friendData = friendData;
@@ -189,10 +241,9 @@ var ModalInstanceCtrl = function($scope, $modalInstance, friendData) {
 };
 
 var SettleInstanceCtrl = function($scope, $modalInstance, settleData) {
-    
 
     $scope.settleAmtCurr = [];
-	
+
     $scope.updateSettleSelection = function($event, amtCurr) {
 	var checkbox = $event.target;
 	var action = (checkbox.checked ? 'add' : 'remove');
@@ -207,7 +258,7 @@ var SettleInstanceCtrl = function($scope, $modalInstance, settleData) {
 	    $scope.settleAmtCurr.splice($scope.settleAmtCurr.indexOf(amtCurr), 1);
 	}
     };
-    
+
     $scope.settleData = settleData;
 
     $scope.ok = function() {
@@ -229,7 +280,7 @@ billControllers.controller('BillUserController', function($scope, $state, $state
 	});
 
     };
-    
+
     $scope.addUserBill = function(userId) {
 	$scope.selectUser(userId);
 	$state.go('billhome.add', {
@@ -271,9 +322,9 @@ billControllers.controller('BillUserController', function($scope, $state, $state
 billControllers.controller('BillRecentController', function($scope, recentBills, $state, $stateParams) {
 
     $scope.userSelectedName = "All";
-    
+
     $scope.selectGroup(1);
-    
+
     $scope.bills = recentBills;
 
     $scope.editBill = function(billId) {
@@ -284,14 +335,8 @@ billControllers.controller('BillRecentController', function($scope, recentBills,
 
 });
 
-billControllers.controller('BillAddController', function($scope, $state, cfpLoadingBar, flash, BillingServices, addBill, SessionService, $filter, $stateParams) {
-
-    $scope.open = function($event) {
-	$event.preventDefault();
-	$event.stopPropagation();
-
-	$scope.opened = true;
-    };
+billControllers.controller('BillAddController', function($scope, $state, cfpLoadingBar, flash, BillingServices, addBill, SessionService, $filter,
+	$stateParams) {
 
     $scope.addBillData = addBill;
 
@@ -300,21 +345,21 @@ billControllers.controller('BillAddController', function($scope, $state, cfpLoad
     $scope.addBillSplits = addBill.billSplits;
 
     $scope.updatedBillSPlitList = [];
-    
+
     angular.forEach($scope.addBillSplits, function(billsplitInput) {
-	    if (billsplitInput.userId === SessionService.get('userId')) {
-		
-		$scope.updatedBillSPlitList.push(billsplitInput);
-	    }
-	    if (billsplitInput.userId === $stateParams.userId) {
-		$scope.selectUser($stateParams.userId);
-		$scope.updatedBillSPlitList.push(billsplitInput);
-	    }
-	    
+	if (billsplitInput.userId === SessionService.get('userId')) {
+
+	    $scope.updatedBillSPlitList.push(billsplitInput);
+	}
+	if (billsplitInput.userId === $stateParams.userId) {
+	    $scope.selectUser($stateParams.userId);
+	    $scope.updatedBillSPlitList.push(billsplitInput);
+	}
+
     });
     console.log($scope.updatedBillSPlitList.length);
     $scope.bill.splitType = 'equally';
-    
+
     $scope.bill.userPaid = SessionService.get('userId');
 
     $scope.billAmountChng = function() {
@@ -432,12 +477,12 @@ billControllers.controller('BillAddController', function($scope, $state, cfpLoad
 	if ($scope.updatedBillSPlitList.length === 0) {
 	    return true;
 	} else if ($scope.updatedBillSPlitList.length === 1) {
-	    var selStatus = false; 
+	    var selStatus = false;
 	    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
 		if (billsplit.userId === $scope.bill.userPaid) {
-		    
+
 		    selStatus = true;
-		} 
+		}
 		console.log(billsplit.userId);
 	    });
 	    return selStatus;
@@ -445,17 +490,17 @@ billControllers.controller('BillAddController', function($scope, $state, cfpLoad
 	    return false;
 	}
     };
-    
-    $scope.isOneSelectedFn = function(){
-	
-	if(isOneSelected()){
-	    
-	flash.pop({
+
+    $scope.isOneSelectedFn = function() {
+
+	if (isOneSelected()) {
+
+	    flash.pop({
 		title : '',
 		body : "Please include one more person other than the user paid.",
 		type : 'alert-warning'
 	    });
-	return true;
+	    return true;
 	}
 	return false;
     };
@@ -492,14 +537,7 @@ billControllers.controller('BillAddController', function($scope, $state, cfpLoad
 billControllers.controller('BillEditController', function($scope, $state, $filter, $stateParams, cfpLoadingBar, flash, BillingServices, addBill,
 	SessionService) {
 
-    $scope.open = function($event) {
-	$event.preventDefault();
-	$event.stopPropagation();
-
-	$scope.opened = true;
-    };
-
-    $scope.addBillData = addBill;
+   $scope.addBillData = addBill;
 
     $scope.addBillSplits = addBill.billSplits;
 
@@ -641,7 +679,7 @@ billControllers.controller('BillEditController', function($scope, $state, $filte
 	var checkbox = $event.target;
 	var action = (checkbox.checked ? 'add' : 'remove');
 	updateSelected(action, billsplit);
-	
+
     };
 
     $scope.isSelected = function(billsplit) {
@@ -655,12 +693,12 @@ billControllers.controller('BillEditController', function($scope, $state, $filte
 	if ($scope.updatedBillSPlitList.length === 0) {
 	    return true;
 	} else if ($scope.updatedBillSPlitList.length === 1) {
-	    var selStatus = false; 
+	    var selStatus = false;
 	    angular.forEach($scope.updatedBillSPlitList, function(billsplit) {
 		if (billsplit.userId === $scope.bill.userPaid) {
-		    
+
 		    selStatus = true;
-		} 
+		}
 		console.log(billsplit.userId);
 	    });
 	    return selStatus;
@@ -668,21 +706,21 @@ billControllers.controller('BillEditController', function($scope, $state, $filte
 	    return false;
 	}
     };
-    
-    $scope.isOneSelectedFn = function(){
-	
-	if(isOneSelected()){
-	    
-	flash.pop({
+
+    $scope.isOneSelectedFn = function() {
+
+	if (isOneSelected()) {
+
+	    flash.pop({
 		title : '',
 		body : "Please include one more person other than the user paid.",
 		type : 'alert-warning'
 	    });
-	return true;
+	    return true;
 	}
 	return false;
     };
-    
+
     $scope.saveBill = function(billData) {
 
 	billData.billSplits = $scope.updatedBillSPlitList;
