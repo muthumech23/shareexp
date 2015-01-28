@@ -11,30 +11,30 @@
                         <ul class="nav nav-pills nav-stacked">
                             <li ng-class="{'active':isUserSelected(1) }" ng-repeat="userInfo in usersBillData" ng-if="userInfo.userId === loggedUser">
                                 <a
-                                        class="list-group-item" ui-sref="billhome.list"> <Strong>{{userInfo.name}}</strong>
-
-                                    <span class="label label-success pull-right" ng-repeat='mapEntry in userInfo.amtCurrs'
+                                        class="list-group-item text-center" ui-sref="billhome.list"> <Strong>{{userInfo.name}}</strong>
+                                    <span class="pull-left label label-success">Owes You</span>
+                                    <span class="label label-danger pull-right">You Owe</span>
+                                        <br/>
+                                    <span class="label label-success pull-left" ng-repeat='mapEntry in userInfo.amtCurrs'
                                           ng-if="mapEntry.amountStatus === 'D'"><strong>{{mapEntry.currency}}{{mapEntry.amount|number:2}}</strong></span>
                                     <span class="label label-danger pull-right" ng-repeat='mapEntry in userInfo.amtCurrs'
                                           ng-if="mapEntry.amountStatus === 'C'"><strong>{{mapEntry.currency}}{{mapEntry.amount|number:2}}</strong></span>
-                                    <span ng-if='userInfo.amtCurrs.length === 0' class="text-success pull-right"><strong>0.00</strong></span>
-
-                                    <br/> <span class="text-muted small"><strong>All Bills</strong></span> <span class="text-muted pull-right small"> Total balance </span>
-                                </a></li>
+                                    <span ng-if='userInfo.amtCurrs.length === 0' class="pull-left label label-success"><strong>0.00</strong></span>
+                                    <br/></a></li>
                         </ul>
                         <ul class="nav nav-pills nav-stacked">
                             <li ng-repeat="userInfo in usersBillData" ng-class="{'active': isUserSelected(userInfo.userId) }">
-                                <a class="list-group-item"
-                                   ng-if="userInfo.userId !== loggedUser"> <strong>{{userInfo.name}} </strong>
+                                <a class="list-group-item text-center"
+                                   ng-if="userInfo.userId !== loggedUser" ng-click="userBill(userInfo.userId);"> <strong>{{userInfo.name}} </strong><br/>
 
-                                    <span class="pull-right label label-success" ng-repeat='mapEntry1 in userInfo.amtCurrs'
+                                    <span class="pull-left label label-success" ng-repeat='mapEntry1 in userInfo.amtCurrs'
                                           ng-if="mapEntry1.amountStatus === 'D'"><strong>{{mapEntry1.currency}}{{mapEntry1.amount|number:2}}</strong></span>
                                     <span class="pull-right label label-danger" ng-repeat='mapEntry1 in userInfo.amtCurrs'
                                           ng-if="mapEntry1.amountStatus === 'C'"><strong>{{mapEntry1.currency}}{{mapEntry1.amount|number:2}}</strong></span>
-                                    <span class="pull-right label label-success" ng-if='userInfo.amtCurrs.length === 0'><strong>0.00</strong></span>
+                                    <span class="pull-left label label-success" ng-if='userInfo.amtCurrs.length === 0'><strong>0.00</strong></span>
 
                                     <br/>
-						<span class="text-muted small" ng-if="userInfo.amtCurrs.length > 0">
+						<span class="text-muted small text-center" ng-if="userInfo.amtCurrs.length > 0">
 							<button class="text-primary small" tooltip-placement="left" tooltip-html-unsafe="Reminder"
                                     ng-click="reminderFn(userInfo.userId, loggedUser, userInfo.amtCurrs)">
                                 <i class="fa fa-bell"></i>
@@ -42,7 +42,7 @@
 							<button class="text-primary small" tooltip-placement="right" tooltip-html-unsafe="Settle"
                                     ng-click="settleUpFn(userInfo.userId, loggedUser, userInfo.amtCurrs)">Settle up
                             </button>
-						</span>
+						</span><br/>
                                 </a></li>
                         </ul>
                     </tab>
