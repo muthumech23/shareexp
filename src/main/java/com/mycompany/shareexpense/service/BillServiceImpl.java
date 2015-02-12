@@ -385,11 +385,14 @@ public class BillServiceImpl implements BillService {
 		billInput.setBy(loggedUser.getId());
 		billInput.setCategory("PAYBACK");
 		billInput.setDate(CommonUtil.getCurrentDateTime());
-		billInput.setEmailRequired(true);
+		billInput.setEmailRequired(false);
 		
 		billInput.setDescription("Paying back pending amount");
 
 		billInput.setSplitType("equally");
+
+        String userSettled = "";
+        String whomPaid = "";
 		
 		for(AmtCurr amtCurr: userDto.getAmtCurrs()){
 			
@@ -397,14 +400,14 @@ public class BillServiceImpl implements BillService {
 						
 			billInput.setCurrency(amtCurr.getCurrency());
 
-			billInput.setUserPaid(user.getId());
-				billInput.setUserPaid(loggedUser.getId());
-
 			List<BillSplit> billSplits = new ArrayList<>();
 			if (amtCurr.getAmountStatus().equalsIgnoreCase(Constants.CREDIT)) {
 				
 				billInput.setUserPaid(loggedUser.getId());
-				
+                userSettled = loggedUser.getName();
+
+                whomPaid = user.getEmail();
+
 				BillSplit billSplit = new BillSplit();
 				billSplit.setAmount(amtCurr.getAmount());
 				billSplit.setEmail(user.getEmail());
@@ -427,7 +430,9 @@ public class BillServiceImpl implements BillService {
 			if (amtCurr.getAmountStatus().equalsIgnoreCase(Constants.DEBIT)) {
 
 				billInput.setUserPaid(user.getId());
-				
+                userSettled = user.getName();
+                whomPaid = loggedUser.getEmail();
+
 				BillSplit billSplit = new BillSplit();
 				billSplit.setAmount(amtCurr.getAmount());
 				billSplit.setEmail(user.getEmail());
@@ -435,7 +440,6 @@ public class BillServiceImpl implements BillService {
 				billSplit.setUserId(user.getId());
 				billSplit.setAmountStatus(Constants.CREDIT);
 				
-
 				BillSplit billSplit1 = new BillSplit();
 				billSplit1.setAmount(amtCurr.getAmount());
 				billSplit1.setEmail(loggedUser.getEmail());
@@ -447,8 +451,30 @@ public class BillServiceImpl implements BillService {
 				billSplits.add(billSplit1);
 			}
 			billInput.setBillSplits(billSplits);
-			saveBill(billInput);
-			
+            Bill billResponse = saveBill(billInput);
+
+            if (billResponse != null) {
+
+                String subject = null;
+                String emailbody = null;
+
+                try {
+
+                    subject = env.getProperty("mail.template.bill.settle.owner.subject");
+
+                    emailbody = env.getProperty("mail.template.bill.settle.owner.body");
+                    emailbody = emailbody.replaceAll("<<billamount>>", billInput.getAmount() + "");
+                    emailbody = emailbody.replaceAll("<<billdesc>>", billInput.getDescription() + "");
+                    emailbody = emailbody.replaceAll("<<username>>", userSettled + "");
+                    emailbody = emailbody.replaceAll("<<loggeduser>>", loggedUser.getName() + "");
+                    emailbody = emailbody.replaceAll("<<siteurl>>", env.getProperty("application.baseurl"));
+
+                    CommonUtil.sendEmail(subject, whomPaid, emailbody, env);
+
+                } catch (Exception exception) {
+                    log.error(ErrorConstants.ERR_EMAIL_SENT_FAILED, exception);
+                }
+            }
 		}
 	}
 
