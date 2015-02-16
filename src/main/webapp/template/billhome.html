@@ -19,7 +19,11 @@
                                           ng-if="mapEntry.amountStatus === 'D'"><strong>{{mapEntry.currency}}{{mapEntry.amount|number:2}}</strong></span>
                                     <span class="label label-danger pull-right" ng-repeat='mapEntry in userInfo.amtCurrs'
                                           ng-if="mapEntry.amountStatus === 'C'"><strong>{{mapEntry.currency}}{{mapEntry.amount|number:2}}</strong></span>
-                                    <span ng-if='userInfo.amtCurrs.length === 0' class="pull-left label label-success"><strong>0.00</strong></span>
+                                    <span class="label label-success pull-left" ng-repeat='mapEntry in userInfo.amtCurrs'
+                                          ng-if="mapEntry.amountStatus != 'D'"><strong>0.0</strong></span>
+                                    <span class="label label-danger pull-right" ng-repeat='mapEntry in userInfo.amtCurrs'
+                                          ng-if="mapEntry.amountStatus != 'C'"><strong>0.0</strong></span>
+
                                     <br/></a></li>
                         </ul>
                         <ul class="nav nav-pills nav-stacked">
@@ -31,7 +35,10 @@
                                           ng-if="mapEntry1.amountStatus === 'D'"><strong>{{mapEntry1.currency}}{{mapEntry1.amount|number:2}}</strong></span>
                                     <span class="pull-right label label-danger" ng-repeat='mapEntry1 in userInfo.amtCurrs'
                                           ng-if="mapEntry1.amountStatus === 'C'"><strong>{{mapEntry1.currency}}{{mapEntry1.amount|number:2}}</strong></span>
-                                    <span class="pull-left label label-success" ng-if='userInfo.amtCurrs.length === 0'><strong>0.00</strong></span>
+                                    <span class="pull-left label label-success" ng-repeat='mapEntry1 in userInfo.amtCurrs'
+                                          ng-if="mapEntry1.amountStatus != 'D'"><strong>0.0</strong></span>
+                                    <span class="pull-right label label-danger" ng-repeat='mapEntry1 in userInfo.amtCurrs'
+                                          ng-if="mapEntry1.amountStatus != 'C'"><strong>0.0</strong></span>
 
                                     <br/>
 						<span class="text-muted small text-center" ng-if="userInfo.amtCurrs.length > 0">

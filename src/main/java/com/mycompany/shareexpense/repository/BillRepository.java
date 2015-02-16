@@ -15,7 +15,11 @@ public interface BillRepository extends CrudRepository<Bill, String> {
 
     public List<Bill> findByUserPaidOrBillSplitsUserId (String Id,
                                                         String userId);
-    
+
+    public List<Bill> findByUserPaid (String Id);
+
+    public List<Bill> findByBillSplitsUserId (String userId);
+
     public List<Bill> findByUserPaidAndBillSplitsUserId (String userId,
                     String loggedUser);
 

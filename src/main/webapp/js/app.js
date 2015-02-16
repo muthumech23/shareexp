@@ -108,7 +108,14 @@ shareExpApp.config(function($stateProvider, $urlRouterProvider) {
 	url : '/account',
 	controller : 'UpdateUserController',
 	templateUrl : 'template/account.html'
-    });
+    }).state('trackexp', {
+      	url : '/trackexp',
+      	templateUrl : 'template/trackexpense.html'
+          }).state('logout', {
+            	url : '/logout',
+            	controller : 'HomeController',
+            	templateUrl : 'template/home.html',
+            	});
 }, function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = true;
 });
@@ -120,7 +127,7 @@ shareExpApp
 			$location, $route, $window) {
 
 		    $scope.avoidSpecialChar = /^[a-zA-Z0-9\s]+$/;
-		    
+
 		    $scope.flash = flash;
 
 		    $scope.selectTab = function(setTab) {
@@ -367,13 +374,9 @@ shareExpApp
 			    
 			    $scope.user = undefined;
 			    cfpLoadingBar.complete();
-			    flash.set({
-				title : '',
-				body : 'You are logged out successfully. Please login to continue...',
-				type : 'alert-success'
-			    });
-			    $state.go('home', {}, {
-				    reload: true
+
+			    $state.go('logout', {}, {
+				    reload: true, inherit: false, notify: true
 				});
 			}, function(response) {
 			    $scope.errorresource = response.data;
@@ -387,10 +390,10 @@ shareExpApp
 		    };
 		});
 
-shareExpApp.run(function($rootScope, $state, $location, AuthenticationService, flash, FlashService) {
+shareExpApp.run(function($rootScope, $state, $location, AuthenticationService, flash, FlashService, $window) {
 
     var routesThatRequireAuth = [ '/', '', '/home', '/privacy', '/terms', '/about', '/home/signup', '/home/forgot', '/home/chgpwd', "/home/login",
-	    '/home/activation' ];
+	    '/home/activation', '/logout' ];
     
     var routesThatNoLoginForm = [ '/home/signup', '/home/forgot', '/home/activation' ];
     
@@ -407,10 +410,9 @@ shareExpApp.run(function($rootScope, $state, $location, AuthenticationService, f
 	}
 	
 	if(!_(routesThatNoLoginForm).contains($location.path())){
-	    console.log('Inside IF'+$location.path());
-	    $rootScope.noLogin = true;    
+	    $rootScope.noLogin = true;
 	}else{
-	    console.log('Inside Else'+$location.path());
+
 	    $rootScope.noLogin = false;
 	}
 	
@@ -423,6 +425,11 @@ shareExpApp.run(function($rootScope, $state, $location, AuthenticationService, f
 	    $state.go('billhome.list');
 	}
 
+	if (("/logout") === $location.path()){
+		$state.go('home');
+	}
+
+
     });
     
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, $scope) {
@@ -434,7 +441,10 @@ shareExpApp.run(function($rootScope, $state, $location, AuthenticationService, f
 	console.log(arguments);
     });
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-
+        if(toState.name === "home" && fromState.name === 'logout'){
+			console.log("Inside main Condition ----->");
+			$window.location.reload();
+		}
     });
 
     $rootScope.$on('$viewContentLoaded', function(event) {

@@ -903,12 +903,10 @@ textarea {
     line-height: inherit;
 }
 a {
-    color: #18bc9c;
     text-decoration: none;
 }
 a:hover,
 a:focus {
-    color: #18bc9c;
     text-decoration: underline;
 }
 a:focus {
@@ -3666,6 +3664,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-tabs.nav-justified {
     width: 100%;
     border-bottom: 0;
+    margin-bottom: 15px;
 }
 .nav-tabs.nav-justified > li {
     float: none;
@@ -3704,7 +3703,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     .nav-tabs.nav-justified > .active > a,
     .nav-tabs.nav-justified > .active > a:hover,
     .nav-tabs.nav-justified > .active > a:focus {
-        border-bottom-color: #ffffff;
+        border-bottom-color: red;
+        border-bottom-width: 2px;
+        margin-bottom: 15px;
     }
 }
 .nav-pills > li {

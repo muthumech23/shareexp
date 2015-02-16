@@ -139,7 +139,15 @@ public class BillServiceImpl implements BillService {
 			users = new ArrayList<>();
 		}
 
-		List<Bill> bills = billRepository.findByUserPaidOrBillSplitsUserId(userId, userId);
+
+
+        List<Bill> myBills = billRepository.findByUserPaid(userId);
+
+        log.debug("My Bill"+myBills.size());
+
+        List<Bill> othersBill = billRepository.findByBillSplitsUserId(userId);
+
+        log.debug("Other Bill"+othersBill.size());
 
 		List<UsersBalance> usersBalances = new ArrayList<>();
 
@@ -156,55 +164,85 @@ public class BillServiceImpl implements BillService {
 		double tempValue = -1.0;
 		
 		for (User userBill : users) {
+
 			UsersBalance billSplit = new UsersBalance();
+
 			String Id = userBill.getId();
 
-			BigDecimal usdBigDecimal = BigDecimal.ZERO;
+            BigDecimal usdBigDecimal = BigDecimal.ZERO;
 			BigDecimal rupeeBigDecimal = BigDecimal.ZERO;
-			for (Bill bill : bills) {
+			for (Bill bill : myBills) {
 				
 				String currency = bill.getCurrency();
-				
-				if(Constants.CURRENCY_USD.equalsIgnoreCase(currency)){
+
+                if(Constants.CURRENCY_USD.equalsIgnoreCase(currency)){
 					for (BillSplit billsplit : bill.getBillSplits()) {
-						if (billsplit.getUserId().equalsIgnoreCase(Id)) {
-							if (userId.equalsIgnoreCase(bill.getUserPaid()) || billsplit.getUserId().equalsIgnoreCase(bill.getUserPaid())) {
+
+
+                        if (billsplit.getUserId().equalsIgnoreCase(Id)) {
+                         	if(billsplit.getAmountStatus().equalsIgnoreCase(Constants.CREDIT)){
+								usdBigDecimal = usdBigDecimal.add(billsplit.getAmount());
+                			}
 								
-								
-								if(billsplit.getAmountStatus().equalsIgnoreCase(Constants.CREDIT)){
-									usdBigDecimal = usdBigDecimal.add(billsplit.getAmount());
-								}
-								
-								if(billsplit.getAmountStatus().equalsIgnoreCase(Constants.DEBIT)){
-									usdBigDecimal = usdBigDecimal.subtract(billsplit.getAmount());
-								}
-								
-								
-							}
-						}
+							if(billsplit.getAmountStatus().equalsIgnoreCase(Constants.DEBIT)){
+								usdBigDecimal = usdBigDecimal.subtract(billsplit.getAmount());
+                			}
+                		}
 					}
 					
 				}else if(Constants.CURRENCY_RUPEE.equalsIgnoreCase(currency)){
-					
 
-					for (BillSplit billsplit : bill.getBillSplits()) {
-						if (billsplit.getUserId().equalsIgnoreCase(Id)) {
-							if (userId.equalsIgnoreCase(bill.getUserPaid()) || billsplit.getUserId().equalsIgnoreCase(bill.getUserPaid())) {
-								
-								if(billsplit.getAmountStatus().equalsIgnoreCase(Constants.CREDIT)){
-									rupeeBigDecimal = rupeeBigDecimal.add(billsplit.getAmount());
-								}
-								
-								if(billsplit.getAmountStatus().equalsIgnoreCase(Constants.DEBIT)){
-									rupeeBigDecimal = rupeeBigDecimal.subtract(billsplit.getAmount());
-								}
-							}
-						}
-					}
+                    for (BillSplit billsplit : bill.getBillSplits()) {
+
+                        if (billsplit.getUserId().equalsIgnoreCase(Id)) {
+
+                            if (billsplit.getAmountStatus().equalsIgnoreCase(Constants.CREDIT)) {
+                                rupeeBigDecimal = rupeeBigDecimal.add(billsplit.getAmount());
+                            }
+
+                            if (billsplit.getAmountStatus().equalsIgnoreCase(Constants.DEBIT)) {
+                                rupeeBigDecimal = rupeeBigDecimal.subtract(billsplit.getAmount());
+                            }
+                        }
+                    }
 					
 				}
 				
 			}
+
+            for (Bill bill : othersBill) {
+
+                String currency = bill.getCurrency();
+                if(Id.equalsIgnoreCase(bill.getUserPaid())){
+
+                    if(Constants.CURRENCY_USD.equalsIgnoreCase(currency)){
+                        for (BillSplit billsplit : bill.getBillSplits()) {
+
+                            if (billsplit.getUserId().equalsIgnoreCase(userId)) {
+                                if(billsplit.getAmountStatus().equalsIgnoreCase(Constants.DEBIT)){
+                                    usdBigDecimal = usdBigDecimal.add(billsplit.getAmount());
+                                }
+
+                            }
+                        }
+
+                    }else if(Constants.CURRENCY_RUPEE.equalsIgnoreCase(currency)){
+
+                        for (BillSplit billsplit : bill.getBillSplits()) {
+                            if (billsplit.getUserId().equalsIgnoreCase(userId)) {
+
+                                if (billsplit.getAmountStatus().equalsIgnoreCase(Constants.DEBIT)) {
+                                    rupeeBigDecimal = rupeeBigDecimal.add(billsplit.getAmount());
+                                }
+
+                            }
+                        }
+                    }
+
+
+                }
+
+            }
 			
 			loggedUserUsdAmt = loggedUserUsdAmt.add(usdBigDecimal);
 			loggedUserRupeeAmt = loggedUserRupeeAmt.add(rupeeBigDecimal);

@@ -39,7 +39,7 @@ loginServices.factory("CookieService", function($cookieStore, $cookies) {
 	    return $cookieStore.put(key, val);
 	},
 	unset : function(key) {
-	    return delete $cookies[key];
+		return delete $cookies[key];
 	}
     };
 });
@@ -55,7 +55,7 @@ loginServices.factory("SessionService", function() {
 	unset : function(key) {
 	    return sessionStorage.removeItem(key);
 	}
-    };
+	};
 });
 
 loginServices.factory('UserServices', function($resource) {
@@ -70,7 +70,7 @@ loginServices.factory('UserServices', function($resource) {
 
 });
 
-loginServices.factory("AuthenticationService", function($resource, $sanitize, SessionService) {
+loginServices.factory("AuthenticationService", function($resource, $sanitize, SessionService, $window) {
 
     return {
 	login : function() {
@@ -122,6 +122,9 @@ loginServices.factory("AuthenticationService", function($resource, $sanitize, Se
 		email : $sanitize(credentials.email),
 		password : $sanitize(credentials.password)
 	    };
-	}
+	},
+	reloadPage: function(){
+			$window.location.reload();
+    }
     };
 });
