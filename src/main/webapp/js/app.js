@@ -26,6 +26,11 @@ shareExpApp.config(function($stateProvider, $urlRouterProvider) {
 		url : '/terms',
 		templateUrl : 'template/terms.html'
     })
+    .state('contactus', {
+    		url : '/contactus',
+    		controller : 'ContactController',
+    		templateUrl : 'template/contactus.html'
+        })
     .state('home.forgot', {
 		url : '/forgot',
 		controller : 'LoginController',
@@ -415,12 +420,12 @@ shareExpApp
 shareExpApp.run(function($rootScope, $state, $location, AuthenticationService, flash, FlashService, $window) {
 
     var routesThatRequireAuth = [ '/', '', '/home', '/privacy', '/terms', '/about', '/home/signup', '/home/forgot', '/home/chgpwd', "/home/login",
-	    '/home/activation', '/logout' ];
+	    '/home/activation', '/logout', '/contactus' ];
 
     var stateThatRequireAuth = [ '/', '', 'home', 'privacy', 'terms', 'about', 'home.signup', 'home.forgot', 'home.chgpwd', "home.login",
     	    'home.activation', 'logout' ];
 
-    var routesThatNoLoginForm = [ '/home/signup', '/home/forgot', '/home/activation' ];
+    var routesThatNoLoginForm = [ '/home/signup', '/home/forgot', '/home/activation', '/contactus' ];
     
     $rootScope.$on('$locationChangeStart', function(event) {
 

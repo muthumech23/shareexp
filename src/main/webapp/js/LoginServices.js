@@ -62,7 +62,8 @@ loginServices.factory('UserServices', function($resource) {
 
     return $resource('api/user/:Id', {
 	userId : '@userid'
-    }, {
+    },
+    {
 	update : {
 	    method : 'PUT'
 	}
@@ -87,6 +88,13 @@ loginServices.factory("AuthenticationService", function($resource, $sanitize, Se
 		}
 	    });
 	},
+	contactUs : function() {
+    	    return $resource("api/user/contactus", {}, {
+    		sendMsg : {
+    		    method : 'POST'
+    		}
+    	    });
+    	},
 	regenerateActivation : function() {
 	    return $resource("api/user/auth/activationcode", {}, {
 		regenerateActivate : {

@@ -164,3 +164,32 @@ loginControllers.controller('UpdateUserController', function($scope, SessionServ
 	);
     };
 });
+
+/* Contact Controller */
+loginControllers.controller('ContactController', function($scope, SessionService, cfpLoadingBar, AuthenticationService, flash) {
+
+    $scope.contactUs = function(contact) {
+
+	cfpLoadingBar.start();
+
+	var userMsgSent = AuthenticationService.contactUs().sendMsg(contact).$promise;
+
+	userMsgSent.then(function(response) {
+	    flash.pop({
+		title : '',
+		body : "Your message has been sent successfully.",
+		type : 'alert-success'
+	    });
+	}, function(response) {
+	    $scope.errorresource = response.data;
+	    flash.pop({
+		title : '',
+		body : $scope.errorresource.message,
+		type : 'alert-danger'
+	    });
+	    cfpLoadingBar.complete();
+	}
+	);
+
+    };
+});

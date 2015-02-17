@@ -1,12 +1,15 @@
 package com.mycompany.shareexpense.controller;
 
+import com.mycompany.shareexpense.model.Contact;
 import com.mycompany.shareexpense.model.User;
 import com.mycompany.shareexpense.model.UserSecure;
 import com.mycompany.shareexpense.service.UserService;
+import com.mycompany.shareexpense.util.CommonUtil;
 import com.mycompany.shareexpense.util.CustomException;
 import com.mycompany.shareexpense.util.ErrorConstants;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,9 @@ public class UserController extends AbstractController {
 
     @Autowired
     public UserService userService;
+
+    @Autowired
+    private Environment env;
 
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.POST,
@@ -112,6 +118,36 @@ public class UserController extends AbstractController {
             throw new CustomException(ErrorConstants.ERR_GENERAL_FAILURE, "Transaction requested has been failed. Please try again.");
         }
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
+    }
+
+    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            method = RequestMethod.POST,
+            value = "/contactus")
+    public ResponseEntity<Void> contact(@RequestBody Contact contact) throws CustomException {
+
+        User userResponse = null;
+
+        try {
+
+            StringBuffer stringBuffer = new StringBuffer();
+            stringBuffer.append("<html><body><tr><td>Name :</td><td>");
+            stringBuffer.append(contact.getName());
+            stringBuffer.append("</td></tr><tr><td>Email:</td><td>");
+            stringBuffer.append(contact.getEmail());
+            stringBuffer.append("</td></tr><tr><td>Message:</td><td>");
+            stringBuffer.append(contact.getMessage());
+            stringBuffer.append("</td></tr></body></html>");
+
+
+            CommonUtil.sendEmail("!!!Important!!! User Report", "majshareexpense@gmail.com", stringBuffer.toString(), env);
+        } catch (CustomException ce) {
+            log.error("/contactus", ce);
+            throw ce;
+        } catch (Exception e) {
+            log.error("/contactus", e);
+            throw new CustomException(ErrorConstants.ERR_GENERAL_FAILURE, "Transaction requested has been failed. Please try again.");
+        }
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     /*
