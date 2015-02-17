@@ -1,4 +1,3 @@
-
 package com.mycompany.shareexpense.util;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -6,38 +5,38 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ErrorResource {
 
-	private String	resource;
-	private String	code;
-	private String	message;
+    private String resource;
+    private String code;
+    private String message;
 
-	public String getCode() {
+    public String getCode() {
 
-		return code;
-	}
+        return code;
+    }
 
-	public void setCode(String code) {
+    public void setCode(String code) {
 
-		this.code = code;
-	}
+        this.code = code;
+    }
 
-	public String getMessage() {
+    public String getMessage() {
 
-		return message;
-	}
+        return message;
+    }
 
-	public void setMessage(String message) {
+    public void setMessage(String message) {
 
-		this.message = message;
-	}
+        this.message = message;
+    }
 
-	public String getResource() {
+    public String getResource() {
 
-		return resource;
-	}
+        return resource;
+    }
 
-	public void setResource(String resource) {
+    public void setResource(String resource) {
 
-		this.resource = resource;
-	}
+        this.resource = resource;
+    }
 
 }

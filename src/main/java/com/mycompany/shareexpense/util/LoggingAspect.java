@@ -1,16 +1,9 @@
 package com.mycompany.shareexpense.util;
 
 import org.apache.log4j.Logger;
-
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
-
+import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
-
 import org.springframework.util.StopWatch;
 
 
@@ -19,7 +12,7 @@ import org.springframework.util.StopWatch;
  *
  * @author Muthukumaran Swaminathan
  * @version $Revision$
-  */
+ */
 @Aspect
 @Component
 public class LoggingAspect {
@@ -41,14 +34,11 @@ public class LoggingAspect {
      * DOCUMENT ME!
      *
      * @param joinPoint DOCUMENT ME!
-     *
      * @return DOCUMENT ME!
-     *
      * @throws Throwable DOCUMENT ME!
      */
     @Around("servicePointcut()")
-    public Object myadvice(ProceedingJoinPoint joinPoint)
-                    throws Throwable {
+    public Object myadvice(ProceedingJoinPoint joinPoint) throws Throwable {
         Object retVal = null;
 
         try {
@@ -82,10 +72,10 @@ public class LoggingAspect {
 
             log.debug(logMessage.toString());
             log.info("Execution Completed [" + packageName + ": Time taken= " + stopWatch.getTotalTimeMillis() +
-                     " ms ]");
+                    " ms ]");
         } catch (Exception e) {
-            log.error("********************** DANGER *************************** \nThere has been an exception myadvice: " + e +
-                      "", e);
+            log.error("********************** DANGER *************************** \nThere has been an exception myadvice: " + e + "", e);
+            throw e;
         }
 
 
@@ -99,12 +89,12 @@ public class LoggingAspect {
      * @param retVal DOCUMENT ME!
      */
     @AfterReturning(pointcut = "execution(* com.mycompany.shareexpense..*.*(..))", returning = "retVal")
-    public void afterReturningAdvice(Object retVal) {
+    public void afterReturningAdvice(Object retVal) throws Throwable {
         try {
             log.debug("\tReturn Params: " + retVal + "");
         } catch (Exception ex) {
-            log.error("********************** DANGER *************************** \nThere has been an exception afterReturningAdvice: " + ex +
-                      "", ex);
+            log.error("********************** DANGER *************************** \nThere has been an exception afterReturningAdvice: " + ex + "", ex);
+            throw ex;
         }
     }
 
@@ -115,13 +105,13 @@ public class LoggingAspect {
      * @param ex DOCUMENT ME!
      */
     @AfterThrowing(pointcut = "execution(* com.mycompany.shareexpense..*.*(..))", throwing = "ex")
-    public void AfterThrowingAdvice(Throwable ex) {
+    public void AfterThrowingAdvice(Throwable ex) throws Throwable {
         try {
-            log.error("********************** DANGER *************************** \nThere has been an exception: " + ex +
-                      "", ex);
+            log.error("********************** DANGER *************************** \nThere has been an exception: " + ex + "", ex);
+            throw ex;
         } catch (Exception e) {
-            log.error("********************** DANGER *************************** \nThere has been an exception AfterThrowingAdvice: " + e +
-                      "", e);
+            log.error("********************** DANGER *************************** \nThere has been an exception AfterThrowingAdvice: " + e + "", e);
+            throw e;
         }
     }
 }

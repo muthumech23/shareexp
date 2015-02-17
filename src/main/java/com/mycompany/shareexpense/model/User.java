@@ -10,8 +10,7 @@ import java.util.List;
 
 
 /**
- * 
-DOCUMENT ME!
+ * DOCUMENT ME!
  *
  * @author AH0661755
  */
@@ -52,11 +51,11 @@ public class User extends AbstractModal {
 
     @Override
     public String toString() {
-    
-    	return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    
+
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+
     }
-    
+
     /**
      * DOCUMENT ME!
      *

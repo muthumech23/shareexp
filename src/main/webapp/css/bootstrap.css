@@ -1,5 +1,5 @@
 html {
-    font-family: sans-serif;
+    font-family: "Courier New", Courier, monospace;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
 }
@@ -887,7 +887,7 @@ html {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Courier New", Courier, monospace;
     font-size: 12px;
     line-height: 1.42857143;
     color: #2c3e50;
@@ -987,7 +987,7 @@ h6,
 .h4,
 .h5,
 .h6 {
-    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Courier New", Courier, monospace;
     font-weight: 400;
     line-height: 1.1;
     color: inherit;
@@ -1336,7 +1336,7 @@ code,
 kbd,
 pre,
 samp {
-    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-family: "Courier New", Courier, monospace;
 }
 code {
     padding: 2px 4px;
@@ -2120,7 +2120,7 @@ th {
 }
 .table-striped > tbody > tr:nth-child(odd) > td,
 .table-striped > tbody > tr:nth-child(odd) > th {
-    background-color: #f9f9f9;
+    background-color: lightgoldenrodyellow;
 }
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
@@ -4145,7 +4145,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-default .navbar-nav > .active > a:hover,
 .navbar-default .navbar-nav > .active > a:focus {
     color: #ffffff;
-    background-color: #ff0000;
+    background-color: lightseagreen;
      -webkit-border-radius: 4px;
      -moz-border-radius: 4px;
      border-radius: 4px;
@@ -4419,8 +4419,8 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 }
 .pagination-sm > li > a,
 .pagination-sm > li > span {
-    padding: 6px 9px;
-    font-size: 12px;
+    padding: 3px 5px;
+    font-size: 10px;
 }
 .pagination-sm > li:first-child > a,
 .pagination-sm > li:first-child > span {
@@ -5536,7 +5536,7 @@ button.close {
     z-index: 1070;
     display: block;
     visibility: visible;
-    font-size: 12px;
+    font-size: 10px;
     line-height: 1.4;
     opacity: 0;
     filter: alpha(opacity=0);
@@ -5562,19 +5562,18 @@ button.close {
     padding: 0 5px;
 }
 .tooltip-inner {
-    max-width: 200px;
     padding: 3px 8px;
-    color: #ffffff;
+    color: black;
     text-align: center;
     text-decoration: none;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: lightgoldenrodyellow;
     border-radius: 4px;
 }
 .tooltip-arrow {
     position: absolute;
     width: 0;
     height: 0;
-    border-color: transparent;
+    border-color: lightgoldenrodyellow;
     border-style: solid;
 }
 .tooltip.top .tooltip-arrow {
@@ -5582,52 +5581,52 @@ button.close {
     left: 50%;
     margin-left: -5px;
     border-width: 5px 5px 0;
-    border-top-color: rgba(0, 0, 0, 0.9);
+    border-top-color: lightgoldenrodyellow;
 }
 .tooltip.top-left .tooltip-arrow {
     bottom: 0;
     left: 5px;
     border-width: 5px 5px 0;
-    border-top-color: rgba(0, 0, 0, 0.9);
+    border-top-color: lightgoldenrodyellow;
 }
 .tooltip.top-right .tooltip-arrow {
     bottom: 0;
     right: 5px;
     border-width: 5px 5px 0;
-    border-top-color: rgba(0, 0, 0, 0.9);
+    border-top-color: lightgoldenrodyellow;
 }
 .tooltip.right .tooltip-arrow {
     top: 50%;
     left: 0;
     margin-top: -5px;
     border-width: 5px 5px 5px 0;
-    border-right-color: rgba(0, 0, 0, 0.9);
+    border-right-color: lightgoldenrodyellow;
 }
 .tooltip.left .tooltip-arrow {
     top: 50%;
     right: 0;
     margin-top: -5px;
     border-width: 5px 0 5px 5px;
-    border-left-color: rgba(0, 0, 0, 0.9);
+    border-left-color: lightgoldenrodyellow;
 }
 .tooltip.bottom .tooltip-arrow {
     top: 0;
     left: 50%;
     margin-left: -5px;
     border-width: 0 5px 5px;
-    border-bottom-color: rgba(0, 0, 0, 0.9);
+    border-bottom-color: lightgoldenrodyellow;
 }
 .tooltip.bottom-left .tooltip-arrow {
     top: 0;
     left: 5px;
     border-width: 0 5px 5px;
-    border-bottom-color: rgba(0, 0, 0, 0.9);
+    border-bottom-color: lightgoldenrodyellow;
 }
 .tooltip.bottom-right .tooltip-arrow {
     top: 0;
     right: 5px;
     border-width: 0 5px 5px;
-    border-bottom-color: rgba(0, 0, 0, 0.9);
+    border-bottom-color: lightgoldenrodyellow;
 }
 .popover {
     position: absolute;
@@ -5856,7 +5855,7 @@ button.close {
     width: 20px;
     height: 20px;
     margin-top: -10px;
-    font-family: serif;
+    font-family: "Courier New", Courier, monospace;
 }
 .carousel-control .icon-prev:before {
     content: '\2039';

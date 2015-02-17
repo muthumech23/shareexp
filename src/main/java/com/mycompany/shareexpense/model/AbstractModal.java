@@ -1,4 +1,3 @@
-
 package com.mycompany.shareexpense.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -11,62 +10,62 @@ import org.springframework.data.mongodb.core.index.Indexed;
  */
 public class AbstractModal {
 
-	@Id
-	private String	id;
+    @Id
+    private String id;
 
-	@Indexed
-	private String	createDate		= null;
+    @Indexed
+    private String createDate = null;
 
-	@Indexed
-	private String	modifiedDate	= null;
+    @Indexed
+    private String modifiedDate = null;
 
-	private String	by				= null;
+    private String by = null;
 
 
     @Override
     public String toString() {
-    	return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
-    
-	public String getBy() {
 
-		return by;
-	}
+    public String getBy() {
+
+        return by;
+    }
 
 
-	public void setBy(String by) {
+    public void setBy(String by) {
 
-		this.by = by;
-	}
+        this.by = by;
+    }
 
-	public void setCreateDate(String createDate) {
+    public void setCreateDate(String createDate) {
 
-		this.createDate = createDate;
-	}
+        this.createDate = createDate;
+    }
 
-	public void setModifiedDate(String modifiedDate) {
+    public void setModifiedDate(String modifiedDate) {
 
-		this.modifiedDate = modifiedDate;
-	}
+        this.modifiedDate = modifiedDate;
+    }
 
-	public String getCreateDate() {
+    public String getCreateDate() {
 
-		return createDate;
-	}
+        return createDate;
+    }
 
-	public String getModifiedDate() {
+    public String getModifiedDate() {
 
-		return modifiedDate;
-	}
+        return modifiedDate;
+    }
 
-	public void setId(String id) {
+    public void setId(String id) {
 
-		this.id = id;
-	}
+        this.id = id;
+    }
 
-	public String getId() {
+    public String getId() {
 
-		return id;
-	}
-	
+        return id;
+    }
+
 }

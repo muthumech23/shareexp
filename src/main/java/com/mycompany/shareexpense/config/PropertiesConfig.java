@@ -9,7 +9,7 @@ import org.springframework.context.annotation.PropertySource;
  *
  * @author Muthukumaran Swaminathan
  * @version $Revision$
-  */
+ */
 @Configuration
 @PropertySource("classpath:application.properties")
 public class PropertiesConfig {

@@ -46,8 +46,8 @@
 <script src="assets/underscore.js"></script>
 <script src="assets/loading-bar.js"></script>
 <script src="assets/ui-bootstrap-tpls-0.12.0.js"></script>
-<script src="assets/jquery.searchable-1.1.0.min.js"></script>
-<script src="assets/jquery.searchable-ie-1.1.0.min.js"></script>
+<script src="assets/jquery.searchable.js"></script>
+<script src="assets/jquery.searchable-ie.js"></script>
 <script src="assets/jquery-ui.min.js"></script>
 
 <!-- Application Javascript Files -->
@@ -79,12 +79,12 @@
 						ui-sref="home">9400 SOLUTIONS</a>
 				</div>
 				<div class="navbar-collapse collapse navbar-inverse-collapse">
-					<ul class="nav navbar-nav navbar-right small" ng-if="loggedIn">
+					<ul class="nav navbar-nav navbar-right" ng-if="loggedIn">
                         <li ng-class="{'active':isSelected(1) }"><a ui-sref="billhome.list"  ng-click="selectTab(1)"  tooltip-placement="bottom"
                                                                     tooltip-html-unsafe="Share Expenses"> Share Expenses </a></li>
                         <li ng-class="{'active':isSelected(2) }"><a ui-sref="trackexp"  ng-click="selectTab(2)" tooltip-placement="bottom"
                                                                     tooltip-html-unsafe="Track Expenses"> Track Expenses </a></li>
-                        <li ng-class="{'active':isSelected(5) }"><a ui-sref="billhome.account" ng-click="selectTab(5)" tooltip-placement="bottom"
+                        <li ng-class="{'active':isSelected(5) }"><a ui-sref="home.account" ng-click="selectTab(5)" tooltip-placement="bottom"
 							tooltip-html-unsafe="account"> {{loggedUserName}} </a></li>
 						<li><a  tooltip-placement="bottom" tooltip-html-unsafe="logout" href="" ng-click="userLogout()">LOGOUT</a></li>
 					</ul>

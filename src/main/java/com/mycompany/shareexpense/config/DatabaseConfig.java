@@ -2,10 +2,8 @@ package com.mycompany.shareexpense.config;
 
 import com.mongodb.Mongo;
 import com.mongodb.WriteConcern;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.data.authentication.UserCredentials;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -18,17 +16,16 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
  *
  * @author Muthukumaran Swaminathan
  * @version $Revision$
-  */
+ */
 @Configuration
-@EnableMongoRepositories(basePackages =  {
-    "com.mycompany.shareexpense.repository"}
+@EnableMongoRepositories(basePackages = {
+        "com.mycompany.shareexpense.repository"}
 )
 public class DatabaseConfig {
     /**
      * DOCUMENT ME!
      *
      * @return DOCUMENT ME!
-     *
      * @throws Exception DOCUMENT ME!
      */
     @Bean

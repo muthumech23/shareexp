@@ -288,7 +288,7 @@ billControllers.controller('BillUserController', function($scope, $state, $state
 	});
 
     };
-
+	$scope.bills = [];
     if ($stateParams.userId !== null && $stateParams.userId !== "" && $stateParams.userId !== undefined) {
 
 	var userbill = BillingServices.getUserBills($stateParams.userId);
@@ -317,6 +317,53 @@ billControllers.controller('BillUserController', function($scope, $state, $state
 	});
 
     }
+
+    $scope.itemsPerPage = 25;
+        $scope.currentPage = 0;
+
+        $scope.prevPage = function() {
+            if ($scope.currentPage > 0) {
+                $scope.currentPage--;
+            }
+        };
+
+        $scope.prevPageDisabled = function() {
+            return $scope.currentPage === 0 ? "disabled" : "";
+        };
+
+        $scope.pageCount = function() {
+            return Math.ceil($scope.bills.length/$scope.itemsPerPage)-1;
+        };
+
+        $scope.nextPage = function() {
+            if ($scope.currentPage < $scope.pageCount()) {
+                $scope.currentPage++;
+            }
+        };
+
+        $scope.nextPageDisabled = function(items) {
+            return $scope.currentPage === $scope.pageCount() ? "disabled" : "";
+        };
+
+        $scope.range = function() {
+            var rangeSize = $scope.pageCount() + 1;
+            var ret = [];
+            var start;
+
+            start = $scope.currentPage;
+            if ( start > $scope.pageCount()-rangeSize ) {
+              start = $scope.pageCount()-rangeSize+1;
+            }
+
+            for (var i=start; i<start+rangeSize; i++) {
+              ret.push(i);
+            }
+            return ret;
+        };
+
+        $scope.setPage = function(n) {
+            $scope.currentPage = n;
+        };
 });
 
 billControllers.controller('BillRecentController', function($scope, recentBills, $state, $stateParams) {
@@ -331,6 +378,55 @@ billControllers.controller('BillRecentController', function($scope, recentBills,
 	$state.go('billhome.edit', {
 	    billId : billId
 	});
+    };
+
+    $scope.itemsPerPage = 25;
+    $scope.currentPage = 0;
+
+    $scope.prevPage = function() {
+        if ($scope.currentPage > 0) {
+            $scope.currentPage--;
+        }
+    };
+
+    $scope.prevPageDisabled = function() {
+        return $scope.currentPage === 0 ? "disabled" : "";
+    };
+
+    $scope.pageCount = function() {
+        return Math.ceil($scope.bills.length/$scope.itemsPerPage)-1;
+    };
+
+    $scope.nextPage = function() {
+        if ($scope.currentPage < $scope.pageCount()) {
+            $scope.currentPage++;
+        }
+    };
+
+    $scope.nextPageDisabled = function(items) {
+        return $scope.currentPage === $scope.pageCount() ? "disabled" : "";
+    };
+
+    $scope.range = function() {
+        var rangeSize = $scope.pageCount() + 1;
+        var ret = [];
+        var start;
+
+        start = $scope.currentPage;
+        console.log("Begin:"+start);
+        if (start > $scope.pageCount()-rangeSize ) {
+          start = $scope.pageCount()-rangeSize+1;
+        }
+		console.log("After:"+start);
+        for (var i=start; i<start+rangeSize; i++) {
+          console.log("Inside I:"+i);
+          ret.push(i);
+        }
+        return ret;
+    };
+
+    $scope.setPage = function(n) {
+        $scope.currentPage = n;
     };
 
 });

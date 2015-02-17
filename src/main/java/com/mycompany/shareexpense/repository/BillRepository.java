@@ -1,29 +1,28 @@
-
 package com.mycompany.shareexpense.repository;
 
 import com.mycompany.shareexpense.model.Bill;
-import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
- *
  * @author AH0661755
  */
 @Repository
 public interface BillRepository extends CrudRepository<Bill, String> {
 
-    public List<Bill> findByUserPaidOrBillSplitsUserId (String Id,
-                                                        String userId);
+    public List<Bill> findByUserPaidOrBillSplitsUserId(String Id, String userId);
 
-    public List<Bill> findByUserPaid (String Id);
+    public List<Bill> findByUserPaid(String Id);
 
-    public List<Bill> findByBillSplitsUserId (String userId);
+    public List<Bill> findByBillSplitsUserId(String userId);
 
-    public List<Bill> findByUserPaidAndBillSplitsUserId (String userId,
-                    String loggedUser);
+    public List<Bill> findByUserPaidAndBillSplitsUserId(String userId, String loggedUser);
 
-    public List<Bill> findByGroupId (String groupId);
+    public List<Bill> findByGroupId(String groupId);
+
+    public List<Bill> findAll();
 
 }
 

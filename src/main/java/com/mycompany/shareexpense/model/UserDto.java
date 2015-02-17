@@ -1,10 +1,10 @@
 package com.mycompany.shareexpense.model;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 
 /**
@@ -13,7 +13,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author AH0661755
  */
 public class UserDto extends AbstractModal {
-    /** DOCUMENT ME! */
+    /**
+     * DOCUMENT ME!
+     */
     private List<AmtCurr> amtCurrs;
 
 
@@ -29,11 +31,15 @@ public class UserDto extends AbstractModal {
     private String currency;
 
 
-    /** DOCUMENT ME! */
+    /**
+     * DOCUMENT ME!
+     */
     private String loggedUser;
 
 
-    /** DOCUMENT ME! */
+    /**
+     * DOCUMENT ME!
+     */
     private BigDecimal amount;
 
 
@@ -44,8 +50,9 @@ public class UserDto extends AbstractModal {
 
     @Override
     public String toString() {
-    	return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    	}
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
+
     /**
      * DOCUMENT ME!
      *

@@ -15,13 +15,12 @@ import javax.servlet.ServletRegistration;
  *
  * @author Muthukumaran Swaminathan
  * @version $Revision$
-  */
+ */
 public class WebAppInitializer implements WebApplicationInitializer {
     /**
      * DOCUMENT ME!
      *
      * @param sc DOCUMENT ME!
-     *
      * @throws ServletException DOCUMENT ME!
      */
     @Override
@@ -40,7 +39,7 @@ public class WebAppInitializer implements WebApplicationInitializer {
         sc.setInitParameter("defaultHtmlEscape", "true");
 
         ServletRegistration.Dynamic dispatcher = sc.addServlet("dispatcherServlet",
-                                                               new DispatcherServlet(mvcWebApplicationContext));
+                new DispatcherServlet(mvcWebApplicationContext));
 
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/api/*");

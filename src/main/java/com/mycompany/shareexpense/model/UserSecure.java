@@ -7,8 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 
 /**
- * 
-DOCUMENT ME!
+ * DOCUMENT ME!
  *
  * @author AH0661755
  */
@@ -40,8 +39,9 @@ public class UserSecure extends AbstractModal {
 
     @Override
     public String toString() {
-    	return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
+
     /**
      * DOCUMENT ME!
      *

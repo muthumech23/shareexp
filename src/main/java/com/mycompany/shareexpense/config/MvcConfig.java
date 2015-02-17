@@ -11,12 +11,12 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  *
  * @author Muthukumaran Swaminathan
  * @version $Revision$
-  */
+ */
 @Configuration
 @EnableWebMvc
 @EnableAspectJAutoProxy
-@ComponentScan(basePackages =  {
-    "com.mycompany.shareexpense.controller"}
+@ComponentScan(basePackages = {
+        "com.mycompany.shareexpense.controller"}
 )
 public class MvcConfig {
 }

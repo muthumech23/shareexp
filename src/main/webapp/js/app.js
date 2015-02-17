@@ -7,115 +7,137 @@ shareExpApp.config(function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/home');
 
-    $stateProvider.state('home', {
-	url : '/home',
-	controller : 'HomeController',
-	templateUrl : 'template/home.html'
-    }).state('home.login', {
-	url : '/login',
-	controller : 'LoginController',
-	templateUrl : 'template/login.html'
-    }).state('privacy', {
-	url : '/privacy',
-	templateUrl : 'template/privacy.html'
-    }).state('terms', {
-	url : '/terms',
-	templateUrl : 'template/terms.html'
-    }).state('home.forgot', {
-	url : '/forgot',
-	controller : 'LoginController',
-	templateUrl : 'template/forgotpwd.html'
-    }).state('home.signup', {
-	url : '/signup',
-	controller : 'LoginController',
-	templateUrl : 'template/register.html'
-    }).state('home.activation', {
-	url : '/activation',
-	controller : 'ActivateController',
-	templateUrl : 'template/activate.html'
-    }).state('home.chgpwd', {
-	url : '/chgpwd',
-	controller : 'ChgpwdController',
-	templateUrl : 'template/changepwd.html'
-    }).state('about', {
-	url : '/about',
-	templateUrl : 'template/aboutus.html'
-    }).state('billhome', {
-	abstract : true,
-	url : '/billhome',
-	controller : 'BillListController',
-	templateUrl : 'template/billhome.html',
-	resolve : {
-	    homeBillData : function(BillingServices) {
-		return BillingServices.getUsersBill();
-	    },
-	    getGroupList : function(GroupServices) {
-		return GroupServices.getGroups();
-	    }
-	}
-    }).state('billhome.list', {
-	url : '/list',
-	controller : 'BillRecentController',
-	templateUrl : 'template/billhome.list.html',
-	resolve : {
-	    recentBills : function(BillingServices) {
-		return BillingServices.getBills();
-	    }
-	}
-    }).state('billhome.userlist', {
-	url : '/userlist/:userId',
-	controller : 'BillUserController',
-	templateUrl : 'template/billhome.userlist.html'
-    }).state('billhome.add', {
-	url : '/add/:userId',
-	controller : 'BillAddController',
-	templateUrl : 'template/billhome.add.html',
-	resolve : {
-	    addBill : function(BillingServices) {
-		return BillingServices.addBillPage();
-	    }
-	}
-    }).state('billhome.edit', {
-	url : '/edit/:billId',
-	controller : 'BillEditController',
-	templateUrl : 'template/billhome.edit.html',
-	resolve : {
-	    addBill : function(BillingServices) {
-		return BillingServices.addBillPage();
-	    }
-	}
-    }).state('billhome.groupbills', {
-	url : '/groupbills/:groupId',
-	controller : 'GroupRecentController',
-	templateUrl : 'template/group.bills.html'
-    }).state('billhome.groupadd', {
-	url : '/groupadd',
-	controller : 'GroupController',
-	templateUrl : 'template/group.add.html'
-    }).state('billhome.grpaddbill', {
-	url : '/grpaddbill/:groupId',
-	controller : 'GroupAddBillController',
-	templateUrl : 'template/group.addbill.html'
-    }).state('billhome.groupedit', {
-	url : '/groupedit/:groupId',
-	controller : 'GroupController',
-	templateUrl : 'template/group.edit.html'
-    }).state('billhome.grpeditbill', {
-	url : '/grpeditbill/:billId',
-	controller : 'GroupEditBillController',
-	templateUrl : 'template/group.editbill.html'
-    }).state('billhome.account', {
-	url : '/account',
-	controller : 'UpdateUserController',
-	templateUrl : 'template/account.html'
-    }).state('trackexp', {
+    $stateProvider
+    .state('home', {
+		url : '/home',
+		controller : 'HomeController',
+		templateUrl : 'template/home.html'
+    })
+    .state('home.login', {
+		url : '/login',
+		controller : 'LoginController',
+		templateUrl : 'template/login.html'
+    })
+    .state('privacy', {
+		url : '/privacy',
+		templateUrl : 'template/privacy.html'
+    })
+    .state('terms', {
+		url : '/terms',
+		templateUrl : 'template/terms.html'
+    })
+    .state('home.forgot', {
+		url : '/forgot',
+		controller : 'LoginController',
+		templateUrl : 'template/forgotpwd.html'
+    })
+    .state('home.signup', {
+		url : '/signup',
+		controller : 'LoginController',
+		templateUrl : 'template/register.html'
+    })
+    .state('home.activation', {
+		url : '/activation',
+		controller : 'ActivateController',
+		templateUrl : 'template/activate.html'
+    })
+    .state('home.chgpwd', {
+		url : '/chgpwd',
+		controller : 'ChgpwdController',
+		templateUrl : 'template/changepwd.html'
+    })
+    .state('home.account', {
+    		url : '/account',
+    		controller : 'UpdateUserController',
+    		templateUrl : 'template/account.html'
+    })
+    .state('about', {
+		url : '/about',
+		templateUrl : 'template/aboutus.html'
+    })
+    .state('billhome', {
+		abstract : true,
+		url : '/billhome',
+		controller : 'BillListController',
+		templateUrl : 'template/billhome.html',
+		resolve : {
+	        homeBillData : function(BillingServices) {
+			return BillingServices.getUsersBill();
+	        },
+	        getGroupList : function(GroupServices) {
+			return GroupServices.getGroups();
+	        }
+		}
+    })
+    .state('billhome.list', {
+		url : '/list',
+		controller : 'BillRecentController',
+		templateUrl : 'template/billhome.list.html',
+		resolve : {
+	        recentBills : function(BillingServices) {
+			return BillingServices.getBills();
+	        }
+		}
+    })
+    .state('billhome.userlist', {
+		url : '/userlist/:userId',
+		controller : 'BillUserController',
+		templateUrl : 'template/billhome.userlist.html'
+    })
+    .state('billhome.add', {
+		url : '/add/:userId',
+		controller : 'BillAddController',
+		templateUrl : 'template/billhome.add.html',
+		resolve : {
+	        addBill : function(BillingServices) {
+			return BillingServices.addBillPage();
+	        }
+		}
+    })
+    .state('billhome.edit', {
+		url : '/edit/:billId',
+		controller : 'BillEditController',
+		templateUrl : 'template/billhome.edit.html',
+		resolve : {
+	        addBill : function(BillingServices) {
+			return BillingServices.addBillPage();
+	        }
+		}
+    })
+    .state('billhome.groupbills', {
+		url : '/groupbills/:groupId',
+		controller : 'GroupRecentController',
+		templateUrl : 'template/group.bills.html'
+    })
+    .state('billhome.groupadd', {
+		url : '/groupadd',
+		controller : 'GroupController',
+		templateUrl : 'template/group.add.html'
+    })
+    .state('billhome.grpaddbill', {
+		url : '/grpaddbill/:groupId',
+		controller : 'GroupAddBillController',
+		templateUrl : 'template/group.addbill.html'
+    })
+    .state('billhome.groupedit', {
+		url : '/groupedit/:groupId',
+		controller : 'GroupController',
+		templateUrl : 'template/group.edit.html'
+    })
+    .state('billhome.grpeditbill', {
+		url : '/grpeditbill/:billId',
+		controller : 'GroupEditBillController',
+		templateUrl : 'template/group.editbill.html'
+    })
+    .state('trackexp', {
       	url : '/trackexp',
       	templateUrl : 'template/trackexpense.html'
-          }).state('logout', {
-            	url : '/logout',
-            	controller : 'HomeController',
-            	templateUrl : 'template/home.html',
-            	});
+    })
+    .state('logout', {
+        url : '/logout',
+        controller : 'HomeController',
+        templateUrl : 'template/home.html',
+    });
 }, function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = true;
 });
@@ -394,17 +416,21 @@ shareExpApp.run(function($rootScope, $state, $location, AuthenticationService, f
 
     var routesThatRequireAuth = [ '/', '', '/home', '/privacy', '/terms', '/about', '/home/signup', '/home/forgot', '/home/chgpwd', "/home/login",
 	    '/home/activation', '/logout' ];
-    
+
+    var stateThatRequireAuth = [ '/', '', 'home', 'privacy', 'terms', 'about', 'home.signup', 'home.forgot', 'home.chgpwd', "home.login",
+    	    'home.activation', 'logout' ];
+
     var routesThatNoLoginForm = [ '/home/signup', '/home/forgot', '/home/activation' ];
     
     $rootScope.$on('$locationChangeStart', function(event) {
 
 	if (!_(routesThatRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn()) {
-	    $state.go('home');
+	    $location.path('/home');
+	    console.log('Inside Location');
 	    flash.pop({
 		title : '',
-		body : 'Your are trying to access without login, Please login to continue...',
-		type : 'alert-warning'
+		body : 'Your are trying to access Location without login, Please login to continue...',
+		type : 'alert-danger'
 	    });
 	    return;
 	}
@@ -412,8 +438,7 @@ shareExpApp.run(function($rootScope, $state, $location, AuthenticationService, f
 	if(!_(routesThatNoLoginForm).contains($location.path())){
 	    $rootScope.noLogin = true;
 	}else{
-
-	    $rootScope.noLogin = false;
+		$rootScope.noLogin = false;
 	}
 	
 	if (("/home/activation") === $location.path() && AuthenticationService.isLoggedIn()) {
@@ -422,18 +447,18 @@ shareExpApp.run(function($rootScope, $state, $location, AuthenticationService, f
 		body : 'You are already registered and logged IN. Please continue to bill home page...',
 		type : 'alert-warning'
 	    });
-	    $state.go('billhome.list');
+	    $location.path('/billhome/list');
 	}
 
 	if (("/logout") === $location.path()){
-		$state.go('home');
+		 $location.path('/home');
 	}
 
 
     });
     
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, $scope) {
-	
+
     });
 
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams) {
@@ -456,7 +481,7 @@ shareExpApp.run(function($rootScope, $state, $location, AuthenticationService, f
     $rootScope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
 	flash.pop({
 		title : '',
-		body : 'The page you arr trying i snot available.',
+		body : 'The page you arr trying is not available.',
 		type : 'alert-danger'
 	    });
 	$state.go('home', {}, {

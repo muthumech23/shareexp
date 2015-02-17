@@ -14,3 +14,8 @@ $(function() {
  searchType: 'fuzzy'
  });
  });*/
+
+
+ $(function () {
+     $( '#table' ).searchable();
+ });

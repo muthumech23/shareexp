@@ -2,24 +2,15 @@ package com.mycompany.shareexpense.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.core.style.ToStringStyler;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.mycompany.shareexpense.util.CommonUtil;
-
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 
 /**
- * 
-DOCUMENT ME!
+ * DOCUMENT ME!
  *
  * @author AH0661755
  */
@@ -91,16 +82,15 @@ public class Bill extends AbstractModal {
      * DOCUMENT ME!
      */
     private List<BillSplit> billSplits;
-    
+
     @Override
     public String toString() {
-    	
-    	return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
 
-
-	/**
+    /**
      * DOCUMENT ME!
      *
      * @return DOCUMENT ME!
@@ -110,23 +100,19 @@ public class Bill extends AbstractModal {
     }
 
 
-    
-	public boolean isEmailRequired() {
-	
-		return emailRequired;
-	}
+    public boolean isEmailRequired() {
+
+        return emailRequired;
+    }
 
 
+    public void setEmailRequired(boolean emailRequired) {
 
-	
-	public void setEmailRequired(boolean emailRequired) {
-	
-		this.emailRequired = emailRequired;
-	}
+        this.emailRequired = emailRequired;
+    }
 
 
-
-	/**
+    /**
      * DOCUMENT ME!
      *
      * @param currency DOCUMENT ME!
@@ -272,7 +258,7 @@ public class Bill extends AbstractModal {
      * @param date DOCUMENT ME!
      */
     public void setDate(String date) {
-    	this.date = date;
+        this.date = date;
     }
 
 

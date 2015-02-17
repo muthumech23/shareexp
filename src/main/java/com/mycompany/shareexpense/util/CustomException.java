@@ -6,19 +6,23 @@ package com.mycompany.shareexpense.util;
  */
 @SuppressWarnings("serial")
 public class CustomException extends RuntimeException {
-    /** The error code. */
+    /**
+     * The error code.
+     */
     private String errorCode = null;
 
 
-    /** The error msg. */
+    /**
+     * The error msg.
+     */
     private String errorMsg = null;
 
 
-/**
+    /**
      * Instantiates a new custom exception.
      *
      * @param errorCode the error code
-     * @param errorMsg the error msg
+     * @param errorMsg  the error msg
      */
     public CustomException(String errorCode,
                            String errorMsg) {

@@ -7,13 +7,13 @@ import java.util.Date;
 
 public class TestStandalone {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		 DateFormat dateFormat = new SimpleDateFormat("MMMMM dd, yyyy");
-		   //get current date time with Date()
-		   Date date = new Date();
-		   System.out.println(dateFormat.format(date));
+        DateFormat dateFormat = new SimpleDateFormat("MMMMM dd, yyyy");
+        //get current date time with Date()
+        Date date = new Date();
+        System.out.println(dateFormat.format(date));
 
-	}
+    }
 
 }

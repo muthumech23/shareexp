@@ -11,12 +11,12 @@ import org.springframework.context.annotation.Import;
  *
  * @author Muthukumaran Swaminathan
  * @version $Revision$
-  */
+ */
 @Configuration
 @Import(DatabaseConfig.class)
 @EnableAspectJAutoProxy
-@ComponentScan(basePackages =  {
-    "com.mycompany.shareexpense.service", "com.mycompany.shareexpense.util", "com.mycompany.shareexpense.repository"}
+@ComponentScan(basePackages = {
+        "com.mycompany.shareexpense.service", "com.mycompany.shareexpense.util", "com.mycompany.shareexpense.repository"}
 )
 public class RootConfig {
 }
