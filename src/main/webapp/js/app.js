@@ -18,15 +18,15 @@ shareExpApp.config(function($stateProvider, $urlRouterProvider) {
 		controller : 'LoginController',
 		templateUrl : 'template/login.html'
     })
-    .state('privacy', {
+    .state('home.privacy', {
 		url : '/privacy',
 		templateUrl : 'template/privacy.html'
     })
-    .state('terms', {
+    .state('home.terms', {
 		url : '/terms',
 		templateUrl : 'template/terms.html'
     })
-    .state('contactus', {
+    .state('home.contactus', {
     		url : '/contactus',
     		controller : 'ContactController',
     		templateUrl : 'template/contactus.html'
@@ -56,7 +56,7 @@ shareExpApp.config(function($stateProvider, $urlRouterProvider) {
     		controller : 'UpdateUserController',
     		templateUrl : 'template/account.html'
     })
-    .state('about', {
+    .state('home.about', {
 		url : '/about',
 		templateUrl : 'template/aboutus.html'
     })
@@ -419,13 +419,13 @@ shareExpApp
 
 shareExpApp.run(function($rootScope, $state, $location, AuthenticationService, flash, FlashService, $window) {
 
-    var routesThatRequireAuth = [ '/', '', '/home', '/privacy', '/terms', '/about', '/home/signup', '/home/forgot', '/home/chgpwd', "/home/login",
-	    '/home/activation', '/logout', '/contactus' ];
+    var routesThatRequireAuth = [ '/', '', '/home', '/home/privacy', '/home/terms', '/home/about', '/home/signup', '/home/forgot', '/home/chgpwd', "/home/login",
+	    '/home/activation', '/logout', '/home/contactus' ];
 
     var stateThatRequireAuth = [ '/', '', 'home', 'privacy', 'terms', 'about', 'home.signup', 'home.forgot', 'home.chgpwd', "home.login",
     	    'home.activation', 'logout' ];
 
-    var routesThatNoLoginForm = [ '/home/signup', '/home/forgot', '/home/activation', '/contactus' ];
+    var routesThatNoLoginForm = [ '/home/signup', '/home/forgot', '/home/activation', '/home/contactus' ];
     
     $rootScope.$on('$locationChangeStart', function(event) {
 

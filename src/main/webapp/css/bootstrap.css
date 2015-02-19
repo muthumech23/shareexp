@@ -1,5 +1,5 @@
 html {
-    font-family: "Courier New", Courier, monospace;
+    font-family: Comic Sans MS;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
 }
@@ -103,7 +103,7 @@ code,
 kbd,
 pre,
 samp {
-    font-family: monospace, monospace;
+    font-family: Comic Sans MS;
     font-size: 1em;
 }
 button,
@@ -887,7 +887,7 @@ html {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-    font-family: "Courier New", Courier, monospace;
+    font-family: Comic Sans MS;
     font-size: 12px;
     line-height: 1.42857143;
     color: #2c3e50;
@@ -904,10 +904,16 @@ textarea {
 }
 a {
     text-decoration: none;
+    color: black;
 }
 a:hover,
 a:focus {
-    text-decoration: underline;
+    text-decoration: none;
+    color: red;
+}
+a:active {
+    text-decoration: none;
+    color: blue;
 }
 a:focus {
     outline: thin dotted;
@@ -987,7 +993,7 @@ h6,
 .h4,
 .h5,
 .h6 {
-    font-family: "Courier New", Courier, monospace;
+    font-family: Comic Sans MS;
     font-weight: 400;
     line-height: 1.1;
     color: inherit;
@@ -1336,7 +1342,7 @@ code,
 kbd,
 pre,
 samp {
-    font-family: "Courier New", Courier, monospace;
+    font-family: Comic Sans MS;
 }
 code {
     padding: 2px 4px;
@@ -5855,7 +5861,7 @@ button.close {
     width: 20px;
     height: 20px;
     margin-top: -10px;
-    font-family: "Courier New", Courier, monospace;
+    font-family: Comic Sans MS;
 }
 .carousel-control .icon-prev:before {
     content: '\2039';

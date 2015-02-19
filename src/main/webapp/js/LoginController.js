@@ -13,13 +13,8 @@ loginControllers.controller('HomeController', function($scope, $log, $location) 
     } ];
     $log.info = 'Inside Index Controller';
 
-    $scope.slides = [ {
-	image : "img/Friends.gif",
-	text : "friends"
-    }, {
-	image : "img/background2.jpg",
-	text : "friends"
-    } ];
+	$scope.myInterval = 5000;
+    var slides = $scope.slides = [{image : "img/slide1.png"}, {image : "img/slide2.png"}, {image : "img/slide3.png"}];
 
 });
 

@@ -7,96 +7,82 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-10">
-            <div ui-view>
-                <div class="col-lg-6" ng-if="!loggedIn" ng-show="!loggedEmail">
-                    <div class="panel panel-primary" >
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Login</h3>
-                        </div>
-                        <div class="panel-body">
-                            <form class="form-horizontal" name="form" rc-attempt novalidate>
-                                <div class="form-group">
-                                    <label class="control-label">Email</label>
+        <div ui-view>
+            <div class="col-lg-6" ng-if="!loggedIn" ng-show="!loggedEmail">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Login</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" name="form" rc-attempt novalidate>
+                            <div class="form-group">
+                                <label class="control-label">Email</label>
 
-                                    <div class="input-group required-field-block">
-                                        <span class="input-group-addon input-sm"><i class="fa fa-envelope-o"></i></span> <input type="email" placeholder="Email"
-                                                                                                                                name='uEmail'
-                                                                                                                                class="form-control input-sm"
-                                                                                                                                ng-model="userLogin.email"
-                                                                                                                                required value="">
+                                <div class="input-group required-field-block">
+                                    <span class="input-group-addon input-sm"><i class="fa fa-envelope-o"></i></span> <input type="email"
+                                                                                                                            placeholder="Email"
+                                                                                                                            name='uEmail'
+                                                                                                                            class="form-control input-sm"
+                                                                                                                            ng-model="userLogin.email"
+                                                                                                                            required value="">
 
-                                        <div class="required-icon">
-                                            <div class="text">*</div>
-                                        </div>
-                                        <div ng-show="(form.uEmail.$dirty || rc.form.attempted) && form.uEmail.$invalid" class="input-help">
-                                            <ul>
-                                                <li ng-show="form.uEmail.$error.required">Email is required.</li>
-                                                <li ng-show="form.uEmail.$error.email">This is not a valid email.</li>
-                                            </ul>
-                                        </div>
+                                    <div class="required-icon">
+                                        <div class="text">*</div>
                                     </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label">Password</label>
-
-                                    <div class="input-group required-field-block">
-                                        <span class="input-group-addon input-sm"><i class="fa fa-lock"></i></span> <input type="password" placeholder="Password"
-                                                                                                                          name='uPassword'
-                                                                                                                          class="form-control input-sm"
-                                                                                                                          ng-model="userLogin.password"
-                                                                                                                          ng-minlength="6" required>
-
-                                        <div class="required-icon">
-                                            <div class="text">*</div>
-                                        </div>
-                                        <div ng-show="(form.uPassword.$dirty || rc.form.attempted) && form.uPassword.$invalid" class="input-help">
-                                            <ul>
-                                                <li ng-show="form.uPassword.$error.required">Password is required.</li>
-                                                <li ng-show="form.uPassword.$error.minlength">This is not a valid password.</li>
-                                            </ul>
-                                        </div>
+                                    <div ng-show="(form.uEmail.$dirty || rc.form.attempted) && form.uEmail.$invalid" class="input-help">
+                                        <ul>
+                                            <li ng-show="form.uEmail.$error.required">Email is required.</li>
+                                            <li ng-show="form.uEmail.$error.email">This is not a valid email.</li>
+                                        </ul>
                                     </div>
-
                                 </div>
-                            </form>
-                        </div>
-                        <div class="panel-footer text-right">
-                            <button ng-show="noLogin" class="btn btn-success btn-sm" ng-disabled="!form.$valid" ng-click="userLoginFn(userLogin)">Login</button>
-                            <a ui-sref="home.forgot">
-                                <button class="btn btn-warning btn-sm right">Help in Login</button>
-                            </a>
-                        </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Password</label>
+
+                                <div class="input-group required-field-block">
+                                    <span class="input-group-addon input-sm"><i class="fa fa-lock"></i></span> <input type="password"
+                                                                                                                      placeholder="Password"
+                                                                                                                      name='uPassword'
+                                                                                                                      class="form-control input-sm"
+                                                                                                                      ng-model="userLogin.password"
+                                                                                                                      ng-minlength="6" required>
+
+                                    <div class="required-icon">
+                                        <div class="text">*</div>
+                                    </div>
+                                    <div ng-show="(form.uPassword.$dirty || rc.form.attempted) && form.uPassword.$invalid" class="input-help">
+                                        <ul>
+                                            <li ng-show="form.uPassword.$error.required">Password is required.</li>
+                                            <li ng-show="form.uPassword.$error.minlength">This is not a valid password.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <button ng-show="noLogin" class="btn btn-success btn-sm" ng-disabled="!form.$valid" ng-click="userLoginFn(userLogin)">
+                            Login
+                        </button>
+                        <a ui-sref="home.signup" class="pull-right">
+                            <button class="btn btn-success btn-sm right">Sign Up</button>
+                        </a>
+                        <a ui-sref="home.forgot" class="pull-left">
+                            Help in Login?
+                        </a>
                     </div>
                 </div>
-                <div class='row' ng-if="!loggedIn">
-                    <blockquote class="pull-right">
-                        <p>It's easy to start sharing right away.</p>
-                        <small>Introduce yourself &nbsp;&nbsp;&nbsp;<a ui-sref="home.signup">
-                            <button class="btn btn-success btn-xs" tooltip-placement="bottom" tooltip-html-unsafe="Register">Sign Up</button>
-                        </a></small>
-                    </blockquote>
-                    <blockquote class="pull-right">
-                        <p>How does it work?</p>
-                        <small>You share bills with your friends and roommates</small>
-                        <small>Tracks what they owe you</small>
-                        <small>Your friends pay you back</small>
-                        <small>Takes it off their total</small>
-                        <small>You get peace of mind</small>
-                    </blockquote>
-                </div>
-                <div class='row' ng-if="loggedIn">
-                    <p>&nbsp;<br/>&nbsp;</p>
-                </div>
-                <div class='row'>
-                    <blockquote class="pull-right">
-                        <p>Friends not on Share Expense yet?</p>
-                        <small>You can send a bill to anyone with an email address.</small>
-                        <small>They will still see your bills when they sign up.</small>
-                    </blockquote>
-                </div>
             </div>
+        </div>
+        <div class="col-lg-6">
+            <carousel interval="myInterval">
+                <slide ng-repeat="slide in slides" active="slide.active">
+                    <img ng-src="{{slide.image}}" style="margin:auto;">
+                </slide>
+            </carousel>
         </div>
     </div>
 </div>
@@ -109,6 +95,8 @@
 
   ga('create', 'UA-55417878-1', 'auto');
   ga('send', 'pageview');
+
+
 
 
 </script>
