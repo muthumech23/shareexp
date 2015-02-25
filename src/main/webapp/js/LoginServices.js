@@ -16,6 +16,12 @@ loginServices.factory("FlashService", function($rootScope) {
 	getUserTab : function() {
 	    return $rootScope.userTabSelected;
 	},
+	setMonthTab : function(month) {
+        $rootScope.monthTabSelected = month;
+    },
+    getMonthTab : function() {
+        return $rootScope.monthTabSelected;
+    },
 	setGroupTab : function(group) {
 	    $rootScope.groupTabSelected = group;
 	},

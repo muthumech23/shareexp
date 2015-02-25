@@ -3,176 +3,96 @@
         <div class="col-lg-4">
             <div class="bs-component">
 
-                <accordion close-others="true">
-                    <accordion-group>
-                        <accordion-heading>
-                            <i class="fa fa-money"></i> <strong><a ui-sref="billhome.list"> Bills</a></strong>
-                            <a ng-if="usersBillData.length > 1" ui-sref="billhome.add" class="pull-right" tooltip-html-unsafe="Add Bill"><i
-                                    class="fa fa-plus-circle"></i></a>
-                        </accordion-heading>
-                        <ul class="nav nav-pills nav-stacked">
-                            <li ng-class="{'active':isUserSelected(1) }" ng-repeat="userInfo in usersBillData" ng-if="userInfo.userId === loggedUser">
-                                <a
-                                        class="list-group-item text-center" ui-sref="billhome.list"> <Strong>{{userInfo.name}}</strong>
-                                    <span class="pull-left label label-success">Owes You</span>
-                                    <span class="label label-danger pull-right">You Owe</span>
-                                    <br/>
-                                    <span class="label label-success pull-left" ng-repeat='mapEntry in userInfo.amtCurrs'
-                                          ng-if="mapEntry.amountStatus === 'D'"><strong>{{mapEntry.currency}}{{mapEntry.amount|number:2}}</strong></span>
-                                    <span class="label label-danger pull-right" ng-repeat='mapEntry in userInfo.amtCurrs'
-                                          ng-if="mapEntry.amountStatus === 'C'"><strong>{{mapEntry.currency}}{{mapEntry.amount|number:2}}</strong></span>
-                                    <span class="label label-success pull-left" ng-repeat='mapEntry in userInfo.amtCurrs'
-                                          ng-if="mapEntry.amountStatus != 'D'"><strong>0.0</strong></span>
-                                    <span class="label label-danger pull-right" ng-repeat='mapEntry in userInfo.amtCurrs'
-                                          ng-if="mapEntry.amountStatus != 'C'"><strong>0.0</strong></span>
-
-                                    <br/></a></li>
-                        </ul>
-                        <ul class="nav nav-pills nav-stacked">
-                            <li ng-repeat="userInfo in usersBillData" ng-class="{'active': isUserSelected(userInfo.userId) }">
-                                <a class="list-group-item text-center"
-                                   ng-if="userInfo.userId !== loggedUser" ng-click="userBill(userInfo.userId);"> <strong>{{userInfo.name}} </strong><br/>
-
-                                    <span class="pull-left label label-success" ng-repeat='mapEntry1 in userInfo.amtCurrs'
-                                          ng-if="mapEntry1.amountStatus === 'D'"><strong>{{mapEntry1.currency}}{{mapEntry1.amount|number:2}}</strong></span>
-                                    <span class="pull-right label label-danger" ng-repeat='mapEntry1 in userInfo.amtCurrs'
-                                          ng-if="mapEntry1.amountStatus === 'C'"><strong>{{mapEntry1.currency}}{{mapEntry1.amount|number:2}}</strong></span>
-                                    <span class="pull-left label label-success" ng-repeat='mapEntry1 in userInfo.amtCurrs'
-                                          ng-if="mapEntry1.amountStatus != 'D'"><strong>0.0</strong></span>
-                                    <span class="pull-right label label-danger" ng-repeat='mapEntry1 in userInfo.amtCurrs'
-                                          ng-if="mapEntry1.amountStatus != 'C'"><strong>0.0</strong></span>
-
-                                    <br/>
-						<span class="text-muted small text-center" ng-if="userInfo.amtCurrs.length > 0">
-							<button class="text-primary small" tooltip-placement="left" tooltip-html-unsafe="Reminder"
-                                    ng-click="reminderFn(userInfo.userId, loggedUser, userInfo.amtCurrs)">
-                                <i class="fa fa-bell"></i>
-                            </button>
-							<button class="text-primary small" tooltip-placement="right" tooltip-html-unsafe="Settle"
-                                    ng-click="settleUpFn(userInfo.userId, loggedUser, userInfo.amtCurrs)">Settle up
-                            </button>
-						</span><br/>
-                                </a></li>
-                        </ul>
-                    </accordion-group>
-                    <accordion-group>
-                        <accordion-heading>
-                            <i class="fa fa-group"></i> <strong><a ui-sref="billhome.list">Groups</a></strong> <a
-                                ui-sref="billhome.groupadd" class="pull-right" tooltip-html-unsafe="Add Group"><i class="fa fa-plus-circle"></i></a>
-                        </accordion-heading>
-                        <ul class="nav nav-pills nav-stacked">
-                            <li ng-repeat="group in groupList" ng-class="{'active': isGroupSelected(group.id) }"><a class="list-group-item"
-                                                                                                                    ng-click="getGroupBills(group.id)">
-                                <strong>{{group.groupName}} </strong><span class="text-muted pull-right small">{{group.userIds.length}}
-								persons</span> <br/> <span class="text-muted small"><i class="fa fa-envelope"></i> By {{group.email}} </span> <br/>
-						<span class="small"><span class="text-muted">Created on {{group.createDate | date: 'mediumdate'}}</span>
-								<button class="text-primary small pull-right" tooltip-placement="right" tooltip-html-unsafe="Edit Group"
-                                        ng-click="editGroup(group.id)">
-                                    <i class="fa fa-edit"></i>
-                                </button></span>
-                            </a></li>
-                        </ul>
-                    </accordion-group>
-                    <accordion-group>
-                        <accordion-heading>
-                            <i class="fa fa-user"></i> <strong><a ui-sref="billhome.list">Friends</a></strong> <a class="pull-right"
-                                                                                                                  ng-click="AddFriend()"
-                                                                                                                  tooltip-html-unsafe="Add Friends"><i
-                                class="fa fa-plus-circle"></i></a>
-                        </accordion-heading>
-                        <ul class="nav nav-pills nav-stacked">
-                            <li class="list-group-item" ng-repeat="friend in usersBillData" ng-if="loggedUser !== friend.userId"><strong>{{friend.name}} </strong>
-
-                                <span ng-if='friend.amtCurrs.length === 0' class="label label-success pull-right"><strong>0.00</strong></span>
-                                <span class="pull-right label label-success" ng-repeat='mapEntry2 in friend.amtCurrs'
-                                      ng-if="mapEntry2.amountStatus === 'D'"><strong>{{mapEntry2.currency}}{{mapEntry2.amount|number:2}}</strong></span>
-                                <span class="pull-right label label-danger" ng-repeat='mapEntry2 in friend.amtCurrs'
-                                      ng-if="mapEntry2.amountStatus === 'C'"><strong>{{mapEntry2.currency}}{{mapEntry2.amount|number:2}}</strong></span>
-
-                                </br/><span class="small"> <span class="text-muted"><i class="fa fa-envelope"></i> {{friend.email}}</span></span>
-                                <button class="text-primary small pull-right" tooltip-placement="right" tooltip-html-unsafe="Delete"
-                                        ng-click="removeFriend(friend.userId)"
-                                        ng-if="userInfo.keyValues.length === 0">
-                                    <i class="fa fa-trash-o"></i>
-                                </button>
-                            </li>
-                        </ul>
-                    </accordion-group>
-                </accordion>
-                <!--<tabset justified="true">
+                <tabset justified="true">
                     <tab>
-                        <tab-heading><i class="fa fa-money"></i> <strong><a ui-sref="billhome.list"> Bills</a></strong>
-                            <a ng-if="usersBillData.length > 1" ui-sref="billhome.add" class="pull-right" tooltip-html-unsafe="Add Bill"><i
-                                    class="fa fa-plus-circle"></i></a></tab-heading>
-                        <ul class="nav nav-pills nav-stacked">
-                            <li ng-class="{'active':isUserSelected(1) }" ng-repeat="userInfo in usersBillData" ng-if="userInfo.userId === loggedUser">
-                                <a
-                                        class="list-group-item text-center" ui-sref="billhome.list"> <Strong>{{userInfo.name}}</strong>
-                                    <span class="pull-left label label-success">Owes You</span>
-                                    <span class="label label-danger pull-right">You Owe</span>
-                                        <br/>
-                                    <span class="label label-success pull-left" ng-repeat='mapEntry in userInfo.amtCurrs'
-                                          ng-if="mapEntry.amountStatus === 'D'"><strong>{{mapEntry.currency}}{{mapEntry.amount|number:2}}</strong></span>
-                                    <span class="label label-danger pull-right" ng-repeat='mapEntry in userInfo.amtCurrs'
-                                          ng-if="mapEntry.amountStatus === 'C'"><strong>{{mapEntry.currency}}{{mapEntry.amount|number:2}}</strong></span>
-                                    <span class="label label-success pull-left" ng-repeat='mapEntry in userInfo.amtCurrs'
-                                          ng-if="mapEntry.amountStatus != 'D'"><strong>0.0</strong></span>
-                                    <span class="label label-danger pull-right" ng-repeat='mapEntry in userInfo.amtCurrs'
-                                          ng-if="mapEntry.amountStatus != 'C'"><strong>0.0</strong></span>
+                        <tab-heading>
+                            <a class="text text-success" ui-sref="billhome.list"> Bills</a>
+                            <a ng-if="usersBillData.length > 1" ui-sref="billhome.add" class="text text-success pull-right" tooltip-html-unsafe="Add Bill">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </a></tab-heading>
 
-                                    <br/></a></li>
-                        </ul>
-                        <ul class="nav nav-pills nav-stacked">
-                            <li ng-repeat="userInfo in usersBillData" ng-class="{'active': isUserSelected(userInfo.userId) }">
-                                <a class="list-group-item text-center"
-                                   ng-if="userInfo.userId !== loggedUser" ng-click="userBill(userInfo.userId);"> <strong>{{userInfo.name}} </strong><br/>
-
-                                    <span class="pull-left label label-success" ng-repeat='mapEntry1 in userInfo.amtCurrs'
-                                          ng-if="mapEntry1.amountStatus === 'D'"><strong>{{mapEntry1.currency}}{{mapEntry1.amount|number:2}}</strong></span>
-                                    <span class="pull-right label label-danger" ng-repeat='mapEntry1 in userInfo.amtCurrs'
-                                          ng-if="mapEntry1.amountStatus === 'C'"><strong>{{mapEntry1.currency}}{{mapEntry1.amount|number:2}}</strong></span>
-                                    <span class="pull-left label label-success" ng-repeat='mapEntry1 in userInfo.amtCurrs'
-                                          ng-if="mapEntry1.amountStatus != 'D'"><strong>0.0</strong></span>
-                                    <span class="pull-right label label-danger" ng-repeat='mapEntry1 in userInfo.amtCurrs'
-                                          ng-if="mapEntry1.amountStatus != 'C'"><strong>0.0</strong></span>
-
-                                    <br/>
-						<span class="text-muted small text-center" ng-if="userInfo.amtCurrs.length > 0">
-							<button class="text-primary small" tooltip-placement="left" tooltip-html-unsafe="Reminder"
-                                    ng-click="reminderFn(userInfo.userId, loggedUser, userInfo.amtCurrs)">
-                                <i class="fa fa-bell"></i>
-                            </button>
-							<button class="text-primary small" tooltip-placement="right" tooltip-html-unsafe="Settle"
-                                    ng-click="settleUpFn(userInfo.userId, loggedUser, userInfo.amtCurrs)">Settle up
-                            </button>
-						</span><br/>
-                                </a></li>
-                        </ul>
+                        <div id="no-more-tables">
+                            <input type="text" ng-model="searchKeyword"  id="search" value="" class="form-control input-sm" placeholder="Search Bills and Friends"/>
+                            <table class="col-md-12 table table-hover cf">
+                                <thead class="cf">
+                                <tr>
+                                    <th class="col-md-6" >Name</th>
+                                    <th class="col-md-1">Owes U</th>
+                                    <th class="col-md-1">U Owe</th>
+                                    <th class="col-md-4">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-if="userInfo.userId === loggedUser" ng-repeat="userInfo in usersBillData | filter: searchKeyword | orderBy: 'userInfo.name'" ng-class="{'active': isUserSelected(userInfo.userId) }" ng-click="userBill(userInfo.userId);">
+                                    <td data-title="Name" class="small">{{userInfo.name}}</td>
+                                    <td data-title="Owes You " class="small">
+                                        <span class="label label-success" ng-repeat='mapEntry in userInfo.amtCurrs' ng-if="mapEntry.amountStatus === 'D'">
+                                            {{mapEntry.currency}}{{mapEntry.amount|number:2}}
+                                        </span>
+                                    </td>
+                                    <td data-title="You Owe" class="small">
+                                        <span class="label label-danger" ng-repeat='mapEntry in userInfo.amtCurrs' ng-if="mapEntry.amountStatus === 'C'">
+                                            {{mapEntry.currency}}{{mapEntry.amount|number:2}}
+                                        </span>
+                                    </td>
+                                    <td data-title="Action" class="small">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr ng-if="userInfo.userId != loggedUser" ng-repeat="userInfo in usersBillData | filter: searchKeyword | orderBy: 'userInfo.name'" ng-class="{'active': isUserSelected(userInfo.userId) }" ng-click="userBill(userInfo.userId);">
+                                    <td data-title="Name" class="small">{{userInfo.name}}</td>
+                                    <td data-title="Owes You " class="small">
+                                        <span class="label label-success" ng-repeat='mapEntry1 in userInfo.amtCurrs' ng-if="mapEntry1.amountStatus === 'D'">
+                                            {{mapEntry1.currency}}{{mapEntry1.amount|number:2}}
+                                        </span>
+                                    </td>
+                                    <td data-title="You Owe" class="small">
+                                        <span class="label label-danger" ng-repeat='mapEntry1 in userInfo.amtCurrs' ng-if="mapEntry1.amountStatus === 'C'">
+                                            {{mapEntry1.currency}}{{mapEntry1.amount|number:2}}
+                                        </span>
+                                    </td>
+                                    <td data-title="Action" class="small">
+                                        <span ng-if="userInfo.amtCurrs.length > 0">
+							                <a class="label label-primary" tooltip-placement="left" tooltip-html-unsafe="Reminder" ng-click="reminderFn(userInfo.userId, loggedUser, userInfo.amtCurrs)">
+                                                <span class="glyphicon glyphicon-bell"></span>
+                                            </a>
+							                <a tooltip-placement="right" tooltip-html-unsafe="Settle" ng-click="settleUpFn(userInfo.userId, loggedUser, userInfo.amtCurrs)"><span class="label label-primary small">Settle</span>
+                                            </a>
+						                </span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </tab>
                     <tab>
-                        <tab-heading><i class="fa fa-group"></i> <strong><a ui-sref="billhome.list">Groups</a></strong> <a
-                                ui-sref="billhome.groupadd" class="pull-right" tooltip-html-unsafe="Add Group"><i class="fa fa-plus-circle"></i></a>
+                        <tab-heading >
+                            <a class="text text-success" ui-sref="billhome.list">Groups</a>
+                            <a class="text text-success pull-right" ui-sref="billhome.groupadd" tooltip-html-unsafe="Add Group"><span class="glyphicon glyphicon-plus"></span></a>
                         </tab-heading>
+                        <input type="text" ng-model="searchKeyword"  value="" class="form-control input-sm" placeholder="Search Groups"/>
                         <ul class="nav nav-pills nav-stacked">
-                            <li ng-repeat="group in groupList" ng-class="{'active': isGroupSelected(group.id) }"><a class="list-group-item"
+                            <li ng-repeat="group in groupList | filter: searchKeyword | orderBy: 'group.groupName'" ng-class="{'active': isGroupSelected(group.id) }"><a class="list-group-item"
                                                                                                                     ng-click="getGroupBills(group.id)">
                                 <strong>{{group.groupName}} </strong><span class="text-muted pull-right small">{{group.userIds.length}}
 								persons</span> <br/> <span class="text-muted small"><i class="fa fa-envelope"></i> By {{group.email}} </span> <br/>
 						<span class="small"><span class="text-muted">Created on {{group.createDate | date: 'mediumdate'}}</span>
-								<button class="text-primary small pull-right" tooltip-placement="right" tooltip-html-unsafe="Edit Group"
-                                        ng-click="editGroup(group.id)">
-                                    <i class="fa fa-edit"></i>
+
+
+                                <button class="pull-right" tooltip-placement="right" tooltip-html-unsafe="Edit Group" ng-click="editGroup(group.id)">
+                                    <span class="glyphicon glyphicon-edit" ></span>
                                 </button></span>
                             </a></li>
                         </ul>
                     </tab>
                     <tab>
-                        <tab-heading><i class="fa fa-user"></i> <strong><a ui-sref="billhome.list">Friends</a></strong> <a class="pull-right"
-                                                                                                                           ng-click="AddFriend()"
-                                                                                                                           tooltip-html-unsafe="Add Friends"><i
-                                class="fa fa-plus-circle"></i></a></tab-heading>
+                        <tab-heading>
+                            <a class="text text-success" ui-sref="billhome.list">Friends</a>
+                            <a class="text text-success pull-right" ng-click="AddFriend()" tooltip-html-unsafe="Add Friends"><span class="glyphicon glyphicon-plus"></span></a>
+                        </tab-heading>
+                        <input type="text" ng-model="searchKeyword"  value="" class="form-control input-sm" placeholder="Search Friends"/>
                         <ul class="nav nav-pills nav-stacked">
-                            <li class="list-group-item" ng-repeat="friend in usersBillData" ng-if="loggedUser !== friend.userId"><strong>{{friend.name}} </strong>
+                            <li class="list-group-item" ng-repeat="friend in usersBillData | filter: searchKeyword | orderBy: 'friend.name'" ng-if="loggedUser !== friend.userId"><strong>{{friend.name}} </strong>
 
                                 <span ng-if='friend.amtCurrs.length === 0' class="label label-success pull-right"><strong>0.00</strong></span>
                                 <span class="pull-right label label-success" ng-repeat='mapEntry2 in friend.amtCurrs'
@@ -189,7 +109,7 @@
                             </li>
                         </ul>
                     </tab>
-                </tabset>-->
+                </tabset>
             </div>
         </div>
         <div class="col-lg-8">

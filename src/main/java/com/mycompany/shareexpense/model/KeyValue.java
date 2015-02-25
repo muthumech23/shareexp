@@ -9,6 +9,7 @@ public class KeyValue {
 
     private String value1;
 
+    private BigDecimal value2;
 
     public String getKey() {
 
@@ -44,8 +45,6 @@ public class KeyValue {
 
         this.value2 = value2;
     }
-
-    private BigDecimal value2;
 
 }
 

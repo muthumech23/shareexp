@@ -56,11 +56,13 @@
 <script src="js/LoginController.js"></script>
 <script src="js/GroupController.js"></script>
 <script src="js/BillController.js"></script>
+    <script src="js/TrackExpensesController.js"></script>
 
 <script src="js/BillServices.js"></script>
 <script src="js/GroupServices.js"></script>
 <script src="js/LoginServices.js"></script>
 <script src="js/FriendServices.js"></script>
+    <script src="js/TrackExpServices.js"></script>
 
 <script src="js/checklist-model.js"></script>
 <script src="js/directives.js"></script>
@@ -88,7 +90,7 @@
                                                                     tooltip-html-unsafe="Share Expenses"> Share Expenses </a></li>
                         <li ng-class="{'active':isSelected(2) }"><a ui-sref="trackexp"  ng-click="selectTab(2)" tooltip-placement="bottom"
                                                                     tooltip-html-unsafe="Track Expenses"> Track Expenses </a></li>
-                        <li ng-class="{'active':isSelected(5) }"><a ui-sref="home.account" ng-click="selectTab(5)" tooltip-placement="bottom"
+                        <li ng-class="{'active':isSelected(5) }"><a ui-sref="account" ng-click="selectTab(5)" tooltip-placement="bottom"
                                                                     tooltip-html-unsafe="account"> {{loggedUserName}} </a></li>
                         <li><a  tooltip-placement="bottom" tooltip-html-unsafe="logout" href="" ng-click="userLogout()">Logout</a></li>
                     </ul>

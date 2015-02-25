@@ -1,7 +1,7 @@
 'use strict'
 var shareExpApp = angular.module("ShareExpApp", [ 'ui.router', 'ngSanitize', 'ngRoute', 'chieffancypants.loadingBar', 'ngAnimate', 'ngResource',
 	'ngCookies', 'LoginControllers', 'BillControllers', 'GroupControllers', 'LoginServices', 'FriendServices',
-	'BillServices', 'GroupServices', 'ShareExpDirectives', 'ShareExpFilters', 'ui.bootstrap', 'checklist-model' ]);
+	'BillServices', 'GroupServices', 'ShareExpDirectives', 'ShareExpFilters', 'ui.bootstrap', 'checklist-model', 'TrackExpController', 'TrackExpServices' ]);
 
 shareExpApp.config(function($stateProvider, $urlRouterProvider) {
 
@@ -51,7 +51,7 @@ shareExpApp.config(function($stateProvider, $urlRouterProvider) {
 		controller : 'ChgpwdController',
 		templateUrl : 'template/changepwd.html'
     })
-    .state('home.account', {
+    .state('account', {
     		url : '/account',
     		controller : 'UpdateUserController',
     		templateUrl : 'template/account.html'
@@ -136,7 +136,13 @@ shareExpApp.config(function($stateProvider, $urlRouterProvider) {
     })
     .state('trackexp', {
       	url : '/trackexp',
-      	templateUrl : 'template/trackexpense.html'
+      	controller: 'TrackControllerHome',
+      	templateUrl : 'template/trackexpense.html',
+      	resolve : {
+        	       getYearSummary : function(ExpenseServices) {
+                    return ExpenseServices.getYearSummary();
+                   }
+        		}
     })
     .state('logout', {
         url : '/logout',

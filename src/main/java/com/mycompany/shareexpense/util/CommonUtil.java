@@ -263,4 +263,29 @@ public class CommonUtil {
         return ret;
     }
 
+    public static Date getStartOfMonth(int year, int month) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month-1, 1);
+
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        return calendar.getTime();
+    }
+
+    public static Date getEndOfMonth(int year, int month) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month-1, 1);
+
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        return calendar.getTime();
+    }
+
+    public static int getCurrentYear() {
+        return Calendar.getInstance().get(Calendar.YEAR);
+    }
+
+    public static int getCurrentMonth() {
+        return Calendar.getInstance().get(Calendar.MONTH) + 1;
+    }
+
+
 }

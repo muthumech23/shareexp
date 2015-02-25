@@ -2065,7 +2065,7 @@ table {
     background-color: transparent;
 }
 th {
-    text-align: left;
+    text-align: center;
 }
 .table {
     width: 100%;
@@ -2206,6 +2206,29 @@ table th[class*="col-"] {
 .table-hover > tbody > tr.info:hover > th {
     background-color: #258cd1;
 }
+
+.table > thead > tr > td.active,
+.table > tbody > tr > td.active,
+.table > tfoot > tr > td.active,
+.table > thead > tr > th.active,
+.table > tbody > tr > th.active,
+.table > tfoot > tr > th.active,
+.table > thead > tr.active > td,
+.table > tbody > tr.active > td,
+.table > tfoot > tr.active > td,
+.table > thead > tr.active > th,
+.table > tbody > tr.active > th,
+.table > tfoot > tr.active > th {
+    background-color: lightgoldenrodyellow;
+}
+.table-hover > tbody > tr > td.active:hover,
+.table-hover > tbody > tr > th.active:hover,
+.table-hover > tbody > tr.active:hover > td,
+.table-hover > tbody > tr:hover > .active,
+.table-hover > tbody > tr.active:hover > th {
+    background-color: lightgoldenrodyellow;
+}
+
 .table > thead > tr > td.warning,
 .table > tbody > tr > td.warning,
 .table > tfoot > tr > td.warning,
@@ -3676,7 +3699,6 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     float: none;
 }
 .nav-tabs.nav-justified > li > a {
-    text-align: center;
     margin-bottom: 5px;
 }
 .nav-tabs.nav-justified > .dropdown .dropdown-menu {
@@ -3699,7 +3721,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-tabs.nav-justified > .active > a,
 .nav-tabs.nav-justified > .active > a:hover,
 .nav-tabs.nav-justified > .active > a:focus {
-    border: 1px solid #ecf0f1;
+    border-bottom-color: red;
+    border-bottom-width: 2px;
+    margin-bottom: 15px;
 }
 @media (min-width: 768px) {
     .nav-tabs.nav-justified > li > a {
@@ -3743,7 +3767,6 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     float: none;
 }
 .nav-justified > li > a {
-    text-align: center;
     margin-bottom: 5px;
 }
 .nav-justified > .dropdown .dropdown-menu {
@@ -4484,7 +4507,6 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
     line-height: 1;
     color: #ffffff;
     text-align: center;
-    white-space: nowrap;
     vertical-align: baseline;
     border-radius: .25em;
     margin-left: 5px;
@@ -4544,7 +4566,8 @@ a.label:focus {
 .label-danger[href]:focus {
     background-color: #d62c1a;
 }
-.badge {
+
+.badgeold {
     display: inline-block;
     min-width: 10px;
     padding: 3px 7px;
@@ -4556,21 +4579,105 @@ a.label:focus {
     white-space: nowrap;
     text-align: center;
     border-radius: 2px;
-    
+
 }
+
+.badge {
+  display: inline-block;
+  padding: 2px 4px;
+  font-size: 11px;
+  line-height: 14px;
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+  vertical-align: baseline;
+  background-color: #999999;
+}
+.badge {
+  padding-right: 9px;
+  padding-left: 9px;
+  -webkit-border-radius: 9px;
+     -moz-border-radius: 9px;
+          border-radius: 9px;
+}
+
 .badge:empty {
-    display: none;
+  display: none;
 }
+
+a.badge:hover {
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.badge-important {
+  background-color: #b94a48;
+}
+
+.badge-important[href] {
+  background-color: #953b39;
+}
+
+.badge-warning {
+  background-color: #f89406;
+}
+
+.badge-warning[href] {
+  background-color: #c67605;
+}
+
+.badge-success {
+  background-color: #468847;
+}
+
+.badge-success[href] {
+  background-color: #128f76;
+}
+
+.badge-info {
+  background-color: #3a87ad;
+}
+
+.badge-info[href] {
+  background-color: #2d6987;
+}
+
+.badge-inverse {
+  background-color: #333333;
+}
+
+.badge-inverse[href] {
+  background-color: #1a1a1a;
+}
+
 .btn .badge {
-    position: relative;
-    top: -1px;
+  position: relative;
+  top: -1px;
 }
+
 .btn-xs .badge {
     top: 0;
     padding: 1px 5px;
 }
-a.badge:hover,
-a.badge:focus {
+
+.btn-mini .badge {
+  top: 0;
+}
+
+.badgeold:empty {
+    display: none;
+}
+.btn .badgeold {
+    position: relative;
+    top: -1px;
+}
+.btn-xs .badgeold {
+    top: 0;
+    padding: 1px 5px;
+}
+a.badgeold:hover,
+a.badgeold:focus {
     color: #ffffff;
     text-decoration: none;
     cursor: pointer;
@@ -6281,7 +6388,6 @@ button.close {
 }
 table a:not(.btn),
 .table a:not(.btn) {
-    text-decoration: underline;
 }
 table .success,
 .table .success,
@@ -6776,4 +6882,67 @@ form.ng-invalid .btn[disabled], form.ng-valid .btn {
 .timeline .timeline-movement .timeline-item .timeline-panel.debits .timeline-panel-ul span.importo {
   color: #e2001a;
   font-size: 1.3em;
+}
+
+@media only screen and (max-width: 768px) {
+
+    /* Force table to not be like tables anymore */
+	#no-more-tables table,
+	#no-more-tables thead,
+	#no-more-tables tbody,
+	#no-more-tables th,
+	#no-more-tables td,
+	#no-more-tables tr {
+		display: block;
+	}
+
+	/* Hide table headers (but not display: none;, for accessibility) */
+	#no-more-tables thead tr {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+
+	#no-more-tables tr { border: 1px solid #ccc; }
+
+	#no-more-tables td {
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee;
+		position: relative;
+		padding-left: 50%;
+		white-space: normal;
+		text-align:left;
+	}
+
+	#no-more-tables td:before {
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%;
+		padding-right: 10px;
+		white-space: nowrap;
+		text-align:left;
+		font-weight: bold;
+	}
+
+	/*
+	Label the data
+	*/
+	#no-more-tables td:before { content: attr(data-title); }
+}
+
+.stylish-input-group .input-group-addon{
+    background: white !important;
+}
+.stylish-input-group .form-control{
+	border-right:0;
+	box-shadow:0 0 0;
+	border-color:#ccc;
+}
+.stylish-input-group button{
+    border:0;
+    background:transparent;
 }

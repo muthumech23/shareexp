@@ -492,6 +492,7 @@ public class BillServiceImpl implements BillService {
                 try {
 
                     subject = env.getProperty("mail.template.bill.settle.owner.subject");
+                    subject = subject.replaceAll("<<username>>", userSettled + "");
 
                     emailbody = env.getProperty("mail.template.bill.settle.owner.body");
                     emailbody = emailbody.replaceAll("<<billamount>>", billInput.getAmount() + "");

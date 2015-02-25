@@ -113,7 +113,7 @@
         </form>
     </div>
     <div class="panel-footer text-right">
-		<span style="float: left;"><input type="checkbox" ng-model="bill.isEmailRequired" value="{{bill.isEmailRequired}} " required> do you
+		<span style="float: left;"><input type="checkbox" ng-model="bill.emailRequired" value="{{bill.emailRequired}} " required> do you
 			prefer to send email for bill?</span>
         <button class="btn btn-success btn-sm" ng-disabled="form.$invalid" ng-click="!isOneSelectedFn() && saveBill(bill)">Save</button>
         <span> </span><a ui-sref="billhome.list">

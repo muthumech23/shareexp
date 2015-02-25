@@ -2,6 +2,7 @@ package com.mycompany.shareexpense.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -76,6 +77,7 @@ public class Bill extends AbstractModal {
     /**
      * DOCUMENT ME!
      */
+    @Transient
     private boolean emailRequired;
 
     /**
