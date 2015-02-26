@@ -14,23 +14,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author AH0661755
  */
 @Document(collection = "categories")
-@CompoundIndexes({
-        @CompoundIndex(name = "userCategory", def = "{'userId' : 1, 'category' : 1}", unique = true)
-})
 public class Category extends AbstractModal {
 
+    @Indexed
     private String userId;
 
-    /**
-     * DOCUMENT ME!
-     */
     private String category;
 
     @Override
     public String toString() {
-
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-
     }
 
     public String getCategory() {

@@ -4,6 +4,12 @@ var trackExpController = angular.module('TrackExpController', []);
 
 trackExpController.controller('TrackControllerHome', function($scope, $filter, ExpenseServices, FlashService, cfpLoadingBar, flash, SessionService, getYearSummary) {
 
+	$scope.status = {
+        isFirstOpen: true,
+        isSummaryOpen: true,
+        isFirstDisabled: false
+    };
+
     $scope.yearSummaryData = getYearSummary;
 
     $scope.currentDate = new Date();
@@ -15,8 +21,8 @@ trackExpController.controller('TrackControllerHome', function($scope, $filter, E
     $scope.categories = [];
     $scope.budget = [];
     $scope.expense = [];
-	$scope.income = [];
-	$scope.allIncomes = [];
+    $scope.income = [];
+    $scope.allIncomes = [];
     $scope.allExpenses = [];
 
     $scope.expensesByCategory = [];
@@ -86,28 +92,28 @@ trackExpController.controller('TrackControllerHome', function($scope, $filter, E
     }
 
     var currentDayIncome = function(dateEntered) {
-            cfpLoadingBar.start();
-            var getIncome = ExpenseServices.getIncome().getIncome({
-                Id: loggedUserId
-            }, dateEntered).$promise;
+        cfpLoadingBar.start();
+        var getIncome = ExpenseServices.getIncome().getIncome({
+            Id: loggedUserId
+        }, dateEntered).$promise;
 
-            getIncome
-                .then(function(response) {
-                        console.log("Inside get income:" + response);
-                        $scope.income = response;
-                        cfpLoadingBar.complete();
-                    }, function(response) {
-                        $scope.errorresource = response.data;
-                        flash.pop({
-                            title: '',
-                            body: $scope.errorresource.message,
-                            type: 'alert-danger'
-                        });
-                        cfpLoadingBar.complete();
-                    }
+        getIncome
+            .then(function(response) {
+                    console.log("Inside get income:" + response);
+                    $scope.income = response;
+                    cfpLoadingBar.complete();
+                }, function(response) {
+                    $scope.errorresource = response.data;
+                    flash.pop({
+                        title: '',
+                        body: $scope.errorresource.message,
+                        type: 'alert-danger'
+                    });
+                    cfpLoadingBar.complete();
+                }
 
-                );
-        }
+            );
+    }
 
     var getCurrentMonthAllExpenses = function(currentYear, currentMonth) {
 
@@ -137,28 +143,28 @@ trackExpController.controller('TrackControllerHome', function($scope, $filter, E
 
     var getCurrentMonthAllIncomes = function(dateEntered) {
 
-            cfpLoadingBar.start();
-                        var getIncomes = ExpenseServices.getAllIncomes().getAllIncomes({
-                            Id: loggedUserId
-                        }, dateEntered).$promise;
+        cfpLoadingBar.start();
+        var getIncomes = ExpenseServices.getAllIncomes().getAllIncomes({
+            Id: loggedUserId
+        }, dateEntered).$promise;
 
-                        getIncomes
-                            .then(function(response) {
-                                    console.log("Inside get income:" + response);
-                                    $scope.allIncomes = response;
-                                    cfpLoadingBar.complete();
-                                }, function(response) {
-                                    $scope.errorresource = response.data;
-                                    flash.pop({
-                                        title: '',
-                                        body: $scope.errorresource.message,
-                                        type: 'alert-danger'
-                                    });
-                                    cfpLoadingBar.complete();
-                                }
+        getIncomes
+            .then(function(response) {
+                    console.log("Inside get income:" + response);
+                    $scope.allIncomes = response;
+                    cfpLoadingBar.complete();
+                }, function(response) {
+                    $scope.errorresource = response.data;
+                    flash.pop({
+                        title: '',
+                        body: $scope.errorresource.message,
+                        type: 'alert-danger'
+                    });
+                    cfpLoadingBar.complete();
+                }
 
-                            );
-        }
+            );
+    }
 
     var getCurrentMonthAllExpensesByCategory = function(currentYear, currentMonth) {
 
@@ -199,8 +205,8 @@ trackExpController.controller('TrackControllerHome', function($scope, $filter, E
     }
 
     $scope.getAllIncome = function() {
-            getCurrentMonthAllIncomes(currentLongDate);
-        }
+        getCurrentMonthAllIncomes(currentLongDate);
+    }
 
     $scope.getAllExpenses = function(year, month) {
         getCurrentMonthAllExpenses(year, month);
@@ -217,20 +223,20 @@ trackExpController.controller('TrackControllerHome', function($scope, $filter, E
     }
 
     $scope.getIncome = function(dateEntered) {
-            currentDayIncome(dateEntered);
-        }
+        currentDayIncome(dateEntered);
+    }
 
     $scope.functionGetExpenses = function() {
-        console.log($scope.track.year +'|'+ $scope.track.month)
+        console.log($scope.track.year + '|' + $scope.track.month)
         getCurrentMonthAllExpenses($scope.track.year, $scope.track.month);
         getCurrentMonthAllExpensesByCategory($scope.track.year, $scope.track.month);
     }
 
     $scope.functionMonthExpenses = function(month) {
-            console.log($scope.track.year +'|'+ month)
-            getCurrentMonthAllExpenses($scope.track.year, month);
-            getCurrentMonthAllExpensesByCategory($scope.track.year, month);
-        }
+        console.log($scope.track.year + '|' + month)
+        getCurrentMonthAllExpenses($scope.track.year, month);
+        getCurrentMonthAllExpensesByCategory($scope.track.year, month);
+    }
 
     $scope.getCategory = function() {
 
@@ -366,28 +372,28 @@ trackExpController.controller('TrackControllerHome', function($scope, $filter, E
 
     $scope.saveIncome = function(incomeToSave) {
 
-            cfpLoadingBar.start();
-            console.log("Inside save expenseToSave:" + incomeToSave);
-            var incomeAdd = ExpenseServices.saveIncome().saveIncome(incomeToSave).$promise;
+        cfpLoadingBar.start();
+        console.log("Inside save expenseToSave:" + incomeToSave);
+        var incomeAdd = ExpenseServices.saveIncome().saveIncome(incomeToSave).$promise;
 
-            incomeAdd.then(function(response) {
-                    flash.pop({
-                        title: '',
-                        body: "Expense Added successfully.",
-                        type: 'alert-success'
-                    });
-                    cfpLoadingBar.complete();
-                }, function(response) {
-                    $scope.errorresource = response.data;
-                    flash.pop({
-                        title: '',
-                        body: $scope.errorresource.message,
-                        type: 'alert-danger'
-                    });
-                    cfpLoadingBar.complete();
-                }
+        incomeAdd.then(function(response) {
+                flash.pop({
+                    title: '',
+                    body: "Expense Added successfully.",
+                    type: 'alert-success'
+                });
+                cfpLoadingBar.complete();
+            }, function(response) {
+                $scope.errorresource = response.data;
+                flash.pop({
+                    title: '',
+                    body: $scope.errorresource.message,
+                    type: 'alert-danger'
+                });
+                cfpLoadingBar.complete();
+            }
 
-            );
-        };
+        );
+    };
 
 });

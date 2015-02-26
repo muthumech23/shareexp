@@ -54,20 +54,20 @@ trackExpServices.factory('ExpenseServices', function($resource, SessionService, 
             });
         },
         getIncome: function() {
-                    return $resource("api/trackexp/getincome/:Id", {}, {
-                        getIncome: {
-                            method: 'POST'
-                        }
-                    });
-                },
-                getAllIncomes: function() {
-                                    return $resource("api/trackexp/getallincomes/:Id", {}, {
-                                        getAllIncomes: {
-                                            method: 'POST',
-                                            isArray: true
-                                        }
-                                    });
-                                },
+            return $resource("api/trackexp/getincome/:Id", {}, {
+                getIncome: {
+                    method: 'POST'
+                }
+            });
+        },
+        getAllIncomes: function() {
+            return $resource("api/trackexp/getallincomes/:Id", {}, {
+                getAllIncomes: {
+                    method: 'POST',
+                    isArray: true
+                }
+            });
+        },
         getExpensesByCategory: function() {
             return $resource("api/trackexp/getexpensesbycategory/:year/:month", {}, {
                 getExpensesByCategory: {
@@ -105,11 +105,11 @@ trackExpServices.factory('ExpenseServices', function($resource, SessionService, 
             });
         },
         saveIncome: function() {
-                    return $resource("api/trackexp/saveincome", {}, {
-                        saveIncome: {
-                            method: 'POST'
-                        }
-                    });
+            return $resource("api/trackexp/saveincome", {}, {
+                saveIncome: {
+                    method: 'POST'
                 }
+            });
+        }
     };
 });

@@ -25,11 +25,12 @@ shareExpDirectives.directive('remove', function() {
 shareExpDirectives.directive('tooltip', function() {
     return {
         restrict: 'A',
-        link: function(scope, element, attrs)
-        {
+        link: function(scope, element, attrs) {
             $(element)
-                    .attr('title', scope.$eval(attrs.tooltip))
-                    .tooltip({placement: "bottom"});
+                .attr('title', scope.$eval(attrs.tooltip))
+                .tooltip({
+                    placement: "bottom"
+                });
         }
     }
 });
@@ -37,16 +38,27 @@ shareExpDirectives.directive('tooltip', function() {
 shareExpDirectives.directive('datepickerse', function() {
     return {
         restrict: 'A',
-        require : 'ngModel',
-        link : function (scope, element, attrs, ngModelCtrl) {
-            $(function(){
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModelCtrl) {
+            $(function() {
                 element.datepicker({
-                    dateFormat:'MM dd, yy',
-                    onSelect:function (date) {
+                    dateFormat: 'MM dd, yy',
+                    onSelect: function(date) {
                         ngModelCtrl.$setViewValue(date);
                         scope.$apply();
                     }
                 });
+            });
+        }
+    }
+});
+
+shareExpDirectives.directive('disableAnimation', function($animate){
+    return {
+        restrict: 'A',
+        link: function($scope, $element, $attrs){
+            $attrs.$observe('disableAnimation', function(value){
+                $animate.enabled(!value, $element);
             });
         }
     }

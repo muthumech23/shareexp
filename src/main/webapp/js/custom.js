@@ -1,4 +1,7 @@
 'use strict'
+
+$("#carousel").carousel();
+
 $(function() {
     $('.required-icon').tooltip({
         placement: 'left',

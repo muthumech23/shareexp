@@ -15,8 +15,6 @@ public interface BudgetRepository extends CrudRepository<Budget, String> {
 
     public List<Budget> findByUserId(String userId);
 
-
-
 }
 
 /*

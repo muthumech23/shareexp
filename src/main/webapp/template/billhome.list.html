@@ -34,7 +34,7 @@
                 </tr>
                 </thead>
                 <tbody>
-            <tr ng-repeat="bill in bills | filter: searchKeyword | orderBy: 'date' : true | offset: currentPage * itemsPerPage | limitTo: itemsPerPage" >
+            <tr ng-repeat="bill in bills | filter: searchKeyword | orderBy: 'date' : true | offset: currentPage * itemsPerPage | limitTo: itemsPerPage" class="text-center">
                 <td data-title="Date" class="small"> {{bill.date| date: 'MMM dd, y'}}</td>
                 <td data-title="Description" class="small">{{bill.description}}</td>
                 <td data-title="Amount">{{bill.currency}}{{bill.amount|number:2}}</td>

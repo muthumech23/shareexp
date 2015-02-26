@@ -22,6 +22,8 @@ public class YearSummaryDto extends AbstractModal {
 
     private BigDecimal incomeAmount;
 
+    private BigDecimal budgetAmount;
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
@@ -57,5 +59,13 @@ public class YearSummaryDto extends AbstractModal {
 
     public void setIncomeAmount(BigDecimal incomeAmount) {
         this.incomeAmount = incomeAmount;
+    }
+
+    public BigDecimal getBudgetAmount() {
+        return budgetAmount;
+    }
+
+    public void setBudgetAmount(BigDecimal budgetAmount) {
+        this.budgetAmount = budgetAmount;
     }
 }

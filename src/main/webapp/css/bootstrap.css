@@ -4368,6 +4368,22 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .breadcrumb > .active {
     color: #95a5a6;
 }
+
+.inlinelist {
+    list-style: none;
+    border-radius: 4px;
+}
+.inlinelist > li {
+    display: inline-block;
+}
+.inlinelist > li + li:before {
+    content: "/\00a0";
+    padding: 0 5px;
+    color: #cccccc;
+}
+.inlinelist > .active {
+    color: #95a5a6;
+}
 .pagination {
     display: inline-block;
     padding-left: 0;
@@ -6934,6 +6950,158 @@ form.ng-invalid .btn[disabled], form.ng-valid .btn {
 	#no-more-tables td:before { content: attr(data-title); }
 }
 
+
+@media only screen and (max-width: 768px) {
+
+    /* Force table to not be like tables anymore */
+	#no-more-tables1 table,
+	#no-more-tables1 thead,
+	#no-more-tables1 tbody,
+	#no-more-tables1 th,
+	#no-more-tables1 td,
+	#no-more-tables1 tr {
+		display: block;
+	}
+
+	/* Hide table headers (but not display: none;, for accessibility) */
+	#no-more-tables1 thead tr {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+
+	#no-more-tables1 tr { border: 1px solid #ccc; }
+
+	#no-more-tables1 td {
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee;
+		position: relative;
+		padding-left: 50%;
+		white-space: normal;
+		text-align:left;
+	}
+
+	#no-more-tables1 td:before {
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%;
+		padding-right: 10px;
+		white-space: nowrap;
+		text-align:left;
+		font-weight: bold;
+	}
+
+	/*
+	Label the data
+	*/
+	#no-more-tables1 td:before { content: attr(data-title); }
+}
+
+
+@media only screen and (max-width: 768px) {
+
+    /* Force table to not be like tables anymore */
+	#no-more-tables2 table,
+	#no-more-tables2 thead,
+	#no-more-tables2 tbody,
+	#no-more-tables2 th,
+	#no-more-tables2 td,
+	#no-more-tables2 tr {
+		display: block;
+	}
+
+	/* Hide table headers (but not display: none;, for accessibility) */
+	#no-more-tables2 thead tr {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+
+	#no-more-tables2 tr { border: 1px solid #ccc; }
+
+	#no-more-tables2 td {
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee;
+		position: relative;
+		padding-left: 50%;
+		white-space: normal;
+		text-align:left;
+	}
+
+	#no-more-tables2 td:before {
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%;
+		padding-right: 10px;
+		white-space: nowrap;
+		text-align:left;
+		font-weight: bold;
+	}
+
+	/*
+	Label the data
+	*/
+	#no-more-tables2 td:before { content: attr(data-title); }
+}
+
+@media only screen and (max-width: 768px) {
+
+    /* Force table to not be like tables anymore */
+	#no-more-tables3 table,
+	#no-more-tables3 thead,
+	#no-more-tables3 tbody,
+	#no-more-tables3 th,
+	#no-more-tables3 td,
+	#no-more-tables3 tr {
+		display: block;
+	}
+
+	/* Hide table headers (but not display: none;, for accessibility) */
+	#no-more-tables3 thead tr {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+
+	#no-more-tables3 tr { border: 1px solid #ccc; }
+
+	#no-more-tables3 td {
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee;
+		position: relative;
+		padding-left: 50%;
+		white-space: normal;
+		text-align:left;
+	}
+
+	#no-more-tables3 td:before {
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%;
+		padding-right: 10px;
+		white-space: nowrap;
+		text-align:left;
+		font-weight: bold;
+	}
+
+	/*
+	Label the data
+	*/
+	#no-more-tables3 td:before { content: attr(data-title); }
+}
+
 .stylish-input-group .input-group-addon{
     background: white !important;
 }
@@ -6945,4 +7113,40 @@ form.ng-invalid .btn[disabled], form.ng-valid .btn {
 .stylish-input-group button{
     border:0;
     background:transparent;
+}
+
+.chart {
+    position: relative;
+    min-height: 250px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.carousel {
+    height: 500px;
+    margin-bottom: 60px;
+}
+/* Since positioning the image, we need to help out the caption */
+ .carousel-caption {
+    z-index: 10;
+}
+/* Declare heights because of positioning of img element */
+ .carousel .item {
+    width: 100%;
+    height: 500px;
+    background-color: #777;
+}
+.carousel-inner > .item > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    height: 500px;
+}
+@media (min-width: 768px) {
+    .carousel-caption p {
+        margin-bottom: 20px;
+        font-size: 21px;
+        line-height: 1.4;
+    }
 }

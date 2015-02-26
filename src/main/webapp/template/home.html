@@ -1,12 +1,9 @@
 <div class="bs-docs-section">
     <div class="row">
-        <div class="col-lg-9">
-            <div class="bs-component">
-                <p class="lead text-danger">Share Expense takes the trouble out of sharing expenses with friends, with roommates, with anyone.</p>
-            </div>
-        </div>
-    </div>
-    <div class="row">
+        <ul class="breadcrumb">
+            <li>Home</li>
+        </ul>
+    </div>    <div class="row">
         <div ui-view>
             <div class="col-lg-6" ng-if="!loggedIn" ng-show="!loggedEmail">
                 <div class="panel panel-success">
@@ -68,7 +65,7 @@
                             Login
                         </button>
                         <a ui-sref="home.signup" class="pull-right">
-                            <button class="btn btn-success btn-sm right">Sign Up</button>
+                            <button class="btn btn-warning btn-sm right">Sign Up</button>
                         </a>
                         <a ui-sref="home.forgot" class="pull-left">
                             Help in Login?
@@ -78,9 +75,13 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <carousel interval="500">
+            <carousel interval="myInterval" disable-animation="true">
                 <slide ng-repeat="slide in slides" active="slide.active">
-                    <img ng-src="{{slide.image}}">
+                    <img ng-src="{{slide.image}}" style="margin:auto;">
+                    <div class="carousel-caption">
+                        <h4>Slide {{$index}}</h4>
+                        <p>{{slide.text}}</p>
+                    </div>
                 </slide>
             </carousel>
         </div>

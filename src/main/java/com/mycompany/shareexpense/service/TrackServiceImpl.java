@@ -196,6 +196,15 @@ public class TrackServiceImpl implements TrackExpService {
 
             int year = CommonUtil.getCurrentYear();
             yearSummaryDtos = new ArrayList<>(12);
+            List<Budget> budgetList = budgetRepository.findByUserId(userId);
+
+            BigDecimal budgetAmount = BigDecimal.ZERO;
+
+            for(Budget budget: budgetList){
+                for(KeyValue keyValue: budget.getCategories()){
+                    budgetAmount = budgetAmount.add(keyValue.getValue2());
+                }
+            }
 
             for(int i = 1; i <= 12; i++){
 
@@ -223,6 +232,8 @@ public class TrackServiceImpl implements TrackExpService {
                 yearSummaryDto.setIncomeAmount(incomeAmount);
 
                 yearSummaryDto.setSavingAmount(incomeAmount.subtract(expenseAmount));
+
+                yearSummaryDto.setBudgetAmount(budgetAmount);
                 yearSummaryDtos.add(yearSummaryDto);
             }
 

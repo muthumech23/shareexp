@@ -26,6 +26,8 @@ public class CommonUtil {
 
     private static Logger log = Logger.getLogger(CommonUtil.class);
 
+    public static String[] months = {"months", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
     public static boolean checkStringNullBlank(String string) {
 
         if (string == null || string.isEmpty() || string.trim().equalsIgnoreCase("")) {

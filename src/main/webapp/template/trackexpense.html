@@ -1,106 +1,92 @@
 <div class="bs-docs-section">
     <div class="row">
-        <div class="bs-component">
-            <!--<form class="form-horizontal" name="form" novalidate rc-attempt>
-                <div class="form-group">
-
-                    <div class="form-group col-sm-1">
-                        <input type="text" ng-model="track.year" class="form-control input-sm col-lg-1" name="uYear"
-                               ng-change="functionDayCal(track)"/>
-
-                        <div ng-show="(form.uYear.$dirty || rc.form.attempted) && form.uYear.$invalid"
-                             class="input-help">
-                            <ul>
-                                <li ng-show="form.uYear.$error.required">Year is required.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-inline">
-                        <label class="radio-inline col-sm-1" ng-repeat="month in months"> <input type="radio"
-                                                                                                 ng-model="track.month"
-                                                                                                 value="{{month.mm}} "
-                                                                                                 ng-change="functionDayCal(track)"
-                                                                                                 required>
-                            {{month.name}}
-                        </label>
-                    </div>
-                </div>
-            </form>-->
-        </div>
+        <ul class="breadcrumb">
+            <li>Track Expenses</li>
+        </ul>
     </div>
     <div class="row">
-        <div id="no-more-tables">
-            <table class="table text-center table-bordered table-hover cf">
-                <thead class="cf">
-                <tr class="warning">
-                    <th data-title="Month">{{currentYear}}</th>
-                    <th data-title="Month" ng-repeat="month in months">{{month.name}}</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td data-title="Income">Income</td>
-                    <td ng-repeat="rowData in yearSummaryData">{{rowData.incomeAmount}}</td>
-                </tr>
-                <tr>
-                    <td data-title="Spending">Spending</td>
-                    <td ng-repeat="rowData in yearSummaryData">{{rowData.expenseAmount}}</td>
-                </tr>
-                <tr>
-                    <td data-title="Saving">Saving</td>
-                    <td ng-repeat="rowData in yearSummaryData"><Strong>
-                        <span ng-if="rowData.savingAmount < 0" class="text text-danger">{{rowData.savingAmount}}</span>
-                        <span ng-if="rowData.savingAmount >= 0" class="text text-success">{{rowData.savingAmount}}</span></Strong>
-                    </td>
+        <accordion close-others="true">
+            <accordion-group class="panel-success" is-open="status.isSummaryOpen">
+                <accordion-heading>Year Summary<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.isSummaryOpen, 'glyphicon-chevron-right': !status.isSummaryOpen}"></i></accordion-heading>
+                <div id="no-more-tables">
+                    <table class="table text-center table-bordered table-hover cf">
+                        <thead class="cf">
+                        <tr>
+                            <th data-title="Month">{{currentYear}}</th>
+                            <th data-title="Month" ng-repeat="month in months">{{month.name}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td data-title="Income">Income</td>
+                            <td ng-repeat="rowData in yearSummaryData">{{rowData.incomeAmount}}</td>
+                        </tr>
+                        <tr>
+                            <td data-title="Spending">Spending</td>
+                            <td ng-repeat="rowData in yearSummaryData">{{rowData.expenseAmount}}</td>
+                        </tr>
+                        <tr>
+                            <td data-title="Saving">Saving</td>
+                            <td ng-repeat="rowData in yearSummaryData"><Strong>
+                                <span ng-if="rowData.savingAmount < 0" class="text text-danger">{{rowData.savingAmount}}</span>
+                                <span ng-if="rowData.savingAmount >= 0" class="text text-success">{{rowData.savingAmount}}</span></Strong>
+                            </td>
 
-                </tr>
-                </tbody>
-            </table>
-        </div>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </accordion-group>
+        </accordion>
     </div>
     <div class="row">
         <div class="col-lg-4">
             <tabset justified="true">
                 <tab>
                     <tab-heading><a class="text text-success" ng-click="getExpenseCurrent()"> Expenses</a></tab-heading>
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-lg-6 control-label">Expense Date</label>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-lg-6 control-label">Expense Date</label>
 
-                            <div class="col-lg-6">
-                                <input type="text" datepickerse ng-model="expense.expenseDate1" class="form-control input-sm"
-                                       placeholder="Expense Date" name="uExpensedate" ng-change="getExpense(expense.expenseDate1)"/>
-                            </div>
+                                    <div class="col-lg-6">
+                                        <input type="text" datepickerse ng-model="expense.expenseDate1" class="form-control input-sm"
+                                               placeholder="Expense Date" name="uExpensedate" ng-change="getExpense(expense.expenseDate1)"/>
+                                    </div>
+                                </div>
+                                <input type="hidden" value="{{expense.userId}}"/>
+
+                                <div class="form-group" ng-repeat="category in expense.categories">
+                                    <label class="col-lg-8 control-label">{{category.key}}</label>
+                                    <input type="hidden" value="{{category.id}}"/>
+
+                                    <div class="col-lg-4">
+                                        <input type="text" class="form-control input-sm" ng-model="category.value2" placeholder="0.0">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-success btn-xs" ng-click="saveExpense(expense)">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <input type="hidden" value="{{expense.userId}}"/>
-
-                        <div class="form-group" ng-repeat="category in expense.categories">
-                            <label class="col-lg-8 control-label">{{category.key}}</label>
-                            <input type="hidden" value="{{category.id}}"/>
-
-                            <div class="col-lg-4">
-                                <input type="text" class="form-control input-sm" ng-model="category.value2" placeholder="0.0">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-success btn-xs" ng-click="saveExpense(expense)">Submit</button>
-                            </div>
-                        </div>
-                    </form>
-
+                    </div>
                 </tab>
                 <tab>
                     <tab-heading><a class="text text-success" ng-click="getCategory()"> Category</a></tab-heading>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" ng-model="addCate.category" class="form-control input-sm" name="uCategory"
-                                   placeholder="Add Category" required>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" ng-model="addCate.category" class="form-control input-sm" name="uCategory"
+                                           placeholder="Add Category" required>
                                     <span class="input-group-btn">
                                         <button class="btn btn-success btn-sm" type="button" ng-click="addCategory(addCate)">Add</button>
                                     </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <ul class="list-group">
@@ -112,61 +98,70 @@
                 </tab>
                 <tab>
                     <tab-heading><a class="text text-success" ng-click="getBudget()"> Budget</a></tab-heading>
-                    <form class="form-horizontal">
-                        <input type="hidden" value="{{budget.userId}}"/>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <form class="form-horizontal">
+                                <input type="hidden" value="{{budget.userId}}"/>
 
-                        <div class="form-group" ng-repeat="category in budget.categories">
-                            <label class="col-lg-8 control-label">{{category.key}}</label>
-                            <input type="hidden" value="{{category.id}}"/>
+                                <div class="form-group" ng-repeat="category in budget.categories">
+                                    <label class="col-lg-8 control-label">{{category.key}}</label>
+                                    <input type="hidden" value="{{category.id}}"/>
 
-                            <div class="col-lg-4">
-                                <input type="text" class="form-control input-sm" ng-model="category.value2" placeholder="0.0">
-                            </div>
+                                    <div class="col-lg-4">
+                                        <input type="text" class="form-control input-sm" ng-model="category.value2" placeholder="0.0">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-success btn-xs" ng-click="saveBudget(budget)">Save</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-success btn-xs" ng-click="saveBudget(budget)">Save</button>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
 
                 </tab>
 
                 <tab>
                     <tab-heading><a class="text text-success" ng-click="getAllIncome()"> Income</a></tab-heading>
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-lg-6 control-label">Income Date</label>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-lg-6 control-label">Income Date</label>
 
-                            <div class="col-lg-6">
-                                <input type="text" datepickerse ng-model="income.incomeDate1" class="form-control input-sm"
-                                       placeholder="Expense Date" name="uIncomedate" ng-change="getIncome(income.incomeDate1)"/>
-                            </div>
-                        </div>
-                        <input type="hidden" value="{{income.userId}}"/>
+                                    <div class="col-lg-6">
+                                        <input type="text" datepickerse ng-model="income.incomeDate1" class="form-control input-sm"
+                                               placeholder="Expense Date" name="uIncomedate" ng-change="getIncome(income.incomeDate1)"/>
+                                    </div>
+                                </div>
+                                <input type="hidden" value="{{income.userId}}"/>
 
-                        <div class="form-group">
-                            <label class="col-lg-8 control-label">Income Amount</label>
-                            <div class="col-lg-4">
-                                <input type="text" class="form-control input-sm" ng-model="income.incomeAmount" placeholder="0.0">
-                            </div>
+                                <div class="form-group">
+                                    <label class="col-lg-8 control-label">Income Amount</label>
+
+                                    <div class="col-lg-4">
+                                        <input type="text" class="form-control input-sm" ng-model="income.incomeAmount" placeholder="0.0">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-success btn-xs" ng-click="saveIncome(income)">Save</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-success btn-xs" ng-click="saveIncome(income)">Save</button>
-                            </div>
-                        </div>
-                    </form>
-                    <div id="no-more-tables">
-                    <table class="table text-center table-hover cf">
-                        <tbody>
-                        <tr ng-repeat="income in allIncomes">
-                            <td data-title="Date" >{{income.incomeDate1}}</td>
-                            <td data-title="Amount" >{{income.incomeAmount}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                        </div>
+                    </div>
+                    <div id="no-more-tables1">
+                        <table class="table text-center table-hover cf">
+                            <tbody>
+                            <tr ng-repeat="income in allIncomes">
+                                <td data-title="Date">{{income.incomeDate1}}</td>
+                                <td data-title="Amount">{{income.incomeAmount}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </tab>
             </tabset>
         </div>
@@ -177,41 +172,57 @@
                         <div class="col-lg-2">
                             <input type="text" ng-model="track.year" class="form-control input-sm" name="uYear" ng-change="functionGetExpenses()"/>
                         </div>
-                        <label class="btn btn-primary btn-sm"  ng-repeat="month in months" ng-model="track.month" btn-radio="'{{month.mm}}'" ng-click="functionMonthExpenses(month.mm)">{{month.name}}</label>
+                        <label class="btn btn-primary btn-sm" ng-repeat="month in months" ng-model="track.month" btn-radio="'{{month.mm}}'"
+                               ng-click="functionMonthExpenses(month.mm)">{{month.name}}</label>
                     </div>
                     <div class="row">
                         &nbsp;
                     </div>
                     <accordion close-others="true">
-                        <accordion-group heading="Expenses">
-                            <input type="text" ng-model="searchKeyword"  value="" class="form-control input-sm" placeholder="Search Expenses"/>
-                            <div id="no-more-tables">
+                        <accordion-group class="panel-success" is-open="status.isFirstOpen">
+                            <accordion-heading>Expenses<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.isFirstOpen, 'glyphicon-chevron-right': !status.isFirstOpen}"></i></accordion-heading>
+
+                            <input type="text" ng-model="searchKeyword" value="" class="form-control input-sm" placeholder="Search Expenses"/>
+
+                            <div id="no-more-tables2">
                                 <table class="table text-center table-bordered table-hover cf">
                                     <tbody>
                                     <tr ng-repeat="expense in allExpenses | filter: searchKeyword | orderBy: 'expense.expenseDate1'">
                                         <td data-title="Date">{{expense.expenseDate1}}</td>
-                                        <td data-title="Category"><label class="label label-info" ng-repeat="category in expense.categories">{{category.key}}: {{category.value2}}</label></td>
+                                        <td data-title="Category">
+                                            <ul class="inlinelist">
+                                                <li ng-repeat="category in expense.categories">{{category.key}}:
+                                                    {{category.value2}}
+                                                </li>
+                                            </ul>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </accordion-group>
-                        <accordion-group heading="Expenses By Category">
-                            <div id="no-more-tables">
+                        <accordion-group class="panel-success" is-open="status.open">
+                            <accordion-heading>Expenses By Category<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i></accordion-heading>
+                            <div id="no-more-tables3">
                                 <table class="table text-center table-bordered table-hover cf">
                                     <thead class="cf">
-                                    <tr class="warning">
+                                    <tr>
                                         <th>Category</th>
-                                        <th>Budget Amount</th>
+                                        <th>Progress</th>
                                         <th>Spending Amount</th>
+                                        <th>Budget Amount</th>
                                         <th>Difference</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="expense1 in expensesByCategory">
                                         <td data-title="Category">{{expense1.category}}</td>
-                                        <td data-title="Budget">{{expense1.budgetAmount}}</td>
+                                        <td data-title="Progress">
+                                            <progressbar class="progress" animate="false" max="expense1.expenseAmount" value="expense1.budgetAmount"
+                                                         type="success"><i>{{expense1.expenseAmount}} / {{expense1.budgetAmount}}</i></progressbar>
+                                        </td>
                                         <td data-title="Spending">{{expense1.expenseAmount}}</td>
+                                        <td data-title="Budget">{{expense1.budgetAmount}}</td>
                                         <td data-title="Difference"><span ng-if="expense1.diffAmount < 0" class="text text-danger">{{expense1.diffAmount}}</span>
                                             <span ng-if="expense1.diffAmount >= 0" class="text text-success">{{expense1.diffAmount}}</span></td>
                                     </tr>
@@ -233,6 +244,10 @@
 
   ga('create', 'UA-55417878-1', 'auto');
   ga('send', 'pageview');
+
+
+
+
 
 
 
