@@ -54,8 +54,8 @@
                     <div id="no-more-tables">
                         <table class="col-md-12 table table-hover cf">
                             <tr ng-repeat="userInfo in OwesLoggedUser | orderBy: 'userInfo.name'">
-                                <td>{{userInfo.name}}</td>
-                                <td>{{userInfo.amount}}
+                                <td data-title="Name">{{userInfo.name}}</td>
+                                <td data-title="Amount">{{userInfo.amount}}
                                 </td>
                             </tr>
                         </table>
@@ -72,8 +72,8 @@
                     <div id="no-more-tables1">
                         <table class="col-md-12 table table-hover cf">
                             <tr ng-repeat="userInfo in loggedUserOwe | orderBy: 'userInfo.name'">
-                                <td>{{userInfo.name}}</td>
-                                <td>{{userInfo.amount}}
+                                <td data-title="Name">{{userInfo.name}}</td>
+                                <td data-title="Amount">{{userInfo.amount}}
                                 </td>
                             </tr>
                         </table>

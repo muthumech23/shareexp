@@ -2724,6 +2724,7 @@ select[multiple].input-lg {
 .form-horizontal .radio,
 .form-horizontal .checkbox,
 .form-horizontal .radio-inline,
+.form-horizontal .button-footer,
 .form-horizontal .checkbox-inline {
     margin-top: 0;
     margin-bottom: 0;
@@ -5201,6 +5202,7 @@ a.list-group-item-danger.active:focus {
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
 }
+
 .panel > .list-group {
     margin-bottom: 0;
 }
@@ -6776,17 +6778,6 @@ input:focus {
   background-position: 2px 6px;
 }
 
-/* Set submit button */
-form .btn, form.ng-valid .btn[disabled] {
-  display: none;
-}
-form.ng-invalid .btn[disabled], form.ng-valid .btn {
-  display: inline-block;
-}
-
-
-
-
 #timeline {
   list-style: none;
   position: relative;
@@ -7149,4 +7140,13 @@ form.ng-invalid .btn[disabled], form.ng-valid .btn {
         font-size: 21px;
         line-height: 1.4;
     }
+}
+
+.help-block {
+  display: none;
+}
+
+.help-block {
+  display: block;
+  color: red;
 }

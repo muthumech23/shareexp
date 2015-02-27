@@ -29,34 +29,25 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label">Password</label>
+                <label class="control-label">Password <span class="text-danger"> *</span></label>
 
-                <div class="input-group required-field-block">
+                <div class="input-group">
                     <span class="input-group-addon input-sm"><i class="fa fa-lock"></i></span>
                     <input type="password" placeholder="Password" name='uPassword' class="form-control input-sm" ng-model="user.password"
                            ng-minlength="6" required>
 
-                    <div class="required-icon">
-                        <div class="text">*</div>
-                    </div>
-                    <div ng-show="(form.uPassword.$dirty || rc.form.attempted) && form.uPassword.$invalid" class="input-help">
-                        <ul>
-                            <li ng-show="form.uPassword.$error.required">Password is required.</li>
-                            <li ng-show="form.uPassword.$error.minlength">Password minimum length is 6 characters.</li>
-                        </ul>
-                    </div>
+                    <p class="help-block" ng-show="(form.uPassword.$dirty || rc.form.attempted) && form.uPassword.$invalid" ng-if="form.uEmail.$error.required">Password is required.</p>
+                    <p class="help-block" ng-show="(form.uPassword.$dirty || rc.form.attempted) && form.uPassword.$invalid" ng-if="form.uEmail.$error.minlength">This is not a valid password (min-length: 6).</p>
                 </div>
-
-
             </div>
-
+            <div class="button-footer text-right">
+                <button class="btn btn-success btn-sm" ng-disabled="!form.$valid" ng-click="saveUser(user)">Save</button>
+                <a ui-sref="billhome.list" ng-click="selectTab(1)" >
+                    <button class="btn btn-warning btn-sm right">Cancel</button>
+                </a></div>
         </form>
     </div>
-    <div class="panel-footer text-right">
-        <button class="btn btn-success btn-sm" ng-disabled="!form.$valid" ng-click="saveUser(user)">Save</button>
-        <a ui-sref="billhome.list" ng-click="selectTab(1)" >
-            <button class="btn btn-warning btn-sm right">Cancel</button>
-        </a></div>
+
 </div>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

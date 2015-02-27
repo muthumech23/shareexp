@@ -21,10 +21,10 @@
                             <table class="col-md-12 table table-hover cf">
                                 <thead class="cf">
                                 <tr>
-                                    <th class="col-md-6" >Name</th>
-                                    <th class="col-md-1">Owes U</th>
-                                    <th class="col-md-1">U Owe</th>
-                                    <th class="col-md-4">Action</th>
+                                    <th class="col-md-4 pull-left" >Name</th>
+                                    <th class="col-md-2 pull-left">Owes U</th>
+                                    <th class="col-md-2 pull-left">U Owe</th>
+                                    <th class="col-md-4 pull-left">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -147,49 +147,37 @@
     <div class="modal-body">
         <form class="form-horizontal" rc-attempted name="form" novalidate>
             <div class="form-group">
-                <label class="control-label">Name</label>
+                <label class="control-label">Name <span class="text-danger"> *</span></label>
 
                 <div class="input-group required-field-block">
                     <span class="input-group-addon input-sm"><i class="fa fa-user"></i></span>
                     <input type="text" placeholder="Name" name='uName' class="form-control input-sm" ng-model="friendData.name" required
                            ng-pattern="avoidSpecialChar">
 
-                    <div class="required-icon">
-                        <div class="text">*</div>
-                    </div>
                 </div>
-                <div ng-show="(form.uName.$dirty || rc.form.attempted) && form.uName.$invalid" class="input-help">
-                    <ul>
-                        <li ng-show="form.uName.$error.required">Name is required.</li>
-                        <li ng-show="form.uName.$error.pattern">This is not a valid Name. Please remove any special characters.</li>
-                    </ul>
-                </div>
+                <p class="help-block" ng-show="(form.uName.$dirty || rc.form.attempted) && form.uName.$invalid" ng-if="form.uName.$error.required">Name is required.</p>
+                <p class="help-block" ng-show="(form.uName.$dirty || rc.form.attempted) && form.uName.$invalid" ng-if="form.uName.$error.pattern">This is not a valid Name. Please remove any special characters.</p>
             </div>
             <div class="form-group">
-                <label class="control-label">Email</label>
+                <label class="control-label">Email <span class="text-danger"> *</span></label>
 
                 <div class="input-group required-field-block">
                     <span class="input-group-addon input-sm"><i class="fa fa-envelope-o"></i></span>
                     <input type="email" placeholder="Email" name='uEmail' class="form-control input-sm" ng-model="friendData.email" required>
 
-                    <div class="required-icon">
-                        <div class="text">*</div>
-                    </div>
+
                 </div>
-                <div ng-show="(form.uEmail.$dirty || rc.form.attempted) && form.uEmail.$invalid" class="input-help">
-                    <ul>
-                        <li ng-show="form.uEmail.$error.required">Email is required.</li>
-                        <li ng-show="form.uEmail.$error.email">This is not a valid email.</li>
-                    </ul>
-                </div>
+                <p class="help-block" ng-show="(form.uEmail.$dirty || rc.form.attempted) && form.uEmail.$invalid" ng-if="form.uEmail.$error.required">Email is required.</p>
+                <p class="help-block" ng-show="(form.uEmail.$dirty || rc.form.attempted) && form.uEmail.$invalid" ng-if="form.uEmail.$error.email">This is not a valid email.</p>
+            </div>
+            <div class="button-footer">
+                <button type="button" class="btn btn-warning btn-xs pull-right" data-dismiss="modal" ng-click="cancel()">Close</button>
+                <span class="pull-right">&nbsp;</span>
+                <button type="button" class="btn btn-success btn-xs" ng-click="ok()" ng-disabled="!form.$valid">Save</button>
             </div>
         </form>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-warning btn-xs pull-right" data-dismiss="modal" ng-click="cancel()">Close</button>
-        <span class="pull-right">&nbsp;</span>
-        <button type="button" class="btn btn-success btn-xs" ng-click="ok()" ng-disabled="!form.$valid">Save</button>
-    </div>
+
 
 </script>
 
@@ -199,7 +187,7 @@
     <div class="modal-body">
         <form class="form-horizontal" rc-attempted name="form" novalidate>
             <div class="form-group">
-                <label class="control-label">Settle Up Amount</label>
+                <label class="control-label">Settle Up Amount <span class="text-danger"> *</span></label>
                 </br/>
                 <div class="input-group" ng-repeat="amtCurr in settleData.amtCurrs">
                     <span class="input-group-addon input-sm text-danger"><input type="checkbox" name="selected"
@@ -211,20 +199,17 @@
                 <input type="hidden" ng-model="settleData.amtCurrUpdated">
                 <input type="hidden" ng-model="settleData.loggedUser">
 
-                <div ng-show="(form.uBillAmount.$dirty || rc.form.attempted) && form.uBillAmount.$invalid" class="input-help">
-                    <ul>
-                        <li ng-show="form.uBillAmount.$error.required">Amount is required.</li>
-                        <li ng-show="form.uBillAmount.$error.number">This is not a valid amount.</li>
-                    </ul>
-                </div>
-            </div>
+                <p class="help-block" ng-show="(form.uBillamt.$dirty || rc.form.attempted) && form.uBillamt.$invalid" ng-if="form.uBillamt.$error.required">Bill Amount is required.</p>
+                <p class="help-block" ng-show="(form.uBillamt.$dirty || rc.form.attempted) && form.uBillamt.$invalid" ng-if="form.uBillamt.$error.number">This is not a valid Amount.</p>
 
+            </div>
+            <div class="button-footer">
+                <button type="button" class="btn btn-warning btn-xs pull-right" data-dismiss="modal" ng-click="cancel()">Close</button>
+                <span class="pull-right">&nbsp;</span>
+                <button type="button" class="btn btn-success btn-xs" ng-click="ok()" ng-disabled="!form.$valid">Save</button>
+            </div>
         </form>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-warning btn-xs pull-right" data-dismiss="modal" ng-click="cancel()">Close</button>
-        <span class="pull-right">&nbsp;</span>
-        <button type="button" class="btn btn-success btn-xs" ng-click="ok()" ng-disabled="!form.$valid">Save</button>
-    </div>
+
 
 </script>

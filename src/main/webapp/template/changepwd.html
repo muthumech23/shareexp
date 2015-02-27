@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Password</label>
+                    <label class="control-label">Password <span class="text-danger"> *</span></label>
 
                     <div class="input-group required-field-block">
 						<span class="input-group-addon input-sm"><i
@@ -35,31 +35,25 @@
                                                                       class="form-control input-sm" ng-model="user.password"
                                                                       ng-minlength="6" required>
 
-                        <div class="required-icon">
-                            <div class="text">*</div>
-                        </div>
-                        <div ng-show="(form.uPassword.$dirty || rc.form.attempted) && form.uPassword.$invalid" class="input-help">
-                            <ul>
-                                <li ng-show="form.uPassword.$error.required">Password is required.</li>
-                                <li ng-show="form.uPassword.$error.minlength">This is not a valid password.</li>
-                            </ul>
-                        </div>
+                        <p class="help-block" ng-show="(form.uPassword.$dirty || rc.form.attempted) && form.uPassword.$invalid" ng-if="form.uPassword.$error.required">password is required.</p>
+                        <p class="help-block" ng-show="(form.uPassword.$dirty || rc.form.attempted) && form.uPassword.$invalid" ng-if="form.uPassword.$error.minlength">This is not a valid password.</p>
+
                     </div>
 
                 </div>
-
+                <div class="button-footer text-right">
+                    <button class="btn btn-success btn-sm" ng-disabled="!form.$valid"
+                            ng-click="changePwd(user)">Save
+                    </button>
+                    <a ui-sref="home">
+                        <button
+                                class="btn btn-warning btn-sm right">Cancel
+                        </button>
+                    </a>
+                </div>
             </form>
         </div>
-        <div class="panel-footer text-right">
-            <button class="btn btn-success btn-sm" ng-disabled="!form.$valid"
-                    ng-click="changePwd(user)">Save
-            </button>
-            <a ui-sref="home">
-                <button
-                        class="btn btn-warning btn-sm right">Cancel
-                </button>
-            </a>
-        </div>
+
     </div>
 </div>
 

@@ -6,17 +6,14 @@
         <form class="form-horizontal" name="form" novalidate rc-attempt>
             <div class="form-group">
                 <div class="form-group col-lg-6">
-                    <label class="control-label">Bill Date</label>
+                    <label class="control-label">Bill Date <span class="text-danger"> *</span></label>
 
                     <input type="text" datepickerse ng-model="bill.date" class="form-control input-sm"
                            placeholder="Bill Date" name="uBilldate"/>
 
-                    <div ng-show="(form.uBilldate.$dirty || rc.form.attempted) && form.uBilldate.$invalid" class="input-help">
-                        <ul>
-                            <li ng-show="form.uBilldate.$error.required">Bill date is required.</li>
-                            <li ng-show="form.uBilldate.$error.date">This is not a valid date.</li>
-                        </ul>
-                    </div>
+                    <p class="help-block" ng-show="(form.uBilldate.$dirty || rc.form.attempted) && form.uBilldate.$invalid" ng-if="form.uBilldate.$error.required">Bill date is required.</p>
+                    <p class="help-block" ng-show="(form.uBilldate.$dirty || rc.form.attempted) && form.uBilldate.$invalid" ng-if="form.uBilldate.$error.date">This is not a valid date.</p>
+
                 </div>
 
                 <div class="form-group col-lg-6">
@@ -24,11 +21,9 @@
                                                                             placeholder="Description" name="uDescription"
                                                                             ng-pattern="avoidSpecialChar">
 
-                    <div ng-show="(form.uDescription.$dirty || rc.form.attempted) && form.uDescription.$invalid" class="input-help">
-                        <ul>
-                            <li ng-show="form.uDescription.$error.pattern">This is not a valid description. Please remove any special characters.</li>
-                        </ul>
-                    </div>
+                    <p class="help-block" ng-show="(form.uDescription.$dirty || rc.form.attempted) && form.uDescription.$invalid" ng-if="form.uDescription.$error.pattern">This is not a valid description. Please
+                        remove any special characters.</p>
+
                 </div>
             </div>
             <div class="form-group">
@@ -37,14 +32,12 @@
                                                                          placeholder="Category"
                                                                          name="uCategory" ng-pattern="avoidSpecialChar">
 
-                    <div ng-show="(form.uCategory.$dirty || rc.form.attempted) && form.uCategory.$invalid" class="input-help">
-                        <ul>
-                            <li ng-show="form.uCategory.$error.pattern">This is not a valid category. Please remove any special characters.</li>
-                        </ul>
-                    </div>
+                    <p class="help-block" ng-show="(form.uCategory.$dirty || rc.form.attempted) && form.uCategory.$invalid" ng-if="form.uCategory.$error.pattern">This is not a valid category. Please
+                        remove any special characters.</p>
+
                 </div>
                 <div class="form-group col-lg-6">
-                    <label class="control-label">Amount</label>
+                    <label class="control-label">Amount <span class="text-danger"> *</span></label>
 
                     <div class="input-group">
 						<span class="input-group-addon input-sm"><select name="sCurrency" ng-model="bill.currency">
@@ -54,16 +47,13 @@
                                                 placeholder="Bill Amount"
                                                 ng-change="billAmountChng()" required>
                     </div>
-                    <div ng-show="(form.uBillamt.$dirty || rc.form.attempted) && form.uBillamt.$invalid" class="input-help">
-                        <ul>
-                            <li ng-show="form.uBillamt.$error.required">Bill amount is required.</li>
-                            <li ng-show="form.uBillamt.$error.number">This is not a valid number.</li>
-                        </ul>
-                    </div>
+                    <p class="help-block" ng-show="(form.uBillamt.$dirty || rc.form.attempted) && form.uBillamt.$invalid" ng-if="form.uBillamt.$error.required">Bill Amount is required.</p>
+                    <p class="help-block" ng-show="(form.uBillamt.$dirty || rc.form.attempted) && form.uBillamt.$invalid" ng-if="form.uBillamt.$error.number">This is not a valid Amount.</p>
+
                 </div>
             </div>
             <div class="form-group col-lg-12">
-                <label class="control-label">Who Paid?</label>
+                <label class="control-label">Who Paid? <span class="text-danger"> *</span></label>
 
                 <div class="form-inline">
                     <label class="col-lg-4 radio-inline" ng-repeat="billsplit in addBillSplits"> <input type="radio" ng-model="bill.userPaid"
@@ -74,7 +64,7 @@
                 </div>
             </div>
             <div class="form-group col-lg-12">
-                <label class="control-label">Split</label>
+                <label class="control-label">Split <span class="text-danger"> *</span></label>
 
                 <div class="form-inline">
                     <label class="col-lg-4 radio-inline"> <input type="radio" ng-model="bill.splitType" value="equally" ng-change="billAmountChng()"
@@ -91,7 +81,7 @@
 
             </div>
             <div class="form-group col-lg-12">
-                <label class="control-label">To Whom?</label>
+                <label class="control-label">To Whom? <span class="text-danger"> *</span></label>
 
                 <div class="form-inline">
                     <label class="col-lg-6 checkbox-inline" ng-repeat="billsplit in addBillSplits"> <input type="checkbox" name="selected"
@@ -109,17 +99,18 @@
                                ng-model="billsplit.amountStatus">
                     </label>
                 </div>
-            </div>
-        </form>
-    </div>
-    <div class="panel-footer text-right">
+            </div> <div class="form-group col-lg-12">
+            <div class="button-footer text-right">
 		<span style="float: left;"><input type="checkbox" ng-model="bill.emailRequired" value="{{bill.emailRequired}} " required> do you
 			prefer to send email for bill?</span>
-        <button class="btn btn-success btn-sm" ng-disabled="form.$invalid" ng-click="!isOneSelectedFn() && saveBill(bill)">Save</button>
-        <span> </span><a ui-sref="billhome.list">
-        <button class="btn btn-warning btn-sm right">Cancel</button>
-    </a>
+                <button class="btn btn-success btn-sm" ng-disabled="form.$invalid" ng-click="!isOneSelectedFn() && saveBill(bill)">Save</button>
+                <span> </span><a ui-sref="billhome.list">
+                <button class="btn btn-warning btn-sm right">Cancel</button>
+            </a>
+            </div></div>
+        </form>
     </div>
+
 </div>
 
 <script>

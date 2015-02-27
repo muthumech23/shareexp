@@ -6,28 +6,21 @@
         <div class="panel-body">
             <form class="form-horizontal" name="form" rc-attempt novalidate>
                 <div class="form-group">
-                    <label class="control-label">Email</label>
+                    <label class="control-label">Email <span class="text-danger"> *</span></label>
 
-                    <div class="input-group required-field-block">
+                    <div class="input-group">
                         <span class="input-group-addon input-sm"><i class="fa fa-envelope-o"></i></span> <input type="email" placeholder="Email"
                                                                                                                 name='uEmail'
                                                                                                                 class="form-control input-sm"
                                                                                                                 ng-model="userSecure.userId" required>
 
-                        <div class="required-icon">
-                            <div class="text">*</div>
-                        </div>
-                        <div ng-show="(form.uEmail.$dirty || rc.form.attempted) && form.uEmail.$invalid" class="input-help">
-                            <ul>
-                                <li ng-show="form.uEmail.$error.required">Email is required.</li>
-                                <li ng-show="form.uEmail.$error.email">This is not a valid email.</li>
-                            </ul>
-                        </div>
+                        <p class="help-block" ng-show="(form.uEmail.$dirty || rc.form.attempted) && form.uEmail.$invalid" ng-if="form.uEmail.$error.required">Email is required.</p>
+                        <p class="help-block" ng-show="(form.uEmail.$dirty || rc.form.attempted) && form.uEmail.$invalid" ng-if="form.uEmail.$error.email">This is not a valid email.</p>
                     </div>
 
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Password</label>
+                    <label class="control-label">Password <span class="text-danger"> *</span></label>
 
                     <div class="input-group required-field-block">
                         <span class="input-group-addon input-sm"><i class="fa fa-lock"></i></span> <input type="password" placeholder="Password"
@@ -36,20 +29,13 @@
                                                                                                           ng-model="userSecure.password"
                                                                                                           ng-minlength="6" required>
 
-                        <div class="required-icon">
-                            <div class="text">*</div>
-                        </div>
-                        <div ng-show="(form.uPassword.$dirty || rc.form.attempted) && form.uPassword.$invalid" class="input-help">
-                            <ul>
-                                <li ng-show="form.uPassword.$error.required">Password is required.</li>
-                                <li ng-show="form.uPassword.$error.minlength">This is not a valid password.</li>
-                            </ul>
-                        </div>
+                        <p class="help-block" ng-show="(form.uPassword.$dirty || rc.form.attempted) && form.uPassword.$invalid" ng-if="form.uPassword.$error.required">Password is required.</p>
+                        <p class="help-block" ng-show="(form.uPassword.$dirty || rc.form.attempted) && form.uPassword.$invalid" ng-if="form.uPassword.$error.minlength">This is not a valid password (minlegth: 6).</p>
                     </div>
 
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Activation Code</label><a class="pull-right text-warning"
+                    <label class="control-label">Activation Code <span class="text-danger"> *</span></label><a class="pull-right text-warning"
                                                                            ng-click="regenerateactivationCode(userSecure.userId)">(Generate
                     Activation Code?)</a>
 
@@ -59,28 +45,22 @@
                                                                                                           class="form-control input-sm"
                                                                                                           ng-model="userSecure.randomString" required>
 
-                        <div class="required-icon">
-                            <div class="text">*</div>
-                        </div>
-                        <div ng-show="(form.uActivation.$dirty || rc.form.attempted) && form.uActivation.$invalid" class="input-help">
-                            <ul>
-                                <li ng-show="form.uActivation.$error.required">Activation Code is required.</li>
-                                <li ng-show="form.uActivation.$error.number">This is not a valid activation code. Please enter only numbers.</li>
-                            </ul>
-                        </div>
+                        <p class="help-block" ng-show="(form.uActivation.$dirty || rc.form.attempted) && form.uActivation.$invalid" ng-if="form.uActivation.$error.required">Activation Code  is required.</p>
+                        <p class="help-block" ng-show="(form.uActivation.$dirty || rc.form.attempted) && form.uActivation.$invalid" ng-if="form.uActivation.$error.number">This is not a valid activation code. Please enter only numbers.</p>
                     </div>
 
                 </div>
+                <div class="button-footer text-right">
+                    <button class="btn btn-success btn-sm" ng-disabled="!form.$valid" ng-click="activateUser(userSecure)">Activate</button>
+                    <a ui-sref="home">
+                        <button
+                                class="btn btn-warning btn-sm right">Cancel
+                        </button>
+                    </a>
+                </div>
             </form>
         </div>
-        <div class="panel-footer text-right">
-            <button class="btn btn-success btn-sm" ng-disabled="!form.$valid" ng-click="activateUser(userSecure)">Activate</button>
-            <a ui-sref="home">
-                <button
-                        class="btn btn-warning btn-sm right">Cancel
-                </button>
-            </a>
-        </div>
+
     </div>
 </div>
 <script>

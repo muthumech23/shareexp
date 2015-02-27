@@ -19,15 +19,15 @@
                         <tbody>
                         <tr>
                             <td data-title="Income">Income</td>
-                            <td ng-repeat="rowData in yearSummaryData">{{rowData.incomeAmount}}</td>
+                            <td data-title="rowData.month" ng-repeat="rowData in yearSummaryData">{{rowData.incomeAmount}}</td>
                         </tr>
                         <tr>
                             <td data-title="Spending">Spending</td>
-                            <td ng-repeat="rowData in yearSummaryData">{{rowData.expenseAmount}}</td>
+                            <td data-title="rowData.month" ng-repeat="rowData in yearSummaryData">{{rowData.expenseAmount}}</td>
                         </tr>
                         <tr>
                             <td data-title="Saving">Saving</td>
-                            <td ng-repeat="rowData in yearSummaryData"><Strong>
+                            <td data-title="rowData.month" ng-repeat="rowData in yearSummaryData"><Strong>
                                 <span ng-if="rowData.savingAmount < 0" class="text text-danger">{{rowData.savingAmount}}</span>
                                 <span ng-if="rowData.savingAmount >= 0" class="text text-success">{{rowData.savingAmount}}</span></Strong>
                             </td>
@@ -48,7 +48,7 @@
                         <div class="panel-body">
                             <form class="form-horizontal">
                                 <div class="form-group">
-                                    <label class="col-lg-6 control-label">Expense Date</label>
+                                    <label class="col-lg-6 control-label">Expense Date <span class="text-danger"> *</span></label>
 
                                     <div class="col-lg-6">
                                         <input type="text" datepickerse ng-model="expense.expenseDate1" class="form-control input-sm"
@@ -128,7 +128,7 @@
                         <div class="panel-body">
                             <form class="form-horizontal">
                                 <div class="form-group">
-                                    <label class="col-lg-6 control-label">Income Date</label>
+                                    <label class="col-lg-6 control-label">Income Date <span class="text-danger"> *</span></label>
 
                                     <div class="col-lg-6">
                                         <input type="text" datepickerse ng-model="income.incomeDate1" class="form-control input-sm"
@@ -138,7 +138,7 @@
                                 <input type="hidden" value="{{income.userId}}"/>
 
                                 <div class="form-group">
-                                    <label class="col-lg-8 control-label">Income Amount</label>
+                                    <label class="col-lg-8 control-label">Income Amount <span class="text-danger"> *</span></label>
 
                                     <div class="col-lg-4">
                                         <input type="text" class="form-control input-sm" ng-model="income.incomeAmount" placeholder="0.0">
