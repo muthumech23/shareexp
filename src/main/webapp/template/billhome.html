@@ -22,37 +22,42 @@
                                 <thead class="cf">
                                 <tr>
                                     <th class="col-md-4 text-left" >Name</th>
+                                    <th class="col-md-8 text-left">Net Balance</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-if="userInfo.userId === loggedUser" ng-repeat="userInfo in usersBillData | filter: searchKeyword | orderBy: 'userInfo.name'" ng-class="{'active': isUserSelected(userInfo.userId) }" ng-click="userBill(userInfo.userId);">
+                                    <td data-title="Name" class="small">{{userInfo.name}}</td>
+                                    <td data-title="Net Balance" class="small">
+                                        <span class="label label-success" ng-repeat='mapEntry in userInfo.amtCurrs' ng-if="mapEntry.amountStatus === 'D'">
+                                            <strong>{{mapEntry.currency}}{{mapEntry.amount|number:2}}</strong>
+                                        </span>
+                                        <span class="label label-danger" ng-repeat='mapEntry in userInfo.amtCurrs' ng-if="mapEntry.amountStatus === 'C'">
+                                            <strong>{{mapEntry.currency}}{{mapEntry.amount|number:2}}</strong>
+                                        </span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="col-md-12 table table-hover cf">
+                                <thead class="cf">
+                                <tr>
+                                    <th class="col-md-4 text-left" >Name</th>
                                     <th class="col-md-2 text-left">Owes U</th>
                                     <th class="col-md-2 text-left">U Owe</th>
                                     <th class="col-md-4 text-left">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-if="userInfo.userId === loggedUser" ng-repeat="userInfo in usersBillData | filter: searchKeyword | orderBy: 'userInfo.name'" ng-class="{'active': isUserSelected(userInfo.userId) }" ng-click="userBill(userInfo.userId);">
-                                    <td data-title="Name" class="small">{{userInfo.name}}</td>
-                                    <td data-title="Owes You " class="small">
-                                        <span class="text text-success" ng-repeat='mapEntry in userInfo.amtCurrs' ng-if="mapEntry.amountStatus === 'D'">
-                                            <strong>{{mapEntry.currency}}{{mapEntry.amount|number:2}}</strong>
-                                        </span>
-                                    </td>
-                                    <td data-title="You Owe" class="small">
-                                        <span class="text text-danger" ng-repeat='mapEntry in userInfo.amtCurrs' ng-if="mapEntry.amountStatus === 'C'">
-                                            <strong>{{mapEntry.currency}}{{mapEntry.amount|number:2}}</strong>
-                                        </span>
-                                    </td>
-                                    <td data-title="Action" class="small">
-                                        &nbsp;
-                                    </td>
-                                </tr>
                                 <tr ng-if="userInfo.userId != loggedUser" ng-repeat="userInfo in usersBillData | filter: searchKeyword | orderBy: 'userInfo.name'" ng-class="{'active': isUserSelected(userInfo.userId) }" ng-click="userBill(userInfo.userId);">
                                     <td data-title="Name" class="small">{{userInfo.name}}</td>
                                     <td data-title="Owes You " class="small">
-                                        <span class="text text-success" ng-repeat='mapEntry1 in userInfo.amtCurrs' ng-if="mapEntry1.amountStatus === 'D'">
+                                        <span class="label label-success" ng-repeat='mapEntry1 in userInfo.amtCurrs' ng-if="mapEntry1.amountStatus === 'D'">
                                             <strong>{{mapEntry1.currency}}{{mapEntry1.amount|number:2}}</strong>
                                         </span>
                                     </td>
                                     <td data-title="You Owe" class="small">
-                                        <span class="text text-danger" ng-repeat='mapEntry1 in userInfo.amtCurrs' ng-if="mapEntry1.amountStatus === 'C'">
+                                        <span class="label label-danger" ng-repeat='mapEntry1 in userInfo.amtCurrs' ng-if="mapEntry1.amountStatus === 'C'">
                                             <strong>{{mapEntry1.currency}}{{mapEntry1.amount|number:2}}</strong>
                                         </span>
                                     </td>

@@ -438,7 +438,7 @@ billControllers.controller('BillAddController', function($scope, $state, cfpLoad
 
     $scope.bill = {};
 
-    $scope.addBillSplits = addBill.billSplits;
+	$scope.addBillSplits = addBill.billSplits;
 
     $scope.updatedBillSPlitList = [];
 

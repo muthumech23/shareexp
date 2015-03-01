@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 
@@ -42,6 +43,11 @@ public class Bill extends AbstractModal {
     @Indexed
     private String date;
 
+    /**
+     * DOCUMENT ME!
+     */
+    @Indexed
+    private Date billDate;
 
     /**
      * DOCUMENT ME!
@@ -91,6 +97,13 @@ public class Bill extends AbstractModal {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
+    public Date getBillDate() {
+        return billDate;
+    }
+
+    public void setBillDate(Date billDate) {
+        this.billDate = billDate;
+    }
 
     /**
      * DOCUMENT ME!

@@ -40,7 +40,7 @@
                     <label class="control-label">Amount <span class="text-danger"> *</span></label>
 
                     <div class="input-group">
-						<span class="input-group-addon input-sm"><select name="sCurrency" ng-model="bill.currency">
+						<span class="input-group-addon input-sm"><select name="sCurrency" ng-model="bill.currency" required>
                             <option value="$">USD</option>
                             <option value="₹">RS</option>
                         </select></span> <input type="number" ng-model="bill.amount" class="form-control input-sm" name="uBillamt"
@@ -49,7 +49,7 @@
                     </div>
                     <p class="help-block" ng-show="(form.uBillamt.$dirty || rc.form.attempted) && form.uBillamt.$invalid" ng-if="form.uBillamt.$error.required">Bill Amount is required.</p>
                     <p class="help-block" ng-show="(form.uBillamt.$dirty || rc.form.attempted) && form.uBillamt.$invalid" ng-if="form.uBillamt.$error.number">This is not a valid Amount.</p>
-
+                    <p class="help-block" ng-show="form.sCurrency.$invalid" ng-if="form.sCurrency.$error.required">Currency is required.</p>
                 </div>
             </div>
             <div class="form-group col-lg-12">
@@ -101,7 +101,7 @@
                 </div>
             </div> <div class="form-group col-lg-12">
             <div class="button-footer text-right">
-		<span style="float: left;"><input type="checkbox" ng-model="bill.emailRequired" value="{{bill.emailRequired}} " required> do you
+		<span style="float: left;"><input type="checkbox" ng-model="bill.emailRequired" value="{{bill.emailRequired}} "> do you
 			prefer to send email for bill?</span>
                 <button class="btn btn-success btn-sm" ng-disabled="form.$invalid" ng-click="!isOneSelectedFn() && saveBill(bill)">Save</button>
                 <span> </span><a ui-sref="billhome.list">

@@ -37,7 +37,7 @@
                             <div class="form-group">
                                 <label class="control-label">Password <span class="text-danger"> *</span></label>
 
-                                <div class="input-group required-field-block">
+                                <div class="input-group">
                                     <span class="input-group-addon input-sm"><i class="fa fa-lock"></i></span> <input type="password"
                                                                                                                       placeholder="Password"
                                                                                                                       name='uPassword'
@@ -45,9 +45,6 @@
                                                                                                                       ng-model="userLogin.password"
                                                                                                                       ng-minlength="6" required>
 
-                                    <div class="required-icon">
-                                        <div class="text">*</div>
-                                    </div>
                                     <!--<div ng-show="(form.uPassword.$dirty || rc.form.attempted) && form.uPassword.$invalid" class="input-help">
                                         <ul>
                                             <li ng-show="form.uPassword.$error.required">Password is required.</li>

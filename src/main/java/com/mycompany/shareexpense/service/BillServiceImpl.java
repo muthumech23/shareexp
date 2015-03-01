@@ -19,6 +19,8 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +51,9 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public Bill saveBill(Bill bill) throws Exception {
+
+        DateFormat df = new SimpleDateFormat("MMMM d, y");
+        bill.setBillDate(df.parse(bill.getDate()));
 
         Bill billResponse = billRepository.save(bill);
 
