@@ -267,7 +267,7 @@ public class CommonUtil {
 
     public static Date getStartOfMonth(int year, int month) {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month-1, 1);
+        calendar.set(year, month, 1);
 
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
         return calendar.getTime();
@@ -275,7 +275,7 @@ public class CommonUtil {
 
     public static Date getEndOfMonth(int year, int month) {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month-1, 1);
+        calendar.set(year, month, 1);
 
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         return calendar.getTime();

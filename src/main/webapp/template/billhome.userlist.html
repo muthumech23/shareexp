@@ -26,10 +26,10 @@
                     <td data-title="Date" class="small"> {{bill.date| date: 'MMM dd, y'}}</td>
                     <td data-title="Description" class="small">{{bill.description}}</td>
                     <td data-title="Amount">{{bill.currency}}{{bill.amount|number:2}}</td>
-                    <td data-title="Splits"><span ng-repeat="billdata in bill.billSplits" class="small"><Strong>
-                            <span class="text text-muted" ng-if="billdata.userId !== bill.userPaid">{{billdata.name}} {{bill.currency}}{{billdata.amount|number:2}}</span>
-                            <span class="text text-success" ng-if="billdata.userId === bill.userPaid">{{billdata.name}} {{bill.currency}}{{billdata.amount|number:2}}</span></Strong>
-                </span></td>
+                    <td data-title="Splits"><ul class="inlinelist small">
+                        <li  ng-repeat="billdata in bill.billSplits"><span class="text text-muted" ng-if="billdata.userId !== bill.userPaid">{{billdata.name}}: {{bill.currency}}{{billdata.amount|number:2}}</span>
+                            <span class="text text-success" ng-if="billdata.userId === bill.userPaid">{{billdata.name}}: {{bill.currency}}{{billdata.amount|number:2}}</span></li>
+                    </ul></td>
 
                     <td data-title="Action" class="text-primary small">
                         <a href="" ng-click="editBill(bill.id, userSelected.id)" tooltip-placement="right" tooltip-html-unsafe="Edit"><span class="glyphicon glyphicon-edit" style="font-size: 1.5em"></span></a>

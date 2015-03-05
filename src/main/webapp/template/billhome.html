@@ -21,7 +21,7 @@
                             <table class="table table-hover cf">
                                 <tbody>
                                 <tr ng-if="userInfo.userId === loggedUser" ng-repeat="userInfo in usersBillData | filter: searchKeyword | orderBy: 'userInfo.name'" ng-class="{'active': isUserSelected(userInfo.userId) }" ng-click="userBill(userInfo.userId);">
-                                    <td data-title="Name" class="small">{{userInfo.name}}<br/>@<span class="text text-muted"><strong>Net Balance</strong></span></td>
+                                    <td data-title="Name" class="small">{{userInfo.name}}<br/><span class="text text-muted"><strong>@Net Balance</strong></span></td>
                                     <td data-title="Net Balance" class="small">
                                         <span class="label label-success" ng-repeat='mapEntry in userInfo.amtCurrs' ng-if="mapEntry.amountStatus === 'D'">
                                             {{mapEntry.currency}}{{mapEntry.amount|number:2}}

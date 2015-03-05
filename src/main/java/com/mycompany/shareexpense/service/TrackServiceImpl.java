@@ -110,9 +110,9 @@ public class TrackServiceImpl implements TrackExpService {
         Date endDate = null;
 
         startDate = CommonUtil.getStartOfMonth(year, month);
-        endDate = CommonUtil.getEndOfMonth(year, month);
+        endDate = CommonUtil.getEndOfMonth(year, month-2);
 
-        return expenseRepository.findByExpenseDateBetweenAndUserId(startDate, endDate, userId);
+        return expenseRepository.findByExpenseDateBetweenAndUserId(endDate, startDate, userId);
     }
 
     @Override
@@ -158,9 +158,9 @@ public class TrackServiceImpl implements TrackExpService {
         Date endDate = null;
 
         startDate = CommonUtil.getStartOfMonth(CommonUtil.getCurrentYear(), CommonUtil.getCurrentMonth());
-        endDate = CommonUtil.getEndOfMonth(CommonUtil.getCurrentYear(), CommonUtil.getCurrentMonth());
+        endDate = CommonUtil.getEndOfMonth(CommonUtil.getCurrentYear(), CommonUtil.getCurrentMonth()-2);
 
-        return incomeRepository.findByIncomeDateBetweenAndUserId(startDate, endDate, userId);
+        return incomeRepository.findByIncomeDateBetweenAndUserId(endDate, startDate, userId);
     }
 
     @Override
@@ -212,7 +212,7 @@ public class TrackServiceImpl implements TrackExpService {
                 yearSummaryDto.setMonth(i+"");
 
                 BigDecimal expenseAmount = BigDecimal.ZERO;
-                List<Expense> expenseList = expenseRepository.findByExpenseDateBetweenAndUserId(CommonUtil.getStartOfMonth(year, i), CommonUtil.getEndOfMonth(year, i), userId);
+                List<Expense> expenseList = expenseRepository.findByExpenseDateBetweenAndUserId(CommonUtil.getEndOfMonth(year, i-2), CommonUtil.getStartOfMonth(year, i), userId);
 
                 for(Expense expense: expenseList){
                     for(KeyValue keyValue: expense.getCategories()){
@@ -223,7 +223,7 @@ public class TrackServiceImpl implements TrackExpService {
                 yearSummaryDto.setExpenseAmount(expenseAmount);
 
                 BigDecimal incomeAmount = BigDecimal.ZERO;
-                List<Income> incomeList = incomeRepository.findByIncomeDateBetweenAndUserId(CommonUtil.getStartOfMonth(year, i), CommonUtil.getEndOfMonth(year, i), userId);
+                List<Income> incomeList = incomeRepository.findByIncomeDateBetweenAndUserId(CommonUtil.getEndOfMonth(year, i-2), CommonUtil.getStartOfMonth(year, i), userId);
 
                 for(Income income: incomeList){
                     incomeAmount = incomeAmount.add(income.getIncomeAmount());
@@ -251,7 +251,8 @@ public class TrackServiceImpl implements TrackExpService {
         try {
 
             List<Category> categories = categoryRepository.findByUserId(userId);
-            List<Expense> expenseList = expenseRepository.findByExpenseDateBetweenAndUserId(CommonUtil.getStartOfMonth(year, month), CommonUtil.getEndOfMonth(year, month), userId);
+
+            List<Expense> expenseList = expenseRepository.findByExpenseDateBetweenAndUserId(CommonUtil.getEndOfMonth(year, month -2), CommonUtil.getStartOfMonth(year, month), userId);
             List<Budget> budgetList = budgetRepository.findByUserId(userId);
             if(categories != null){
                 categorySummaryDtos = new ArrayList<>(categories.size());

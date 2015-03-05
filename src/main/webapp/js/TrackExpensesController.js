@@ -2,7 +2,7 @@
 var trackExpController = angular.module('TrackExpController', []);
 
 
-trackExpController.controller('TrackControllerHome', function($scope, $filter, ExpenseServices, FlashService, cfpLoadingBar, flash, SessionService, getYearSummary) {
+trackExpController.controller('TrackControllerHome', function($scope, $filter, ExpenseServices, FlashService, cfpLoadingBar, flash, SessionService, getYearSummary, $state) {
 
 	$scope.status = {
         isFirstOpen: true,
@@ -305,6 +305,7 @@ trackExpController.controller('TrackControllerHome', function($scope, $filter, E
                     type: 'alert-success'
                 });
                 cfpLoadingBar.complete();
+                $state.go('trackexp', {}, {reload: true});
             }, function(response) {
                 $scope.errorresource = response.data;
                 flash.pop({
@@ -331,6 +332,7 @@ trackExpController.controller('TrackControllerHome', function($scope, $filter, E
                     type: 'alert-success'
                 });
                 cfpLoadingBar.complete();
+                $state.go('trackexp', {}, {reload: true});
             }, function(response) {
                 $scope.errorresource = response.data;
                 flash.pop({
@@ -357,6 +359,7 @@ trackExpController.controller('TrackControllerHome', function($scope, $filter, E
                     type: 'alert-success'
                 });
                 cfpLoadingBar.complete();
+                $state.go('trackexp', {}, {reload: true});
             }, function(response) {
                 $scope.errorresource = response.data;
                 flash.pop({
@@ -383,6 +386,7 @@ trackExpController.controller('TrackControllerHome', function($scope, $filter, E
                     type: 'alert-success'
                 });
                 cfpLoadingBar.complete();
+                $state.go('trackexp', {}, {reload: true});
             }, function(response) {
                 $scope.errorresource = response.data;
                 flash.pop({

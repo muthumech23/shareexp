@@ -22,7 +22,7 @@ public class TestStandalone {
         System.out.println(dateFormat.format(date));
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2015, 02-1, 1);
+        calendar.set(2015, 01-2, 1);
 
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
         //startDate = calendar.getTime();
